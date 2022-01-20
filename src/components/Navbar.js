@@ -33,9 +33,9 @@ const Navbar = props => {
                 model={items}
                 end={
                     <React.Fragment>
-                        <Button onClick={() => navigate("/signup")} className="p-button-info" label="Sign Up"
+                        <Button onClick={() => navigate("/signup")} className="p-button-info" label="Regisztráció"
                                 icon="pi pi-user-plus" style={{marginRight: 20, fontSize: 18}}/>
-                        <Button onClick={() => navigate("/signin")} className="p-button-success" label="Sign In"
+                        <Button onClick={() => navigate("/signin")} className="p-button-success" label="Bejelentkezés"
                                 icon="pi pi-sign-in" style={{marginRight: 10, fontSize: 18}}/>
                     </React.Fragment>
                 }

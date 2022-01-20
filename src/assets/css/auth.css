@@ -1,14 +1,10 @@
-body {
-    background-color: #323232;
-}
-
 .form .card {
     display: flex;
     justify-content: center;
     flex-direction: column;
     max-width: 40%;
     margin: 3% auto;
-    background-color: #232323;
+    background-color: #252525;
 }
 
 .form .card-name {

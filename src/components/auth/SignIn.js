@@ -1,24 +1,21 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
 import {Password} from 'primereact/password';
-import {Divider} from 'primereact/divider';
 import {classNames} from 'primereact/utils';
+import '../../assets/css/auth.css';
 
-const SignIn = () => {
-    const [showMessage, setShowMessage] = useState(false);
-    const [formData, setFormData] = useState({});
+const SignIn = props => {
+    const {credentials} = props;
     const defaultValues = {
         email: '',
         password: ''
     }
-
     const {control, formState: {errors}, handleSubmit, reset} = useForm({defaultValues});
 
     const onSubmit = (data) => {
-        setFormData(data);
-        setShowMessage(true);
+        console.log(data)
 
         reset();
     };
