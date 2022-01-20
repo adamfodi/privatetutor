@@ -1,38 +1,51 @@
-.App {
-  text-align: center;
+body {
+    background-color: #323232;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.form .card {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 40%;
+    margin: 3% auto;
+    background-color: #232323;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.form .card-name {
+    text-align: center;
+    color: #DEDEDE;
+    font-size: 1.5em;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.form .card-content {
+    text-align: center;
+    font-size: 1em;
+    margin: 5%;
 }
 
-.App-link {
-  color: #61dafb;
+.form .card-field {
+    margin-bottom: 1.5em;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.form .card-field-error {
+    text-align: left;
+    color: #ef9a9a;
+    margin: 0.2em 0.2em;
+}
+
+.form .card-button {
+    font-size: 1.5em;
+    padding: 0.5em;
+}
+
+@media screen and (max-width: 960px) {
+    .form .card {
+        max-width: 50%;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .form .card {
+        max-width: 80%;
+    }
 }
