@@ -34,6 +34,13 @@
     padding: 0.5em;
 }
 
+.form .card-signin-error {
+    text-align: center;
+    font-size: 1.3em;
+    color: #ef9a9a;
+    padding-top: 1em;
+}
+
 @media screen and (max-width: 960px) {
     .form .card {
         max-width: 50%;

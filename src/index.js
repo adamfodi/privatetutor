@@ -1,14 +1,59 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from 'react'
+import {Provider} from 'react-redux'
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+import {applyMiddleware, compose, createStore} from 'redux'
+import {getFirebase, ReactReduxFirebaseProvider} from 'react-redux-firebase'
+import {createFirestoreInstance, getFirestore} from 'redux-firestore' // <- needed if using
+import firebaseConfig from "./config/firebaseConfig";
+import rootReducer from "./redux/reducers/rootReducer";
+import * as ReactDOM from "react-dom";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import {composeWithDevTools} from "redux-devtools-extension";
+import "./index.css";
+import thunk from "redux-thunk";
+
+
+// react-redux-firebase config
+const rrfConfig = {
+    userProfile: 'users',
+    useFirestoreForProfile: true,
+    attachAuthIsReady: true
+};
+
+// Initialize firebase and firestore instances
+firebase.initializeApp(firebaseConfig);
+firebase.firestore();
+
+const initialState = {};
+
+const store = createStore(
+    rootReducer,
+    initialState,
+    composeWithDevTools(
+        applyMiddleware(thunk.withExtraArgument({getFirebase, getFirestore}))
+    )
+);
+
+const rrfProps = {
+    firebase,
+    config: rrfConfig,
+    dispatch: store.dispatch,
+    firestore: createFirestoreInstance
+}
+
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <Provider store={store}>
+            <ReactReduxFirebaseProvider {...rrfProps}>
+                <App/>
+            </ReactReduxFirebaseProvider>
+        </Provider>
+    </React.StrictMode>,
+    document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function

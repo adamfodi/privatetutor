@@ -1,21 +1,34 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
 import {Password} from 'primereact/password';
 import {classNames} from 'primereact/utils';
 import '../../assets/css/auth.css';
+import {signIn} from "../../redux/actions/authActions";
+import {connect} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 const SignIn = props => {
-    const {credentials} = props;
+    const {authError, auth, signIn} = props;
+    const navigate = useNavigate();
     const defaultValues = {
         email: '',
         password: ''
     }
     const {control, formState: {errors}, handleSubmit, reset} = useForm({defaultValues});
 
+    useEffect(() => {
+        if (auth.uid){
+            navigate("/signup")
+        }
+    }, [auth]);
+
     const onSubmit = (data) => {
-        console.log(data)
+        signIn(data);
+
+        console.log("onSubmit");
+        console.log(data);
 
         reset();
     };
@@ -23,6 +36,7 @@ const SignIn = props => {
     const getFormErrorMessage = (name) => {
         return errors[name] && <p className="card-field-error">{errors[name].message}</p>
     };
+
     return (
         <div className="form">
             <div className="card">
@@ -72,6 +86,7 @@ const SignIn = props => {
                         </div>
 
                         <Button type="submit" label="Bejelentkezés" className="card-button"/>
+                        {authError ? <p className="card-signin-error">Sikertelen bejelentkezés!</p> : null}
                     </form>
                 </div>
             </div>
@@ -79,5 +94,18 @@ const SignIn = props => {
     );
 };
 
-export default SignIn;
+const mapStateToProps = state => {
+    return {
+        authError: state.auth.authError,
+        auth: state.firebase.auth
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        signIn: credentials => dispatch(signIn(credentials))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
                  
