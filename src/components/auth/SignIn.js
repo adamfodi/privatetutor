@@ -10,7 +10,7 @@ import {connect} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
 const SignIn = props => {
-    const {authError, auth, signIn} = props;
+    const {authError, auth} = props;
     const navigate = useNavigate();
     const defaultValues = {
         email: '',
@@ -19,17 +19,15 @@ const SignIn = props => {
     const {control, formState: {errors}, handleSubmit, reset} = useForm({defaultValues});
 
     useEffect(() => {
-        if (auth.uid){
+        console.log(auth);
+
+        if (auth.uid) {
             navigate("/signup")
         }
     }, [auth]);
 
     const onSubmit = (data) => {
-        signIn(data);
-
-        console.log("onSubmit");
-        console.log(data);
-
+        props.signIn(data);
         reset();
     };
 

@@ -3,13 +3,13 @@ import {useNavigate} from "react-router-dom";
 import {Menubar} from 'primereact/menubar';
 import {Button} from "primereact/button";
 import {connect} from "react-redux";
-import {signIn, signOut} from "../redux/actions/authActions";
+import {signOut} from "../redux/actions/authActions";
 
 
 const Navbar = props => {
 
     const navigate = useNavigate();
-    const {auth, signOut} = props;
+    const {auth} = props;
 
     const items = [
         {
@@ -42,7 +42,7 @@ const Navbar = props => {
                                 icon="pi pi-sign-in" style={{marginRight: 10, fontSize: 18}}/>
                     </React.Fragment>
                     : <React.Fragment>
-                        <Button onClick={signOut} className="p-button-danger" label="Kijelentkezés"
+                        <Button onClick={props.signOut} className="p-button-danger" label="Kijelentkezés"
                                 icon="pi pi-sign-out" style={{marginRight: 10, fontSize: 18}}/>
                     </React.Fragment>
                 }
