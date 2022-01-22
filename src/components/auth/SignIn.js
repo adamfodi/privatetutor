@@ -15,16 +15,15 @@ const SignIn = props => {
     const defaultValues = {
         email: '',
         password: ''
-    }
+    };
     const {control, formState: {errors}, handleSubmit, reset} = useForm({defaultValues});
 
     useEffect(() => {
-        console.log(auth);
-
-        if (auth.uid) {
+        if (!(auth.isLoaded && auth.isEmpty)) {
             navigate("/signup")
         }
-    }, [auth]);
+
+    }, [auth, navigate]);
 
     const onSubmit = (data) => {
         props.signIn(data);
@@ -38,7 +37,6 @@ const SignIn = props => {
     return (
         <div className="form">
             <div className="card">
-
                 <div className="card-name">
                     <h1>Bejelentkezés</h1>
                 </div>
@@ -84,7 +82,8 @@ const SignIn = props => {
                         </div>
 
                         <Button type="submit" label="Bejelentkezés" className="card-button"/>
-                        {authError ? <p className="card-signin-error">Sikertelen bejelentkezés!</p> : null}
+                        {authError ?
+                            <p className="card-signin-error">Sikertelen bejelentkezés!</p> : null}
                     </form>
                 </div>
             </div>

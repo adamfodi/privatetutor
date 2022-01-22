@@ -34,7 +34,7 @@ const Navbar = props => {
         <div>
             <Menubar
                 model={items}
-                end={!auth.uid
+                end={auth.isLoaded && auth.isEmpty
                     ? <React.Fragment>
                         <Button onClick={() => navigate("/signup")} className="p-button-info" label="Regisztráció"
                                 icon="pi pi-user-plus" style={{marginRight: 20, fontSize: 18}}/>
