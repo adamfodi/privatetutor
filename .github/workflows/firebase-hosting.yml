@@ -13,7 +13,8 @@ jobs:
         run: npm ci
       - name: Build dependencies
         run: npm run build
-      - name: Archive production artifact@main
+      - name: Archive production artifact
+        uses: actions/upload-artifact@main
         with:
           name: build
           path: build
