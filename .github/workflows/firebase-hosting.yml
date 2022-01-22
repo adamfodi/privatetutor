@@ -13,6 +13,8 @@ jobs:
         run: npm ci
       - name: Build dependencies
         run: npm run build
+        env:
+          CI: false
       - name: Archive production artifact
         uses: actions/upload-artifact@main
         with:
@@ -37,7 +39,7 @@ jobs:
         with:
           args: deploy --only hosting
         env:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_PRIVATETUTOR_1417D }}
 
 
 
