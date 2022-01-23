@@ -34,9 +34,9 @@
     padding: 0.5em;
 }
 
-.form .card-signin-error {
+.form .card-auth-error {
     text-align: center;
-    font-size: 1.3em;
+    font-size: 1em;
     color: #ef9a9a;
     padding-top: 1em;
 }

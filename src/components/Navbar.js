@@ -4,12 +4,14 @@ import {Menubar} from 'primereact/menubar';
 import {Button} from "primereact/button";
 import {connect} from "react-redux";
 import {signOut} from "../redux/actions/authActions";
+import {compose} from "redux";
+import {firestoreConnect} from "react-redux-firebase";
 
 
 const Navbar = props => {
 
     const navigate = useNavigate();
-    const {auth} = props;
+    const {auth,users} = props;
 
     const items = [
         {
@@ -29,6 +31,9 @@ const Navbar = props => {
         }
 
     ];
+
+    console.log("AUTH STATUS")
+    console.log(users)
 
     return (
         <div>
@@ -52,9 +57,11 @@ const Navbar = props => {
 };
 
 const mapStateToProps = state => {
+    console.log("STATE")
+    console.log(state);
     return {
         auth: state.firebase.auth,
-        // profile: state.firebase.profile
+        users: state.firestore.ordered.users
     };
 };
 
@@ -64,4 +71,8 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    firestoreConnect( () => ['users'])
+
+)(Navbar);

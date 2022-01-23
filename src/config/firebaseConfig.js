@@ -34,8 +34,9 @@ const initialState = {};
 const store = createStore(
     rootReducer,
     initialState,
-    composeWithDevTools(applyMiddleware(thunk)
-    )
+    composeWithDevTools(
+        applyMiddleware(thunk),
+    ),
 );
 
 // react-redux-firebase props
@@ -43,7 +44,7 @@ const rrfProps = {
     firebase,
     config: rrfConfig,
     dispatch: store.dispatch,
-    firestore: createFirestoreInstance
+    createFirestoreInstance // NEEDED FOR FIRESTORE REDUCER!
 };
 
 export {store, rrfProps};

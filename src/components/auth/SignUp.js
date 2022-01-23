@@ -1,118 +1,203 @@
+import React, {useEffect, useState} from 'react';
+import {Controller, useForm} from 'react-hook-form';
+import {InputText} from 'primereact/inputtext';
+import {Button} from 'primereact/button';
+import {Password} from 'primereact/password';
+import {classNames} from 'primereact/utils';
+import '../../assets/css/auth.css';
+import {signUp} from "../../redux/actions/authActions";
+import {connect} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {Calendar} from "primereact/calendar";
+import {Dropdown} from "primereact/dropdown";
 
-import React, { useEffect, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
-import { Dropdown } from 'primereact/dropdown';
-import { Calendar } from 'primereact/calendar';
-import { Password } from 'primereact/password';
-import { Checkbox } from 'primereact/checkbox';
-import { Dialog } from 'primereact/dialog';
-import { Divider } from 'primereact/divider';
-import { classNames } from 'primereact/utils';
-
-const SignUp = () => {
-    const [countries, setCountries] = useState([]);
-    const [showMessage, setShowMessage] = useState(false);
-    const [formData, setFormData] = useState({});
+const SignUp = props => {
+    const {authError, auth} = props;
+    const navigate = useNavigate();
+    const genderList = ["Férfi", "Nő", "Egyéb"];
+    const [passwordsAreIdentical, setPasswordsAreIdentical] = useState(true);
     const defaultValues = {
-        name: '',
         email: '',
         password: '',
-        date: null,
-        accept: false
-    }
+        password2: '',
+        lastname: '',
+        firstname: '',
+        birthday: null,
+        gender: genderList[0]
+    };
+    const {control, formState: {errors}, handleSubmit} = useForm({defaultValues});
 
-    const { control, formState: { errors }, handleSubmit, reset } = useForm({ defaultValues });
+    useEffect(() => {
+        if (!(auth.isLoaded && auth.isEmpty)) {
+            navigate("/indexStudent")
+        }
 
+    }, [auth, navigate]);
     const onSubmit = (data) => {
-        setFormData(data);
-        setShowMessage(true);
 
-        reset();
+        if (data.password === data.password2) {
+            console.log(data)
+            setPasswordsAreIdentical(true);
+            props.signUp(data);
+        } else {
+            setPasswordsAreIdentical(false);
+        }
     };
 
     const getFormErrorMessage = (name) => {
-        return errors[name] && <small className="p-error">{errors[name].message}</small>
+        return errors[name] && <p className="card-field-error">{errors[name].message}</p>
     };
 
-    const dialogFooter = <div className="flex justify-content-center"><Button label="OK" className="p-button-text" autoFocus onClick={() => setShowMessage(false)} /></div>;
-    const passwordHeader = <h6>Pick a password</h6>;
-    const passwordFooter = (
-        <React.Fragment>
-            <Divider />
-            <p className="mt-2">Suggestions</p>
-            <ul className="pl-2 ml-2 mt-0" style={{ lineHeight: '1.5' }}>
-                <li>At least one lowercase</li>
-                <li>At least one uppercase</li>
-                <li>At least one numeric</li>
-                <li>Minimum 8 characters</li>
-            </ul>
-        </React.Fragment>
-    );
-
     return (
-        <div className="form-demo">
-            <Dialog visible={showMessage} onHide={() => setShowMessage(false)} position="top" footer={dialogFooter} showHeader={false} breakpoints={{ '960px': '80vw' }} style={{ width: '30vw' }}>
-                <div className="flex justify-content-center flex-column pt-6 px-3">
-                    <i className="pi pi-check-circle" style={{ fontSize: '5rem', color: 'var(--green-500)' }}></i>
-                    <h5>Registration Successful!</h5>
-                    <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>
-                        Your account is registered under name <b>{formData.name}</b> ; it'll be valid next 30 days without activation. Please check <b>{formData.email}</b> for activation instructions.
-                    </p>
+        <div className="form">
+            <div className="card">
+                <div className="card-name">
+                    <h1>Regisztráció</h1>
                 </div>
-            </Dialog>
 
-            <div className="flex justify-content-center">
-                <div className="card">
-                    <h5 className="text-center">Register</h5>
+                <div className="card-content">
                     <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
-                        <div className="field">
-                            <span className="p-float-label">
-                                <Controller name="name" control={control} rules={{ required: 'Name is required.' }} render={({ field, fieldState }) => (
-                                    <InputText id={field.name} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.invalid })} />
-                                )} />
-                                <label htmlFor="name" className={classNames({ 'p-error': errors.name })}>Name*</label>
-                            </span>
-                            {getFormErrorMessage('name')}
-                        </div>
-                        <div className="field">
+
+                        <div className="card-field">
                             <span className="p-float-label p-input-icon-right">
-                                <i className="pi pi-envelope" />
-                                <Controller name="email" control={control}
-                                            rules={{ required: 'Email is required.', pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i, message: 'Invalid email address. E.g. example@email.com' }}}
-                                            render={({ field, fieldState }) => (
-                                                <InputText id={field.name} {...field} className={classNames({ 'p-invalid': fieldState.invalid })} />
-                                            )} />
-                                <label htmlFor="email" className={classNames({ 'p-error': !!errors.email })}>Email*</label>
+                                <i className="pi pi-envelope"/>
+                                <Controller name="email"
+                                            control={control}
+                                            rules={{
+                                                required: 'Email cím megadása kötelező!',
+                                                pattern: {
+                                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                                    message: 'Helytelen email cím!'
+                                                }
+                                            }}
+                                            render={({field, fieldState}) => (
+                                                <InputText id={field.name} {...field}
+                                                           className={classNames({'p-invalid': fieldState.invalid})}/>
+                                            )}/>
+                                <label htmlFor="email"
+                                       className={classNames({'p-error': !!errors.email})}>Email*</label>
                             </span>
                             {getFormErrorMessage('email')}
                         </div>
-                        <div className="field">
+
+                        <div className="card-field">
                             <span className="p-float-label">
-                                <Controller name="password" control={control} rules={{ required: 'Password is required.' }} render={({ field, fieldState }) => (
-                                    <Password id={field.name} {...field} toggleMask className={classNames({ 'p-invalid': fieldState.invalid })} header={passwordHeader} footer={passwordFooter} />
-                                )} />
-                                <label htmlFor="password" className={classNames({ 'p-error': errors.password })}>Password*</label>
+                                <Controller name="password"
+                                            control={control}
+                                            rules={{required: 'Jelszó megadása kötelező!'}}
+                                            render={({field, fieldState}) => (
+                                                <Password id={field.name} {...field} toggleMask
+                                                          feedback
+                                                          promptLabel="Írjon be egy jelszót"
+                                                          weakLabel="Gyenge"
+                                                          mediumLabel="Közepes"
+                                                          strongLabel="Erős"
+                                                          minLength={6}
+                                                          className={classNames({'p-invalid': fieldState.invalid})}/>
+                                            )}/>
+                                <label htmlFor="password"
+                                       className={classNames({'p-error': errors.password})}>Jelszó*</label>
                             </span>
                             {getFormErrorMessage('password')}
                         </div>
-                        <div className="field">
+
+                        <div className="card-field">
                             <span className="p-float-label">
-                                <Controller name="date" control={control} render={({ field }) => (
-                                    <Calendar id={field.name} value={field.value} onChange={(e) => field.onChange(e.value)} dateFormat="dd/mm/yy" mask="99/99/9999" showIcon />
-                                )} />
-                                <label htmlFor="date">Birthday</label>
+                                <Controller name="password2"
+                                            control={control}
+                                            rules={{required: 'Ismételt jelszó megadása kötelező!'}}
+                                            render={({field, fieldState}) => (
+                                                <Password id={field.name} {...field} toggleMask
+                                                          feedback={false}
+                                                          minLength={6}
+                                                          className={classNames({'p-invalid': fieldState.invalid})}/>
+                                            )}/>
+                                <label htmlFor="password2"
+                                       className={classNames({'p-error': errors.password2})}>Ismételt jelszó*</label>
                             </span>
-                        </div>
-                        <div className="field-checkbox">
-                            <Controller name="accept" control={control} rules={{ required: true }} render={({ field, fieldState }) => (
-                                <Checkbox inputId={field.name} onChange={(e) => field.onChange(e.checked)} checked={field.value} className={classNames({ 'p-invalid': fieldState.invalid })} />
-                            )} />
-                            <label htmlFor="accept" className={classNames({ 'p-error': errors.accept })}>I agree to the terms and conditions*</label>
+                            {getFormErrorMessage('password2')}
                         </div>
 
-                        <Button type="submit" label="Submit" className="mt-2" />
+                        <div className="card-field">
+                            <span className="p-float-label">
+                                <Controller name="lastname"
+                                            control={control}
+                                            rules={{
+                                                required: 'Vezetéknév megadása kötelező!'
+                                            }}
+                                            render={({field, fieldState}) => (
+                                                <InputText id={field.name} {...field}
+                                                           className={classNames({'p-invalid': fieldState.invalid})}/>
+                                            )}/>
+                                <label htmlFor="lastname"
+                                       className={classNames({'p-error': !!errors.lastname})}>Vezetéknév*</label>
+                            </span>
+                            {getFormErrorMessage('lastname')}
+                        </div>
+
+                        <div className="card-field">
+                            <span className="p-float-label">
+                                <Controller name="firstname"
+                                            control={control}
+                                            rules={{
+                                                required: 'Keresztnév megadása kötelező!'
+                                            }}
+                                            render={({field, fieldState}) => (
+                                                <InputText id={field.name} {...field}
+                                                           className={classNames({'p-invalid': fieldState.invalid})}/>
+                                            )}/>
+                                <label htmlFor="firstname"
+                                       className={classNames({'p-error': !!errors.lastname})}>Keresztnév*</label>
+                            </span>
+                            {getFormErrorMessage('firstname')}
+                        </div>
+
+                        <div className="card-field">
+                            <span className="p-float-label">
+                                <Controller name="birthday"
+                                            control={control}
+                                            rules={{
+                                                required: 'Születésnap megadása kötelező!'
+                                            }}
+                                            render={({field}) => (
+                                                <Calendar
+                                                    id={field.name}
+                                                    value={field.value}
+                                                    onChange={(e) => field.onChange(e.value)}
+                                                    dateFormat="yy/mm/dd"
+                                                    mask="9999/99/99"
+                                                    maxDate={new Date()}
+                                                    yearNavigator
+                                                    yearRange="1900:2022"
+                                                    showIcon
+                                                />
+                                            )}/>
+                                <label htmlFor="birthday"
+                                       className={classNames({'p-error': !!errors.birthday})}>Születésnap*</label>
+                            </span>
+                            {getFormErrorMessage('birthday')}
+                        </div>
+
+                        <div className="card-field">
+                            <span className="p-float-label" style={{textAlign: "left"}}>
+                                <Controller name="gender"
+                                            control={control}
+                                            render={({field}) => (
+                                                <Dropdown
+                                                    id={field.name}
+                                                    value={field.value}
+                                                    onChange={(e) => field.onChange(e.value)}
+                                                    options={genderList}
+                                                />
+                                            )}/>
+                            </span>
+                            {getFormErrorMessage('gender')}
+                        </div>
+
+                        <Button type="submit" label="Regisztráció" className="card-button"/>
+                        {authError ? <p className="card-auth-error">{authError}</p> : null}
+                        {!passwordsAreIdentical ?
+                            <p className="card-auth-error">A jelszavak nem egyeznek meg!</p> : null}
                     </form>
                 </div>
             </div>
@@ -120,4 +205,17 @@ const SignUp = () => {
     );
 };
 
-export default SignUp;
+const mapStateToProps = state => {
+    return {
+        authError: state.auth.authError,
+        auth: state.firebase.auth
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        signUp: credentials => dispatch(signUp(credentials))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

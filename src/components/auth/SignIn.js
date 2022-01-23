@@ -20,7 +20,7 @@ const SignIn = props => {
 
     useEffect(() => {
         if (!(auth.isLoaded && auth.isEmpty)) {
-            navigate("/signup")
+            navigate("/indexStudent")
         }
 
     }, [auth, navigate]);
@@ -47,7 +47,8 @@ const SignIn = props => {
                         <div className="card-field">
                             <span className="p-float-label p-input-icon-right">
                                 <i className="pi pi-envelope"/>
-                                <Controller name="email" control={control}
+                                <Controller name="email"
+                                            control={control}
                                             rules={{
                                                 required: 'Email cím megadása kötelező!',
                                                 pattern: {
@@ -82,8 +83,7 @@ const SignIn = props => {
                         </div>
 
                         <Button type="submit" label="Bejelentkezés" className="card-button"/>
-                        {authError ?
-                            <p className="card-signin-error">Sikertelen bejelentkezés!</p> : null}
+                        {authError ? <p className="card-auth-error">{authError}</p> : null}
                     </form>
                 </div>
             </div>

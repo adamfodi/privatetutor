@@ -9,12 +9,12 @@ import "./index.css";
 import {rrfProps, store} from "./config/firebaseConfig";
 
 ReactDOM.render(
-    <React.StrictMode>
+    <React.Fragment>
         <Provider store={store}>
             <ReactReduxFirebaseProvider {...rrfProps}>
                 <App/>
             </ReactReduxFirebaseProvider>
         </Provider>
-    </React.StrictMode>,
+    </React.Fragment>,
     document.getElementById('root')
 );

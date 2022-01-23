@@ -4,18 +4,18 @@ const initState = {
 
 const authReducer = (state = initState, action) => {
     switch (action.type) {
-        case "SIGNIN_ERROR":
-            console.log("signin error");
-            return {
-                ...state,
-                authError: "signin failed"
-            };
-
         case "SIGNIN_SUCCESS":
             console.log("login success");
             return {
                 ...state,
                 authError: null
+            };
+
+        case "SIGNIN_ERROR":
+            console.log("signin error");
+            return {
+                ...state,
+                authError: "Sikertelen bejelentkezés!"
             };
 
         case "SIGNOUT_SUCCESS":
@@ -30,7 +30,7 @@ const authReducer = (state = initState, action) => {
             };
 
         case "SIGNUP_ERROR":
-            console.log("signup error");
+            console.log("Sikertelen regisztráció!");
             return {
                 ...state,
                 authError: action.err.message

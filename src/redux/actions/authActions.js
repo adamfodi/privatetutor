@@ -1,4 +1,5 @@
 import {rrfProps as state} from "../../config/firebaseConfig";
+import moment from "moment";
 
 export const signIn = credentials => {
     return (dispatch) => {
@@ -32,20 +33,20 @@ export const signOut = () => {
 export const signUp = newUser => {
     return (dispatch) => {
         const firebase = state.firebase;
-        const firestore = state.firestore;
-
+        const firestore = state.firebase.firestore;
 
         firebase
             .auth()
             .createUserWithEmailAndPassword(newUser.email, newUser.password)
             .then(resp => {
-                return firestore
+                return firestore()
                     .collection("users")
                     .doc(resp.user.uid)
                     .set({
-                        firstName: newUser.firstName,
-                        lastName: newUser.lastName,
-                        initials: newUser.firstName[0] + newUser.lastName[0]
+                        firstName: newUser.firstname,
+                        lastName: newUser.lastname,
+                        birthday: moment(newUser.birthday).format('YYYY.MM.DD'),
+                        gender: newUser.gender
                     });
             })
             .then(() => {
