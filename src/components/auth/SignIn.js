@@ -4,7 +4,6 @@ import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
 import {Password} from 'primereact/password';
 import {classNames} from 'primereact/utils';
-import '../../assets/css/auth.css';
 import {signIn} from "../../redux/actions/authActions";
 import {connect} from "react-redux";
 import {useNavigate} from "react-router-dom";

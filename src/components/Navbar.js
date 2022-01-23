@@ -11,7 +11,7 @@ import {firestoreConnect} from "react-redux-firebase";
 const Navbar = props => {
 
     const navigate = useNavigate();
-    const {auth,users} = props;
+    const {auth, users} = props;
 
     const items = [
         {
@@ -28,12 +28,28 @@ const Navbar = props => {
             command: () => {
                 navigate("")
             }
-        }
+        },
+
+        {
+            label: 'Magánórák',
+            icon: 'pi pi-fw pi-pencil',
+            items: [
+                {
+                    label: 'Létrehozás',
+                    icon: 'pi pi-fw pi-align-left',
+                    command: () => {
+                        navigate("/createlesson")
+                    }
+                },
+                {
+                    label: 'Meghirdetett órák',
+                    icon: 'pi pi-fw pi-align-right'
+                },
+            ]
+        },
+
 
     ];
-
-    console.log("AUTH STATUS")
-    console.log(users)
 
     return (
         <div>
@@ -57,8 +73,6 @@ const Navbar = props => {
 };
 
 const mapStateToProps = state => {
-    console.log("STATE")
-    console.log(state);
     return {
         auth: state.firebase.auth,
         users: state.firestore.ordered.users
@@ -73,6 +87,5 @@ const mapDispatchToProps = dispatch => {
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
-    firestoreConnect( () => ['users'])
-
+    firestoreConnect(() => ['users'])
 )(Navbar);

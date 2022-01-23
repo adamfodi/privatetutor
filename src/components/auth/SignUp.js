@@ -4,12 +4,12 @@ import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
 import {Password} from 'primereact/password';
 import {classNames} from 'primereact/utils';
-import '../../assets/css/auth.css';
 import {signUp} from "../../redux/actions/authActions";
 import {connect} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {Calendar} from "primereact/calendar";
 import {Dropdown} from "primereact/dropdown";
+import {addLocale} from 'primereact/api';
 
 const SignUp = props => {
     const {authError, auth} = props;
@@ -26,6 +26,18 @@ const SignUp = props => {
         gender: genderList[0]
     };
     const {control, formState: {errors}, handleSubmit} = useForm({defaultValues});
+
+    addLocale('hu', {
+        firstDayOfWeek: 1,
+        dayNames: ["Vasárnap", "Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat"],
+        dayNamesShort: ["Vasá", "Hétf", "Kedd", "Szer", "Csüt", "Pént", "Szom"],
+        dayNamesMin: ["Va", "Hé", "Ke", "Sz", "Cs", "Pé", "Sz"],
+        monthNames: ["Január", "Február", "Március", "Április", "Május", "Június", "Július", "Augusztus", "Szeptember", "Október", "November", "December"],
+        monthNamesShort: ["Jan", "Feb", "Már", "Ápr", "Máj", "Jún", "Júl", "Aug", "Sze", "Okt", "Nov", "Dec"],
+        today: 'Ma',
+        clear: 'Tisztítás',
+        weekHeader: 'Hét'
+    });
 
     useEffect(() => {
         if (!(auth.isLoaded && auth.isEmpty)) {
@@ -71,8 +83,10 @@ const SignUp = props => {
                                                 }
                                             }}
                                             render={({field, fieldState}) => (
-                                                <InputText id={field.name} {...field}
-                                                           className={classNames({'p-invalid': fieldState.invalid})}/>
+                                                <InputText id={field.name}
+                                                           {...field}
+                                                           className={classNames({'p-invalid': fieldState.invalid})}
+                                                />
                                             )}/>
                                 <label htmlFor="email"
                                        className={classNames({'p-error': !!errors.email})}>Email*</label>
@@ -93,7 +107,8 @@ const SignUp = props => {
                                                           mediumLabel="Közepes"
                                                           strongLabel="Erős"
                                                           minLength={6}
-                                                          className={classNames({'p-invalid': fieldState.invalid})}/>
+                                                          className={classNames({'p-invalid': fieldState.invalid})}
+                                                />
                                             )}/>
                                 <label htmlFor="password"
                                        className={classNames({'p-error': errors.password})}>Jelszó*</label>
@@ -110,10 +125,11 @@ const SignUp = props => {
                                                 <Password id={field.name} {...field} toggleMask
                                                           feedback={false}
                                                           minLength={6}
-                                                          className={classNames({'p-invalid': fieldState.invalid})}/>
+                                                          className={classNames({'p-invalid': fieldState.invalid})}
+                                                />
                                             )}/>
                                 <label htmlFor="password2"
-                                       className={classNames({'p-error': errors.password2})}>Ismételt jelszó*</label>
+                                       className={classNames({'p-error': errors.password2})}>Jelszó újra*</label>
                             </span>
                             {getFormErrorMessage('password2')}
                         </div>
@@ -126,8 +142,10 @@ const SignUp = props => {
                                                 required: 'Vezetéknév megadása kötelező!'
                                             }}
                                             render={({field, fieldState}) => (
-                                                <InputText id={field.name} {...field}
-                                                           className={classNames({'p-invalid': fieldState.invalid})}/>
+                                                <InputText id={field.name}
+                                                           {...field}
+                                                           className={classNames({'p-invalid': fieldState.invalid})}
+                                                />
                                             )}/>
                                 <label htmlFor="lastname"
                                        className={classNames({'p-error': !!errors.lastname})}>Vezetéknév*</label>
@@ -143,8 +161,10 @@ const SignUp = props => {
                                                 required: 'Keresztnév megadása kötelező!'
                                             }}
                                             render={({field, fieldState}) => (
-                                                <InputText id={field.name} {...field}
-                                                           className={classNames({'p-invalid': fieldState.invalid})}/>
+                                                <InputText id={field.name}
+                                                           {...field}
+                                                           className={classNames({'p-invalid': fieldState.invalid})}
+                                                />
                                             )}/>
                                 <label htmlFor="firstname"
                                        className={classNames({'p-error': !!errors.lastname})}>Keresztnév*</label>
@@ -165,10 +185,10 @@ const SignUp = props => {
                                                     value={field.value}
                                                     onChange={(e) => field.onChange(e.value)}
                                                     dateFormat="yy/mm/dd"
-                                                    mask="9999/99/99"
                                                     maxDate={new Date()}
                                                     yearNavigator
                                                     yearRange="1900:2022"
+                                                    locale="hu"
                                                     showIcon
                                                 />
                                             )}/>
@@ -191,13 +211,19 @@ const SignUp = props => {
                                                 />
                                             )}/>
                             </span>
-                            {getFormErrorMessage('gender')}
                         </div>
 
                         <Button type="submit" label="Regisztráció" className="card-button"/>
-                        {authError ? <p className="card-auth-error">{authError}</p> : null}
-                        {!passwordsAreIdentical ?
-                            <p className="card-auth-error">A jelszavak nem egyeznek meg!</p> : null}
+                        {
+                            authError
+                                ? <p className="card-auth-error">{authError}</p>
+                                : null
+                        }
+                        {
+                            !passwordsAreIdentical
+                                ? <p className="card-auth-error">A jelszavak nem egyeznek meg!</p>
+                                : null
+                        }
                     </form>
                 </div>
             </div>
