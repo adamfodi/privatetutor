@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {Menubar} from 'primereact/menubar';
 import {Button} from "primereact/button";
 import {connect} from "react-redux";
-import {signOut} from "../redux/actions/authActions";
+import {signOut} from "../../redux/actions/authActions";
 import {compose} from "redux";
 import {firestoreConnect} from "react-redux-firebase";
 
@@ -26,7 +26,9 @@ const Navbar = props => {
             label: 'Órarend',
             icon: 'pi pi-fw pi-calendar',
             command: () => {
-                navigate("")
+                navigate("/success", {
+                    alma: "repa"
+                })
             }
         },
 

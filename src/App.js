@@ -5,7 +5,7 @@ import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import "./App.css"
 import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/layout/Navbar";
 import SignIn from "./components/auth/SignIn";
 import SignUp from "./components/auth/SignUp";
 import IndexStudent from "./components/student/IndexStudent";
