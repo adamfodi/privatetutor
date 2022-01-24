@@ -8,8 +8,9 @@ import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 import SignIn from "./components/auth/SignIn";
 import SignUp from "./components/auth/SignUp";
-import IndexStudent from "./components/student/IndexStudent";
 import CreateLesson from "./components/tutor/CreateLesson";
+import Main from "./components/Main";
+import RoleSelector from "./components/layout/RoleSelector";
 
 const App = () => {
     return (
@@ -18,9 +19,10 @@ const App = () => {
             <Routes>
                 <Route exact path="/signin" element={<SignIn/>}/>
                 <Route exact path="/signup" element={<SignUp/>}/>
-                <Route exact path="/indexStudent" element={<IndexStudent/>}/>
+                <Route exact path="/main" element={<Main/>}/>
                 <Route exact path="/createlesson" element={<CreateLesson/>}/>
-                <Route path="*" element={<Navigate to="/indexStudent"/>}/>
+                <Route exact path="/roleselector" element={<RoleSelector/>}/>
+                <Route path="*" element={<Navigate to="/main"/>}/>
             </Routes>
         </BrowserRouter>
     );

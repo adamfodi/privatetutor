@@ -11,7 +11,7 @@ import {firestoreConnect} from "react-redux-firebase";
 const Navbar = props => {
 
     const navigate = useNavigate();
-    const {auth, users} = props;
+    const {auth, role} = props;
 
     const items = [
         {
@@ -26,9 +26,7 @@ const Navbar = props => {
             label: 'Órarend',
             icon: 'pi pi-fw pi-calendar',
             command: () => {
-                navigate("/success", {
-                    alma: "repa"
-                })
+                navigate("")
             }
         },
 
@@ -49,15 +47,12 @@ const Navbar = props => {
                 },
             ]
         },
-
-
     ];
-
     return (
         <div>
             <Menubar
                 model={items}
-                end={auth.isLoaded && auth.isEmpty
+                end={!role
                     ? <React.Fragment>
                         <Button onClick={() => navigate("/signup")} className="p-button-info" label="Regisztráció"
                                 icon="pi pi-user-plus" style={{marginRight: 20, fontSize: 18}}/>
@@ -77,7 +72,8 @@ const Navbar = props => {
 const mapStateToProps = state => {
     return {
         auth: state.firebase.auth,
-        users: state.firestore.ordered.users
+        users: state.firestore.ordered.users,
+        role: state.auth.role
     };
 };
 

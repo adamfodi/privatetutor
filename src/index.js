@@ -6,14 +6,17 @@ import {ReactReduxFirebaseProvider} from 'react-redux-firebase'
 import * as ReactDOM from "react-dom";
 import App from "./App";
 import "./index.css";
-import {rrfProps, store} from "./config/firebaseConfig";
+import {persistor, rrfProps, store} from "./config/firebaseConfig";
+import {PersistGate} from "redux-persist/integration/react";
 
 ReactDOM.render(
     <React.Fragment>
         <Provider store={store}>
-            <ReactReduxFirebaseProvider {...rrfProps}>
-                <App/>
-            </ReactReduxFirebaseProvider>
+            <PersistGate loading={null} persistor={persistor}>
+                <ReactReduxFirebaseProvider {...rrfProps}>
+                    <App/>
+                </ReactReduxFirebaseProvider>
+            </PersistGate>
         </Provider>
     </React.Fragment>,
     document.getElementById('root')

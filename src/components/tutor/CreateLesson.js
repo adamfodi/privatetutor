@@ -48,7 +48,7 @@ const CreateLesson = props => {
 
     useEffect(() => {
         if (!(auth.uid)) {
-            navigate("/indexStudent")
+            navigate("/main")
         }
 
     }, [auth, navigate]);

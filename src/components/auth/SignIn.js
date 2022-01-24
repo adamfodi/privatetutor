@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
@@ -9,23 +9,26 @@ import {connect} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
 const SignIn = props => {
-    const {authError, auth} = props;
+    const {signInError, auth} = props;
     const navigate = useNavigate();
+    const [role, setRole] = useState(null);
     const defaultValues = {
         email: '',
-        password: ''
+        password: '',
+        role: null
     };
     const {control, formState: {errors}, handleSubmit, reset} = useForm({defaultValues});
 
+
     useEffect(() => {
         if (!(auth.isLoaded && auth.isEmpty)) {
-            navigate("/indexStudent")
+            navigate("/main")
         }
 
     }, [auth, navigate]);
 
     const onSubmit = (data) => {
-        props.signIn(data);
+        props.signIn({...data, role: role});
         reset();
     };
 
@@ -81,8 +84,11 @@ const SignIn = props => {
                             {getFormErrorMessage('password')}
                         </div>
 
-                        <Button type="submit" label="Bejelentkezés" className="card-button"/>
-                        {authError ? <p className="card-auth-error">{authError}</p> : null}
+                        <Button type="submit" onClick={() => setRole("student")} label="Bejelentkezés, mint hallgató"
+                                className="card-button p-button-info student-button"/>
+                        <Button type="submit" onClick={() => setRole("tutor")} label="Bejelentkezés, mint oktató"
+                                className="card-button p-button-help"/>
+                        {signInError ? <p className="card-auth-error">{signInError}</p> : null}
                     </form>
                 </div>
             </div>
@@ -92,7 +98,7 @@ const SignIn = props => {
 
 const mapStateToProps = state => {
     return {
-        authError: state.auth.authError,
+        signInError: state.auth.signInError,
         auth: state.firebase.auth
     };
 };

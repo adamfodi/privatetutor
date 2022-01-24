@@ -12,7 +12,7 @@ import {Dropdown} from "primereact/dropdown";
 import {addLocale} from 'primereact/api';
 
 const SignUp = props => {
-    const {authError, auth} = props;
+    const {signUpError, auth} = props;
     const navigate = useNavigate();
     const genderList = ["Férfi", "Nő", "Egyéb"];
     const [passwordsAreIdentical, setPasswordsAreIdentical] = useState(true);
@@ -41,7 +41,7 @@ const SignUp = props => {
 
     useEffect(() => {
         if (!(auth.isLoaded && auth.isEmpty)) {
-            navigate("/indexStudent")
+            navigate("/main")
         }
 
     }, [auth, navigate]);
@@ -215,8 +215,8 @@ const SignUp = props => {
 
                         <Button type="submit" label="Regisztráció" className="card-button"/>
                         {
-                            authError
-                                ? <p className="card-auth-error">{authError}</p>
+                            signUpError
+                                ? <p className="card-auth-error">{signUpError}</p>
                                 : null
                         }
                         {
@@ -233,7 +233,7 @@ const SignUp = props => {
 
 const mapStateToProps = state => {
     return {
-        authError: state.auth.authError,
+        signUpError: state.auth.signUpError,
         auth: state.firebase.auth
     };
 };

@@ -14,6 +14,8 @@
 }
 
 .form .card-name h1 {
+    font-family: "Verdana", "Times New Roman", serif;
+    color: white;
     text-decoration: underline;
 }
 
@@ -33,7 +35,6 @@
     margin-bottom: 0.2em;
     margin-left: 0.2em;
     text-align:left;
-
 }
 
 .form .card-field-error {
@@ -49,9 +50,13 @@
 
 .form .card-auth-error {
     text-align: center;
-    font-size: 1em;
+    font-size: 1.5em;
     color: #ef9a9a;
     padding-top: 1em;
+}
+
+.form .student-button {
+    margin-bottom: 1em;
 }
 
 @media screen and (max-width: 960px) {

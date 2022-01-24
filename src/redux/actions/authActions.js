@@ -9,7 +9,7 @@ export const signIn = credentials => {
             .auth()
             .signInWithEmailAndPassword(credentials.email, credentials.password)
             .then(() => {
-                dispatch({type: "SIGNIN_SUCCESS"});
+                dispatch({type: "SIGNIN_SUCCESS", role: credentials.role});
             })
             .catch(err => {
                 dispatch({type: "SIGNIN_ERROR", err});
