@@ -12,6 +12,7 @@ import storage from 'redux-persist/lib/storage' // defaults to localStorage for 
 const persistConfig = {
     key: 'root',
     storage,
+    blacklist: ['auth'] // AUTH PREVIOUS STATE WILL NOT BE LOADED! SO IT STARTS EMPTY
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
@@ -58,4 +59,4 @@ const rrfProps = {
 
 const persistor = persistStore(store)
 
-export {store, persistor, rrfProps};
+export {store, persistor, rrfProps, firebaseConfig};

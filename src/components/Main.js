@@ -18,7 +18,7 @@ const Main = props => {
 
 const mapStateToProps = state => {
     return {
-        role: state.auth.role
+        role: state.user.role
     };
 };
 

@@ -4,7 +4,7 @@ import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
 import {Password} from 'primereact/password';
 import {classNames} from 'primereact/utils';
-import {signUp} from "../../redux/actions/authActions";
+import {clearAuth, signUp} from "../../redux/actions/authActions";
 import {connect} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {Calendar} from "primereact/calendar";
@@ -12,7 +12,7 @@ import {Dropdown} from "primereact/dropdown";
 import {addLocale} from 'primereact/api';
 
 const SignUp = props => {
-    const {signUpError, auth} = props;
+    const {signUpError, signUpSuccess, auth} = props;
     const navigate = useNavigate();
     const genderList = ["Férfi", "Nő", "Egyéb"];
     const [passwordsAreIdentical, setPasswordsAreIdentical] = useState(true);
@@ -25,6 +25,8 @@ const SignUp = props => {
         birthday: null,
         gender: genderList[0]
     };
+    const emailError = "Firebase: The email address is already in use by another account. (auth/email-already-in-use).";
+
     const {control, formState: {errors}, handleSubmit} = useForm({defaultValues});
 
     addLocale('hu', {
@@ -44,7 +46,16 @@ const SignUp = props => {
             navigate("/main")
         }
 
-    }, [auth, navigate]);
+        if (signUpSuccess) {
+            navigate("/signin")
+        }
+
+        return () => {
+            props.clearAuth();
+        }
+
+    }, [auth, navigate, passwordsAreIdentical,signUpSuccess]);
+
     const onSubmit = (data) => {
 
         if (data.password === data.password2) {
@@ -215,15 +226,21 @@ const SignUp = props => {
 
                         <Button type="submit" label="Regisztráció" className="card-button"/>
                         {
-                            signUpError
-                                ? <p className="card-auth-error">{signUpError}</p>
-                                : null
-                        }
-                        {
                             !passwordsAreIdentical
                                 ? <p className="card-auth-error">A jelszavak nem egyeznek meg!</p>
                                 : null
                         }
+                        {
+                            signUpError
+                                ? <p className="card-auth-error">Sikertelen regisztráció!</p>
+                                : null
+                        }
+                        {
+                            signUpError === emailError
+                                ? <p className="card-auth-error">Az adott email cím már foglalt!</p>
+                                : null
+                        }
+
                     </form>
                 </div>
             </div>
@@ -234,13 +251,15 @@ const SignUp = props => {
 const mapStateToProps = state => {
     return {
         signUpError: state.auth.signUpError,
+        signUpSuccess: state.auth.signUpSuccess,
         auth: state.firebase.auth
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        signUp: credentials => dispatch(signUp(credentials))
+        signUp: credentials => dispatch(signUp(credentials)),
+        clearAuth: () => dispatch(clearAuth())
     };
 };
 

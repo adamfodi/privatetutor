@@ -4,7 +4,7 @@ import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
 import {Password} from 'primereact/password';
 import {classNames} from 'primereact/utils';
-import {signIn} from "../../redux/actions/authActions";
+import {clearAuth, signIn} from "../../redux/actions/authActions";
 import {connect} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
@@ -25,7 +25,11 @@ const SignIn = props => {
             navigate("/main")
         }
 
-    }, [auth, navigate]);
+        return () => {
+            props.clearAuth();
+        }
+
+    }, [auth, navigate, role]);
 
     const onSubmit = (data) => {
         props.signIn({...data, role: role});
@@ -88,7 +92,7 @@ const SignIn = props => {
                                 className="card-button p-button-info student-button"/>
                         <Button type="submit" onClick={() => setRole("tutor")} label="Bejelentkezés, mint oktató"
                                 className="card-button p-button-help"/>
-                        {signInError ? <p className="card-auth-error">{signInError}</p> : null}
+                        {signInError ? <p className="card-auth-error">Sikertelen bejelentkezés!</p> : null}
                     </form>
                 </div>
             </div>
@@ -105,7 +109,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        signIn: credentials => dispatch(signIn(credentials))
+        signIn: credentials => dispatch(signIn(credentials)),
+        clearAuth: () => dispatch(clearAuth())
     };
 };
 

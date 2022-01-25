@@ -1,4 +1,4 @@
-import {rrfProps as state} from "../../config/firebaseConfig";
+import {firebaseConfig, rrfProps as state} from "../../config/firebaseConfig";
 import moment from "moment";
 
 export const signIn = credentials => {
@@ -33,13 +33,11 @@ export const signOut = () => {
 export const signUp = newUser => {
     return (dispatch) => {
         const firebase = state.firebase;
-        const firestore = state.firebase.firestore;
+        const tempFirebase = firebase.initializeApp(firebaseConfig, "secondary");
 
-        firebase
-            .auth()
-            .createUserWithEmailAndPassword(newUser.email, newUser.password)
+        tempFirebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password)
             .then(resp => {
-                return firestore()
+                return firebase.firestore()
                     .collection("users")
                     .doc(resp.user.uid)
                     .set({
@@ -55,5 +53,11 @@ export const signUp = newUser => {
             .catch(err => {
                 dispatch({type: "SIGNUP_ERROR", err});
             });
+    };
+};
+
+export const clearAuth = () => {
+    return (dispatch) => {
+        dispatch({type: "CLEAR_AUTH"});
     };
 };

@@ -11,7 +11,7 @@ import {firestoreConnect} from "react-redux-firebase";
 const Navbar = props => {
 
     const navigate = useNavigate();
-    const {auth, role} = props;
+    const {role} = props;
 
     const items = [
         {
@@ -48,6 +48,9 @@ const Navbar = props => {
             ]
         },
     ];
+
+    console.log(props.auth)
+
     return (
         <div>
             <Menubar
@@ -71,9 +74,9 @@ const Navbar = props => {
 
 const mapStateToProps = state => {
     return {
-        auth: state.firebase.auth,
         users: state.firestore.ordered.users,
-        role: state.auth.role
+        role: state.user.role,
+        auth: state.firebase.auth
     };
 };
 

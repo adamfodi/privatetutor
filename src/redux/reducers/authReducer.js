@@ -1,34 +1,37 @@
 const initState = {
     signInError: null,
     signUpError: null,
-    role: null
+    signUpSuccess: null
 };
 
 const authReducer = (state = initState, action) => {
     switch (action.type) {
         case "SIGNIN_SUCCESS":
-            return {
-                ...initState,
-                role: action.role
-            };
+            return initState;
 
         case "SIGNIN_ERROR":
             return {
-                ...state,
-                signInError: "Sikertelen bejelentkezés!"
+                ...initState,
+                signInError: action.err.message,
             };
 
         case "SIGNOUT_SUCCESS":
             return initState;
 
         case "SIGNUP_SUCCESS":
-            return initState;
+            return {
+                ...initState,
+                signUpSuccess: true
+            };
 
         case "SIGNUP_ERROR":
             return {
                 ...initState,
-                signUpError: "Sikertelen regisztráció!"
+                signUpError: action.err.message,
             };
+
+        case "CLEAR_AUTH":
+            return initState;
 
         default:
             return state;
