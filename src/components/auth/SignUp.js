@@ -54,7 +54,7 @@ const SignUp = props => {
             props.clearAuth();
         }
 
-    }, [auth, navigate, passwordsAreIdentical,signUpSuccess]);
+    }, [auth, navigate, props, passwordsAreIdentical,signUpSuccess]);
 
     const onSubmit = (data) => {
 

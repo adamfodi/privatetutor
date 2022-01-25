@@ -11,6 +11,7 @@ import SignUp from "./components/auth/SignUp";
 import CreateLesson from "./components/tutor/CreateLesson";
 import Main from "./components/Main";
 import RoleSelector from "./components/layout/RoleSelector";
+import CreatedLessons from "./components/tutor/CreatedLessons";
 
 const App = () => {
     return (
@@ -22,6 +23,7 @@ const App = () => {
                 <Route exact path="/main" element={<Main/>}/>
                 <Route exact path="/createlesson" element={<CreateLesson/>}/>
                 <Route exact path="/roleselector" element={<RoleSelector/>}/>
+                <Route exact path="/createdlessons" element={<CreatedLessons/>}/>
                 <Route path="*" element={<Navigate to="/main"/>}/>
             </Routes>
         </BrowserRouter>

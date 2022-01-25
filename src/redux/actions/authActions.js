@@ -1,4 +1,5 @@
 import {firebaseConfig, rrfProps as state} from "../../config/firebaseConfig";
+import {getAuth, onAuthStateChanged} from "firebase/auth";
 import moment from "moment";
 
 export const signIn = credentials => {
@@ -9,7 +10,18 @@ export const signIn = credentials => {
             .auth()
             .signInWithEmailAndPassword(credentials.email, credentials.password)
             .then(() => {
-                dispatch({type: "SIGNIN_SUCCESS", role: credentials.role});
+                onAuthStateChanged(getAuth(), (user) => {
+                    if (user) {
+                        firebase.firestore().collection("users").doc(user.uid).get()
+                            .then(function (doc) {
+                                dispatch({
+                                    type: "SIGNIN_SUCCESS",
+                                    role: credentials.role,
+                                    displayName: doc.data().lastName + ' ' + doc.data().firstName
+                                });
+                            })
+                    }
+                })
             })
             .catch(err => {
                 dispatch({type: "SIGNIN_ERROR", err});
@@ -36,10 +48,10 @@ export const signUp = newUser => {
         const tempFirebase = firebase.initializeApp(firebaseConfig, "secondary");
 
         tempFirebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password)
-            .then(resp => {
+            .then(userCredentials => {
                 return firebase.firestore()
                     .collection("users")
-                    .doc(resp.user.uid)
+                    .doc(userCredentials.user.uid)
                     .set({
                         firstName: newUser.firstname,
                         lastName: newUser.lastname,

@@ -1,5 +1,6 @@
 const initState = {
-    role: null
+    role: null,
+    displayName: null
 };
 
 const userReducer = (state = initState, action) => {
@@ -8,20 +9,14 @@ const userReducer = (state = initState, action) => {
             return {
                 ...state,
                 role: action.role,
-
+                displayName: action.displayName
             };
 
         case "SIGNIN_ERROR":
-            return {
-                ...state,
-                role: null
-            };
+            return initState;
 
         case "SIGNOUT_SUCCESS":
-            return {
-                ...state,
-                role: null
-            };
+            return initState;
 
         default:
             return state;

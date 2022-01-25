@@ -8,10 +8,10 @@ import {Dropdown} from "primereact/dropdown";
 import {addLocale} from 'primereact/api';
 import {InputNumber} from "primereact/inputnumber";
 import {InputTextarea} from "primereact/inputtextarea";
-import {CreateLessonService} from "../../services/CreateLessonService";
+import {createLesson} from "../../redux/actions/lessonAction";
 
 const CreateLesson = props => {
-    const {auth} = props;
+    const {auth, role, error, success} = props;
     const navigate = useNavigate();
 
     const dateOffset = new Date();
@@ -28,8 +28,9 @@ const CreateLesson = props => {
         description: '',
         startDate: new Date(),
         endDate: dateOffset,
-        tutorUID: auth.uid
+        tutorUID: null
     };
+
     addLocale('hu', {
         firstDayOfWeek: 1,
         dayNames: ["Vasárnap", "Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat"],
@@ -47,17 +48,22 @@ const CreateLesson = props => {
     const {control, handleSubmit} = useForm({defaultValues});
 
     useEffect(() => {
-        if (!(auth.uid)) {
+        if (role !== 'tutor' || !auth.uid) {
             navigate("/main")
         }
 
-    }, [auth, navigate]);
+        if (success) {
+            navigate("/createdlessons")
+        }
+
+    }, [auth, navigate, role, success]);
 
     const onSubmit = (data) => {
 
         if (startDate < endDate && descriptionLength >= 50 && descriptionLength <= 1000) {
             console.log(data)
-            !CreateLessonService(data) ? setSuccessfulCreation(true) : setSuccessfulCreation(false);
+            console.log(defaultValues.tutorUID)
+            props.createLesson({...data, tutorUID: auth.uid});
         }
     };
 
@@ -204,6 +210,12 @@ const CreateLesson = props => {
                                 </div>
 
                                 <Button type="submit" label="Meghirdetés" className="card-button"/>
+                                {
+                                    error
+                                        ? <p className="card-auth-error">Probléma merült fel! Kérem próbálja újra
+                                            később!</p>
+                                        : null
+                                }
                             </form>
                         </div>
                     </div>
@@ -216,8 +228,19 @@ const CreateLesson = props => {
 
 const mapStateToProps = state => {
     return {
-        auth: state.firebase.auth
+        auth: state.firebase.auth,
+        role: state.user.role,
+        error: state.lessons.creationError,
+        success: state.lessons.creationSuccess,
+
     };
 };
 
-export default connect(mapStateToProps)(CreateLesson);
+const mapDispatchToProps = dispatch => {
+    return {
+        createLesson: lesson => dispatch(createLesson(lesson)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateLesson);
+

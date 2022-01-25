@@ -88,10 +88,16 @@ const SignIn = props => {
                             {getFormErrorMessage('password')}
                         </div>
 
-                        <Button type="submit" onClick={() => setRole("student")} label="Bejelentkezés, mint hallgató"
-                                className="card-button p-button-info student-button"/>
-                        <Button type="submit" onClick={() => setRole("tutor")} label="Bejelentkezés, mint oktató"
-                                className="card-button p-button-help"/>
+                        <Button type="submit"
+                                onClick={() => setRole("student")}
+                                label="Bejelentkezés, mint hallgató"
+                                className="card-button p-button-warning student-button"
+                        />
+                        <Button type="submit"
+                                onClick={() => setRole("tutor")}
+                                label="Bejelentkezés, mint oktató"
+                                className="card-button p-button-help"
+                        />
                         {signInError ? <p className="card-auth-error">Sikertelen bejelentkezés!</p> : null}
                     </form>
                 </div>
