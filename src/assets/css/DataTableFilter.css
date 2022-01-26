@@ -31,3 +31,45 @@
 .datatable-filter .p-datatable.p-datatable-courses .p-dropdown-label:not(.p-placeholder) {
     text-transform: uppercase;
 }
+
+.datatable-title {
+    text-align: center;
+    font-size: 2em;
+    margin: 0.4em;
+}
+
+.datatable-container {
+    margin: 5em;
+    text-align:center;
+}
+
+.datatable-button {
+    display:flex;
+    justify-content: center;
+}
+
+.datatable-button button {
+    font-size: 1.3em;
+    padding: 0.5em 1em;
+}
+
+.datatable-tutor {
+    font-size: 1.5em;
+    font-family: "Bahnschrift","Verdana", serif;
+    font-weight: bold;
+}
+
+.datatable-tutor:hover {
+    cursor:pointer;
+}
+
+.datatable-container table td{
+    font-size: 1.2em;
+}
+
+.datatable-container table div{
+    display:flex;
+    justify-content: center;
+    font-size: 1.2em;
+    text-align: center;
+}

@@ -66,7 +66,7 @@ const MyCourses = props => {
                         >
                             <Column selectionMode="multiple" headerStyle={{width: '3rem'}} exportable={false}/>
                             <Column field="subject" header="Tantárgy" sortable style={{minWidth: '5rem'}}/>
-                            <Column field="payment" header="Ár(Ft)" sortable style={{minWidth: '3rem'}}/>
+                            <Column field="price" header="Ár(Ft)" sortable style={{minWidth: '3rem'}}/>
                             <Column field="limit" header="Létszám(fő)" sortable style={{minWidth: '3rem'}}/>
                             <Column field="startDate" header="Mettől" sortable style={{minWidth: '12rem'}}/>
                             <Column field="endDate" header="Meddig" sortable style={{minWidth: '12rem'}}/>

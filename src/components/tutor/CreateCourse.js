@@ -12,7 +12,7 @@ import {clearCourses, createCourse} from "../../redux/actions/courseAction";
 import moment from "moment";
 
 const CreateCourse = props => {
-    const {auth, role, error, success} = props;
+    const {auth, role, displayName, error, success} = props;
     const navigate = useNavigate();
 
     const dateOffset = new Date();
@@ -24,14 +24,14 @@ const CreateCourse = props => {
     const subjectList = ["Matematika", "Fizika", "Kémia", "Biológia", "Történelem", "Informatika"];
     const defaultValues = {
         subject: subjectList[0],
-        payment: '1000',
+        price: '1000',
         limit: '1',
         startDate: new Date(),
         endDate: dateOffset,
         applicants: null,
         description: '',
-        tutorUID: null,
-        tutorEmail: null
+        tutorUID: auth.uid,
+        tutorFullName: displayName
     };
 
     addLocale('hu', {
@@ -71,10 +71,8 @@ const CreateCourse = props => {
             props.createCourse(
                 {
                     ...data,
-                    tutorUID: auth.uid,
-                    tutorEmail: auth.email,
-                    startDate: moment(data.startDate).format('YYYY.MM.DD').toString(),
-                    endDate: moment(data.endDate).format('YYYY.MM.DD').toString(),
+                    startDate: moment(data.startDate).format('YYYY.MM.DD HH:mm').toString(),
+                    endDate: moment(data.endDate).format('YYYY.MM.DD HH:mm').toString(),
                 });
         }
     };
@@ -128,7 +126,7 @@ const CreateCourse = props => {
                         <div className="card-field">
                             <span className="p-float-label">
                                 <p className="card-field-name">Ár</p>
-                                <Controller name="payment"
+                                <Controller name="price"
                                             control={control}
                                             render={({field, fieldState}) => (
                                                 <InputNumber id={field.name}
@@ -238,6 +236,7 @@ const CreateCourse = props => {
 const mapStateToProps = state => {
     return {
         auth: state.firebase.auth,
+        displayName: state.user.displayName,
         role: state.user.role,
         error: state.courses.creationError,
         success: state.courses.creationSuccess,
