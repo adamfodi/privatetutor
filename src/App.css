@@ -68,6 +68,7 @@
     font-family: "Verdana", "Times New Roman", serif;
     font-size: 1.4em;
     padding: 0.5em 1em;
+    margin-right: 0.5em;
 }
 
 .role-button-tutor {
@@ -78,6 +79,7 @@
     font-family: "Verdana", "Times New Roman", serif;
     font-size: 1.4em;
     padding: 0.5em 1em;
+    margin-right: 0.5em;
 }
 
 @media screen and (max-width: 960px) {

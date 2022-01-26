@@ -1,23 +1,28 @@
 const initState = {
     creationError: null,
-    cCreationSuccess: null
+    creationSuccess: null
 };
 
-const lessonReducer = (state = initState, action) => {
+const courseReducer = (state = initState, action) => {
     switch (action.type) {
-        case "LESSON_CREATION_SUCCESS":
+        case "COURSE_CREATION_SUCCESS":
             return {
                 ...state,
                 creationSuccess: true,
             };
-        case "LESSON_CREATION_ERROR":
+
+        case "COURSE_CREATION_ERROR":
             return {
                 ...state,
                 creationError: action.err.message,
             };
+
+        case "CLEAR_COURSES":
+            return initState;
+
         default:
             return state;
     }
 };
 
-export default lessonReducer;
+export default courseReducer;

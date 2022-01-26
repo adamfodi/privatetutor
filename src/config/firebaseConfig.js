@@ -12,7 +12,7 @@ import storage from 'redux-persist/lib/storage' // defaults to localStorage for 
 const persistConfig = {
     key: 'root',
     storage,
-    blacklist: ['auth', 'lessons'] // AUTH'S PREVIOUS STATE WILL NOT BE LOADED! SO IT STARTS EMPTY
+    blacklist: ['auth', 'courses'] // AUTH'S PREVIOUS STATE WILL NOT BE LOADED! SO IT STARTS EMPTY
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

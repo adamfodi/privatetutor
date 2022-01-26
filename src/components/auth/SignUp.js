@@ -22,6 +22,7 @@ const SignUp = props => {
         password2: '',
         lastname: '',
         firstname: '',
+        fullname: '',
         birthday: null,
         gender: genderList[0]
     };
@@ -54,14 +55,14 @@ const SignUp = props => {
             props.clearAuth();
         }
 
-    }, [auth, navigate, props, passwordsAreIdentical,signUpSuccess]);
+    }, [auth, navigate, props, passwordsAreIdentical, signUpSuccess]);
 
     const onSubmit = (data) => {
 
         if (data.password === data.password2) {
             console.log(data)
             setPasswordsAreIdentical(true);
-            props.signUp(data);
+            props.signUp({...data, fullname: data.lastname + ' ' + data.firstname});
         } else {
             setPasswordsAreIdentical(false);
         }

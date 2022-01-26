@@ -21,7 +21,7 @@ const Navbar = props => {
             label: 'Főoldal',
             icon: 'pi pi-fw pi-home',
             command: () => {
-                navigate("")
+                navigate("/main")
             }
         },
 
@@ -34,21 +34,21 @@ const Navbar = props => {
         },
 
         {
-            label: 'Magánórák',
+            label: 'Kurzusaim',
             icon: 'pi pi-fw pi-pencil',
             items: [
                 {
                     label: 'Létrehozás',
                     icon: 'pi pi-fw pi-align-left',
                     command: () => {
-                        navigate("/createlesson")
+                        navigate("/createcourse")
                     }
                 },
                 {
-                    label: 'Meghirdetett órák',
+                    label: 'Kurzusaim',
                     icon: 'pi pi-fw pi-align-right',
                     command: () => {
-                        navigate("/createdlessons")
+                        navigate("/mycourses")
                     }
                 },
             ]

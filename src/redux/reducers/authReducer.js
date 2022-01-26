@@ -31,7 +31,7 @@ const authReducer = (state = initState, action) => {
             };
 
         case "CLEAR_AUTH":
-            return state;
+            return initState;
 
         default:
             return state;

@@ -3,12 +3,12 @@ import {combineReducers} from "redux";
 import {firestoreReducer} from "redux-firestore";
 import {firebaseReducer} from "react-redux-firebase";
 import userReducer from "./userReducer";
-import lessonReducer from "./lessonReducer";
+import courseReducer from "./courseReducer";
 
 const rootReducer = combineReducers({
     auth: authReducer,
     user: userReducer,
-    lessons: lessonReducer,
+    courses: courseReducer,
     firebase: firebaseReducer,
     firestore: firestoreReducer
 });

@@ -17,7 +17,7 @@ export const signIn = credentials => {
                                 dispatch({
                                     type: "SIGNIN_SUCCESS",
                                     role: credentials.role,
-                                    displayName: doc.data().lastName + ' ' + doc.data().firstName
+                                    displayName: doc.data().fullName
                                 });
                             })
                     }
@@ -55,6 +55,8 @@ export const signUp = newUser => {
                     .set({
                         firstName: newUser.firstname,
                         lastName: newUser.lastname,
+                        fullName: newUser.fullname,
+                        email: newUser.email,
                         birthday: moment(newUser.birthday).format('YYYY.MM.DD'),
                         gender: newUser.gender
                     });

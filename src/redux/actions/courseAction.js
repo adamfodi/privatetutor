@@ -1,22 +1,28 @@
 import {rrfProps as state} from "../../config/firebaseConfig";
 
-export const createLesson = lesson => {
+export const createCourse = course => {
     return (dispatch) => {
 
         const firestore = state.firebase.firestore;
         firestore()
-            .collection("lessons")
+            .collection("courses")
             .doc()
             .set({
-                ...lesson,
+                ...course,
             })
             .then(() => {
-                dispatch({ type: "LESSON_CREATION_SUCCESS" });
+                dispatch({ type: "COURSE_CREATION_SUCCESS" });
             })
             .catch(err => {
                 console.log(err.message)
-                dispatch({ type: "LESSON_CREATION_ERROR" }, err);
+                dispatch({ type: "COURSE_CREATION_ERROR" }, err);
             });
         return null;
+    };
+};
+
+export const clearCourses = () => {
+    return (dispatch) => {
+        dispatch({type: "CLEAR_COURSES"});
     };
 };

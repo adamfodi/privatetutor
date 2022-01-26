@@ -8,9 +8,10 @@ import {Dropdown} from "primereact/dropdown";
 import {addLocale} from 'primereact/api';
 import {InputNumber} from "primereact/inputnumber";
 import {InputTextarea} from "primereact/inputtextarea";
-import {createLesson} from "../../redux/actions/lessonAction";
+import {clearCourses, createCourse} from "../../redux/actions/courseAction";
+import moment from "moment";
 
-const CreateLesson = props => {
+const CreateCourse = props => {
     const {auth, role, error, success} = props;
     const navigate = useNavigate();
 
@@ -23,12 +24,14 @@ const CreateLesson = props => {
     const subjectList = ["Matematika", "Fizika", "Kémia", "Biológia", "Történelem", "Informatika"];
     const defaultValues = {
         subject: subjectList[0],
-        limit: '1',
         payment: '1000',
-        description: '',
+        limit: '1',
         startDate: new Date(),
         endDate: dateOffset,
-        tutorUID: null
+        applicants: null,
+        description: '',
+        tutorUID: null,
+        tutorEmail: null
     };
 
     addLocale('hu', {
@@ -43,8 +46,6 @@ const CreateLesson = props => {
         weekHeader: 'Hét'
     });
 
-    const [successfulCreation, setSuccessfulCreation] = useState(false);
-
     const {control, handleSubmit} = useForm({defaultValues});
 
     useEffect(() => {
@@ -53,35 +54,45 @@ const CreateLesson = props => {
         }
 
         if (success) {
-            navigate("/createdlessons")
+            navigate("/createdcourses")
         }
 
-    }, [auth, navigate, role, success]);
+        return () => {
+            props.clearCourses();
+        }
+
+    }, [auth, navigate, role, success, props]);
 
     const onSubmit = (data) => {
 
         if (startDate < endDate && descriptionLength >= 50 && descriptionLength <= 1000) {
             console.log(data)
             console.log(defaultValues.tutorUID)
-            props.createLesson({...data, tutorUID: auth.uid});
+            props.createCourse(
+                {
+                    ...data,
+                    tutorUID: auth.uid,
+                    tutorEmail: auth.email,
+                    startDate: moment(data.startDate).format('YYYY.MM.DD').toString(),
+                    endDate: moment(data.endDate).format('YYYY.MM.DD').toString(),
+                });
         }
     };
 
     return (
         <React.Fragment>
-            {!successfulCreation
-                ? <div className="form">
-                    <div className="card">
-                        <div className="card-name">
-                            <h1>Új magánóra létrehozása</h1>
-                        </div>
+            ? <div className="form">
+            <div className="card">
+                <div className="card-name">
+                    <h1>Új kurzus létrehozása</h1>
+                </div>
 
-                        <div className="card-content">
-                            <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
+                <div className="card-content">
+                    <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
 
-                                <div className="card-field">
-                                    <p className="card-field-name">Tantárgy</p>
-                                    <span className="p-float-label" style={{textAlign: "left"}}>
+                        <div className="card-field">
+                            <p className="card-field-name">Tantárgy</p>
+                            <span className="p-float-label" style={{textAlign: "left"}}>
                                 <Controller name="subject"
                                             control={control}
                                             render={({field}) => (
@@ -93,11 +104,11 @@ const CreateLesson = props => {
                                                 />
                                             )}/>
                             </span>
-                                </div>
+                        </div>
 
-                                <div className="card-field">
-                                    <p className="card-field-name">Létszám</p>
-                                    <span className="p-float-label">
+                        <div className="card-field">
+                            <p className="card-field-name">Létszám</p>
+                            <span className="p-float-label">
                                 <Controller name="limit"
                                             control={control}
                                             render={({field, fieldState}) => (
@@ -112,9 +123,9 @@ const CreateLesson = props => {
                                                 />
                                             )}/>
                             </span>
-                                </div>
+                        </div>
 
-                                <div className="card-field">
+                        <div className="card-field">
                             <span className="p-float-label">
                                 <p className="card-field-name">Ár</p>
                                 <Controller name="payment"
@@ -131,11 +142,11 @@ const CreateLesson = props => {
                                                 />
                                             )}/>
                             </span>
-                                </div>
+                        </div>
 
-                                <div className="card-field">
-                                    <p className="card-field-name">Leírás</p>
-                                    <span className="p-float-label">
+                        <div className="card-field">
+                            <p className="card-field-name">Leírás</p>
+                            <span className="p-float-label">
                                 <Controller name="description"
                                             control={control}
                                             render={({field, fieldState}) => (
@@ -152,16 +163,16 @@ const CreateLesson = props => {
                                                 />
                                             )}/>
                             </span>
-                                    {descriptionLength < 50 || descriptionLength > 1000
-                                        ? <p className="card-field-error">A leírásnak 50 és 1000 karakter között kell
-                                            lennie! ({descriptionLength})</p>
-                                        : null
-                                    }
-                                </div>
+                            {descriptionLength < 50 || descriptionLength > 1000
+                                ? <p className="card-field-error">A leírásnak 50 és 1000 karakter között kell
+                                    lennie! ({descriptionLength})</p>
+                                : null
+                            }
+                        </div>
 
-                                <div className="card-field">
-                                    <p className="card-field-name">Mettől</p>
-                                    <span className="p-float-label">
+                        <div className="card-field">
+                            <p className="card-field-name">Mettől</p>
+                            <span className="p-float-label">
                                 <Controller name="startDate"
                                             control={control}
                                             render={({field}) => (
@@ -180,11 +191,11 @@ const CreateLesson = props => {
                                                 />
                                             )}/>
                             </span>
-                                </div>
+                        </div>
 
-                                <div className="card-field">
-                                    <p className="card-field-name">Meddig</p>
-                                    <span className="p-float-label">
+                        <div className="card-field">
+                            <p className="card-field-name">Meddig</p>
+                            <span className="p-float-label">
                                 <Controller name="endDate"
                                             control={control}
                                             render={({field}) => (
@@ -203,25 +214,23 @@ const CreateLesson = props => {
                                                 />
                                             )}/>
                             </span>
-                                    {startDate >= endDate
-                                        ? <p className="card-field-error">A dátumok nem megfelelőek!</p>
-                                        : null
-                                    }
-                                </div>
-
-                                <Button type="submit" label="Meghirdetés" className="card-button"/>
-                                {
-                                    error
-                                        ? <p className="card-auth-error">Probléma merült fel! Kérem próbálja újra
-                                            később!</p>
-                                        : null
-                                }
-                            </form>
+                            {startDate >= endDate
+                                ? <p className="card-field-error">A dátumok nem megfelelőek!</p>
+                                : null
+                            }
                         </div>
-                    </div>
+
+                        <Button type="submit" label="Meghirdetés" className="card-button"/>
+                        {
+                            error
+                                ? <p className="card-auth-error">Probléma merült fel! Kérem próbálja újra
+                                    később!</p>
+                                : null
+                        }
+                    </form>
                 </div>
-                : <div>Sikeres létrehozás!</div>
-            }
+            </div>
+        </div>
         </React.Fragment>
     );
 };
@@ -230,17 +239,18 @@ const mapStateToProps = state => {
     return {
         auth: state.firebase.auth,
         role: state.user.role,
-        error: state.lessons.creationError,
-        success: state.lessons.creationSuccess,
+        error: state.courses.creationError,
+        success: state.courses.creationSuccess,
 
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        createLesson: lesson => dispatch(createLesson(lesson)),
+        createCourse: course => dispatch(createCourse(course)),
+        clearCourses: () => dispatch(clearCourses())
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateLesson);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateCourse);
 
