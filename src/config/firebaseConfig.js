@@ -6,7 +6,7 @@ import {createFirestoreInstance} from 'redux-firestore'
 import rootReducer from "../redux/reducers/rootReducer";
 import {composeWithDevTools} from "redux-devtools-extension";
 import thunk from "redux-thunk";
-import { persistStore, persistReducer } from 'redux-persist'
+import {persistReducer, persistStore} from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 
 const persistConfig = {

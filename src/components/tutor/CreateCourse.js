@@ -8,7 +8,7 @@ import {Dropdown} from "primereact/dropdown";
 import {addLocale} from 'primereact/api';
 import {InputNumber} from "primereact/inputnumber";
 import {InputTextarea} from "primereact/inputtextarea";
-import {clearCourses, createCourse} from "../../redux/actions/courseAction";
+import {clearCourses, createCourse} from "../../redux/actions/courseActions";
 import moment from "moment";
 
 const CreateCourse = props => {
@@ -28,7 +28,7 @@ const CreateCourse = props => {
         limit: '1',
         startDate: new Date(),
         endDate: dateOffset,
-        applicants: null,
+        applicants: [],
         description: '',
         tutorUID: auth.uid,
         tutorFullName: displayName

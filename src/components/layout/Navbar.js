@@ -7,6 +7,8 @@ import {signOut} from "../../redux/actions/authActions";
 import {compose} from "redux";
 import {firestoreConnect} from "react-redux-firebase";
 import {Menu} from "primereact/menu";
+import "../../App.css"
+import {switchRole} from "../../redux/actions/userActions";
 
 
 const Navbar = props => {
@@ -86,11 +88,33 @@ const Navbar = props => {
     const roleSelector = (() => {
         if (role === 'student') {
             return (
-                <Button className="role-button-student" label="HALLGATÓ" disabled/>
+                <React.Fragment>
+                    <Button
+                        className="role-button-student"
+                        label="HALLGATÓ"
+                        disabled
+                    />
+                    <img
+                        className="switch-role"
+                        src={require("../../assets/img/switch.png")} alt="Switch role"
+                        onClick={() => props.switchRole(role)}
+                    />
+                </React.Fragment>
             )
         } else if (role === 'tutor') {
             return (
-                <Button className="role-button-tutor" label="OKTATÓ" disabled/>
+                <React.Fragment>
+                    <Button
+                        className="role-button-tutor"
+                        label="OKTATÓ"
+                        disabled
+                    />
+                    <img
+                        className="switch-role"
+                        src={require("../../assets/img/switch.png")} alt="Switch role"
+                        onClick={() => props.switchRole(role)}
+                    />
+                </React.Fragment>
             );
         } else {
             return null;
@@ -104,28 +128,35 @@ const Navbar = props => {
                 start={roleSelector}
                 end={!role
                     ? <React.Fragment>
-                        <Button onClick={() => navigate("/signup")}
-                                className="p-button-info"
-                                label="Regisztráció"
-                                icon="pi pi-user-plus"
-                                style={{marginRight: 20, fontSize: 18}}
+                        <Button
+                            onClick={() => navigate("/signup")}
+                            className="p-button-info"
+                            label="Regisztráció"
+                            icon="pi pi-user-plus"
+                            style={{marginRight: 20, fontSize: 18}}
                         />
-                        <Button onClick={() => navigate("/signin")}
-                                className="p-button-success"
-                                label="Bejelentkezés"
-                                icon="pi pi-sign-in"
-                                style={{marginRight: 10, fontSize: 18}}
+
+                        <Button
+                            onClick={() => navigate("/signin")}
+                            className="p-button-success"
+                            label="Bejelentkezés"
+                            icon="pi pi-sign-in"
+                            style={{marginRight: 10, fontSize: 18}}
                         />
                     </React.Fragment>
                     : <React.Fragment>
-                        <Menu model={userItems} popup ref={menu} id="popup_menu"/>
-                        <Button label= {displayName}
-                                icon="pi pi-chevron-down"
-                                iconPos="right"
-                                onClick={(event) => menu.current.toggle(event)}
-                                aria-controls="popup_menu" aria-haspopup
-                                style={{marginRight: 10, fontSize: 18}}
-
+                        <Menu
+                            model={userItems}
+                            popup
+                            ref={menu}
+                            id="popup_menu"/>
+                        <Button
+                            label={displayName}
+                            icon="pi pi-chevron-down"
+                            iconPos="right"
+                            onClick={(event) => menu.current.toggle(event)}
+                            aria-controls="popup_menu" aria-haspopup
+                            style={{marginRight: 10, fontSize: 18}}
                         />
                     </React.Fragment>
                 }
@@ -145,7 +176,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        signOut: () => dispatch(signOut())
+        signOut: () => dispatch(signOut()),
+        switchRole: (role) => dispatch(switchRole(role))
     };
 };
 

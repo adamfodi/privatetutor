@@ -34,7 +34,7 @@
 
 .datatable-title {
     text-align: center;
-    font-size: 2em;
+    font-size: 2.5em;
     margin: 0.4em;
 }
 
@@ -72,4 +72,18 @@
     justify-content: center;
     font-size: 1.2em;
     text-align: center;
+}
+
+.successCourse {
+    display: flex;
+    justify-content: center;
+    color: greenyellow;
+    font-size: 2em;
+}
+
+.errorCourse {
+    display: flex;
+    justify-content: center;
+    color: orangered;
+    font-size: 2em;
 }
