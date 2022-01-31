@@ -16,7 +16,6 @@ export const signIn = credentials => {
                             .then(function (doc) {
                                 dispatch({
                                     type: "SIGNIN_SUCCESS",
-                                    role: credentials.role,
                                     displayName: doc.data().fullName
                                 });
                             })

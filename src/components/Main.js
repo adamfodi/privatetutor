@@ -12,7 +12,7 @@ import {InputTextarea} from "primereact/inputtextarea";
 import {clearCourses, modifyCourseApplicants} from "../redux/actions/courseActions";
 
 const Main = props => {
-    const {auth, role, courses, users, error, success} = props;
+    const {auth, courses, users, error, success} = props;
     const [descriptionDialog, setDescriptionDialog] = useState(false);
     const [tutorDialog, setTutorDialog] = useState(false);
     const [currentRowDataValue, setCurrentRowDataValue] = useState(null);
@@ -49,7 +49,7 @@ const Main = props => {
     };
 
     const applyButton = (rowData) => {
-        if (!auth.uid || role === 'tutor' || rowData.tutorUID === auth.uid) {
+        if (!auth.uid || rowData.tutorUID === auth.uid) {
             return null;
         }
 
@@ -126,13 +126,13 @@ const Main = props => {
 
     const description = (rowData) => {
         return (
-            <p className="datatable-button">
+            <div className="datatable-button">
                 <Button
                     label="Megtekintés"
                     className="p-button-info"
                     onClick={() => descriptionClickHandler(rowData)}
                 />
-            </p>
+            </div>
         );
     };
 
@@ -192,7 +192,7 @@ const Main = props => {
             <div className="datatable-container">
                 <DataTable
                     value={courses}
-                    loading={!courses && !role}
+                    loading={!courses && !auth.uid}
                     paginator
                     responsiveLayout="scroll"
                     rows={10}
@@ -205,7 +205,7 @@ const Main = props => {
                     <Column
                         body={applyButton}
                         exportable={false}
-                        style={{minWidth: '14rem', maxWidth: '14rem'}}
+                        style={{minWidth: '10rem', maxWidth: '10rem'}}
                     />
                     <Column
                         field="subject"
@@ -256,7 +256,7 @@ const Main = props => {
                         header="Leírás"
                         body={description}
                         exportable={false}
-                        style={{minWidth: '14rem', maxWidth: '14rem'}}
+                        style={{minWidth: '10rem', maxWidth: '10rem'}}
                     />
                 </DataTable>
             </div>
@@ -364,7 +364,6 @@ const mapStateToProps = state => {
         courses: state.firestore.ordered.courses,
         users: state.firestore.ordered.users,
         auth: state.firebase.auth,
-        role: state.user.role,
         error: state.courses.modificationError,
         success: state.courses.modificationSuccess,
     };

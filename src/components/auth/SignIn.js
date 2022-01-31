@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
@@ -11,11 +11,9 @@ import {useNavigate} from "react-router-dom";
 const SignIn = props => {
     const {signInError, auth} = props;
     const navigate = useNavigate();
-    const [role, setRole] = useState(null);
     const defaultValues = {
         email: '',
-        password: '',
-        role: null
+        password: ''
     };
     const {control, formState: {errors}, handleSubmit, reset} = useForm({defaultValues});
 
@@ -29,10 +27,10 @@ const SignIn = props => {
             props.clearAuth();
         }
 
-    }, [auth, navigate, role]);
+    }, [auth, navigate]);
 
     const onSubmit = (data) => {
-        props.signIn({...data, role: role});
+        props.signIn(data);
         reset();
     };
 
@@ -89,13 +87,7 @@ const SignIn = props => {
                         </div>
 
                         <Button type="submit"
-                                onClick={() => setRole("student")}
-                                label="Bejelentkezés, mint hallgató"
-                                className="card-button p-button-warning student-button"
-                        />
-                        <Button type="submit"
-                                onClick={() => setRole("tutor")}
-                                label="Bejelentkezés, mint oktató"
+                                label="Bejelentkezés"
                                 className="card-button p-button-help"
                         />
                         {signInError ? <p className="card-auth-error">Sikertelen bejelentkezés!</p> : null}

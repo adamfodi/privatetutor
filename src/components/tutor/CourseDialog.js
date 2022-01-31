@@ -10,9 +10,10 @@ import {InputNumber} from "primereact/inputnumber";
 import {InputTextarea} from "primereact/inputtextarea";
 import {clearCourses, createCourse} from "../../redux/actions/courseActions";
 import moment from "moment";
+import {Dialog} from "primereact/dialog";
 
-const CreateCourse = props => {
-    const {auth,displayName, error, success} = props;
+const CourseDialog = props => {
+    const {auth,displayName, error} = props;
     const navigate = useNavigate();
 
     const dateOffset = new Date();
@@ -48,21 +49,6 @@ const CreateCourse = props => {
 
     const {control, handleSubmit} = useForm({defaultValues});
 
-    useEffect(() => {
-        if (!auth.uid) {
-            navigate("/main")
-        }
-
-        if (success) {
-            navigate("/createdcourses")
-        }
-
-        return () => {
-            props.clearCourses();
-        }
-
-    }, [auth, navigate, success, props]);
-
     const onSubmit = (data) => {
 
         if (startDate < endDate && descriptionLength >= 50 && descriptionLength <= 1000) {
@@ -78,8 +64,10 @@ const CreateCourse = props => {
     };
 
     return (
-        <React.Fragment>
-            ? <div className="form">
+        <Dialog
+            visible={true}
+        >
+             <div className="form">
             <div className="card">
                 <div className="card-name">
                     <h1>Új kurzus létrehozása</h1>
@@ -229,7 +217,7 @@ const CreateCourse = props => {
                 </div>
             </div>
         </div>
-        </React.Fragment>
+        </Dialog>
     );
 };
 
@@ -250,5 +238,5 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateCourse);
+export default connect(mapStateToProps, mapDispatchToProps)(CourseDialog);
 

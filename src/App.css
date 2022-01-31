@@ -60,40 +60,6 @@
     margin-bottom: 1em;
 }
 
-.role-button-student {
-    background-color: #FFB74D;
-    color: black;
-    opacity: 1 !important;
-    border: none;
-    font-family: "Verdana", "Times New Roman", serif;
-    font-size: 1.4em;
-    padding: 0.5em 1em;
-    margin-right: 0.7em;
-    width: 8em;
-}
-
-.role-button-tutor {
-    background-color: #BA68C8;
-    color: black;
-    opacity: 1 !important;
-    border: none;
-    font-family: "Verdana", "Times New Roman", serif;
-    font-size: 1.4em;
-    padding: 0.5em 1em;
-    margin-right: 0.7em;
-    width: 8em;
-}
-
-.switch-role {
-    width: 2.5em;
-    color: white;
-    margin-right: 4em;
-}
-
-.switch-role:hover {
-    cursor: pointer;
-}
-
 @media screen and (max-width: 960px) {
     .form .card {
         max-width: 50%;

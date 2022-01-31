@@ -8,14 +8,13 @@ import {compose} from "redux";
 import {firestoreConnect} from "react-redux-firebase";
 import {Menu} from "primereact/menu";
 import "../../App.css"
-import {switchRole} from "../../redux/actions/userActions";
 
 
 const Navbar = props => {
 
     const navigate = useNavigate();
     const menu = useRef(null);
-    const {role, displayName} = props;
+    const {auth,displayName} = props;
 
 
     const mainItems = [
@@ -32,16 +31,17 @@ const Navbar = props => {
             icon: 'pi pi-fw pi-calendar',
             command: () => {
                 navigate("")
-            }
+            },
+            disabled: true
         },
 
         {
-            label: 'Kurzusaim',
-            icon: 'pi pi-fw pi-pencil',
+            label: 'Kurzusok',
+            icon: 'pi pi-fw pi-table',
             items: [
                 {
                     label: 'Létrehozás',
-                    icon: 'pi pi-fw pi-align-left',
+                    icon: 'pi pi-fw pi-pencil',
                     command: () => {
                         navigate("/createcourse")
                     }
@@ -51,9 +51,28 @@ const Navbar = props => {
                     icon: 'pi pi-fw pi-align-right',
                     command: () => {
                         navigate("/mycourses")
-                    }
+                    },
+                    disabled: true
                 },
             ]
+        },
+
+        {
+            label: 'Privát órák',
+            icon: 'pi pi-fw pi-eye',
+            command: () => {
+                navigate("")
+            },
+            disabled: true
+        },
+
+        {
+            label: 'Tesztek',
+            icon: 'pi pi-fw pi-copy',
+            command: () => {
+                navigate("")
+            },
+            disabled: true
         },
     ];
 
@@ -63,7 +82,8 @@ const Navbar = props => {
             icon: 'pi pi-user',
             command: () => {
                 navigate("")
-            }
+            },
+            disabled: true
         },
 
         {
@@ -72,7 +92,8 @@ const Navbar = props => {
             badge: '8',
             command: () => {
                 navigate("")
-            }
+            },
+            disabled: true
         },
 
         {
@@ -85,48 +106,11 @@ const Navbar = props => {
 
     ];
 
-    const roleSelector = (() => {
-        if (role === 'student') {
-            return (
-                <React.Fragment>
-                    <Button
-                        className="role-button-student"
-                        label="HALLGATÓ"
-                        disabled
-                    />
-                    <img
-                        className="switch-role"
-                        src={require("../../assets/img/switch.png")} alt="Switch role"
-                        onClick={() => props.switchRole(role)}
-                    />
-                </React.Fragment>
-            )
-        } else if (role === 'tutor') {
-            return (
-                <React.Fragment>
-                    <Button
-                        className="role-button-tutor"
-                        label="OKTATÓ"
-                        disabled
-                    />
-                    <img
-                        className="switch-role"
-                        src={require("../../assets/img/switch.png")} alt="Switch role"
-                        onClick={() => props.switchRole(role)}
-                    />
-                </React.Fragment>
-            );
-        } else {
-            return null;
-        }
-    })
-
     return (
         <div>
             <Menubar
                 model={mainItems}
-                start={roleSelector}
-                end={!role
+                end={!auth.uid
                     ? <React.Fragment>
                         <Button
                             onClick={() => navigate("/signup")}
@@ -168,7 +152,6 @@ const Navbar = props => {
 const mapStateToProps = state => {
     return {
         users: state.firestore.ordered.users,
-        role: state.user.role,
         auth: state.firebase.auth,
         displayName: state.user.displayName
     };
@@ -177,7 +160,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         signOut: () => dispatch(signOut()),
-        switchRole: (role) => dispatch(switchRole(role))
     };
 };
 

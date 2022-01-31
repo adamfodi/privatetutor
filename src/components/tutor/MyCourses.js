@@ -1,96 +1,240 @@
-import React, {useRef, useState} from "react";
 import {connect} from "react-redux";
-import {firestoreConnect} from "react-redux-firebase";
-import {compose} from "redux";
-import {Toast} from "primereact/toast";
-import {Button} from "primereact/button";
-import {Toolbar} from "primereact/toolbar";
-import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
-import {InputText} from "primereact/inputtext";
-import {Rating} from "primereact/rating";
+import {compose} from "redux";
+import {firestoreConnect} from "react-redux-firebase";
+import {DataTable} from "primereact/datatable";
+import {FilterMatchMode} from "primereact/api";
+import React, {useEffect, useState} from "react";
+import "../../assets/css/main.css"
+import {Button} from "primereact/button";
+import {Dialog} from "primereact/dialog";
+import {InputTextarea} from "primereact/inputtextarea";
+import {clearCourses, modifyCourseApplicants} from "../../redux/actions/courseActions";
+import CourseDialog from "./CourseDialog";
 
 const MyCourses = props => {
-    const {courses, auth} = props;
-    const toast = useRef(null);
-    const dt = useRef(null);
-    const [selectedCourses, setSelectedCourses] = useState(null);
-    const [globalFilter, setGlobalFilter] = useState(null);
+    const {auth, courses, error, success} = props;
+    const [myCourses, setMyCourses] = useState([]);
+    const [selectedCourses, setSelectedCourses] = useState([]);
+    const [descriptionDialog, setDescriptionDialog] = useState(false);
+    const [currentRowDataValue, setCurrentRowDataValue] = useState(null);
+    const [successDialog, setSuccessDialog] = useState(false);
+    const [errorDialog, setErrorDialog] = useState(false);
+    const [successValue, setSuccessValue] = useState(null);
 
-    const leftToolbarTemplate = () => {
+
+    const filters = {
+        'subject': {value: null, matchMode: FilterMatchMode.STARTS_WITH},
+        'tutorFullName': {value: null, matchMode: FilterMatchMode.STARTS_WITH},
+    };
+
+    const filterCourses = () => {
+        return courses.filter(function (course) {
+            return course.tutorUID === auth.uid;
+        });
+
+    }
+
+    useEffect(() => {
+        if (courses) {
+            setMyCourses(filterCourses());
+        }
+
+        if (success) {
+            setSuccessDialog(true);
+        }
+
+        if (error) {
+            setErrorDialog(true);
+        }
+
+        return () => {
+            props.clearCourses();
+        }
+
+    }, [success, error, props, courses]);
+
+    const header = () => {
         return (
-            <React.Fragment>
-                <Button label="New" icon="pi pi-plus" className="p-button-success mr-2"/>
-                <Button label="Delete" icon="pi pi-trash" className="p-button-danger"/>
-            </React.Fragment>
+            <div className="datatable-title">
+                <span>Meghirdetett kurzusaim</span>
+                <div>
+                    <Button label="Új kurzus felvétele" icon="pi pi-plus" className="p-button-success mr-2" />
+                    <Button label="Törlés" icon="pi pi-trash" className="p-button-danger"/>
+                </div>
+            </div>
         )
-    }
+    };
 
-    const rightToolbarTemplate = () => {
+
+    const limit = (rowData) => {
         return (
-            <React.Fragment>
-                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Keresés..."/>
-            </React.Fragment>
-        )
-    }
-
-    const ratingBodyTemplate = (rowData) => {
-        return <Rating value={6.5} stars="10" readOnly cancel={false} />;
-    }
-
-    const actionBodyTemplate = (rowData) => {
-        return (
-            <React.Fragment>
-                <Button icon="pi pi-pencil" className="p-button-rounded p-button-info mr-2"/>
-                <Button icon="pi pi-trash" className="p-button-rounded p-button-danger mr-2"/>
-            </React.Fragment>
+            <p>
+                <span>{rowData.applicants.length + '/' + rowData.limit}</span>
+            </p>
         );
-    }
+    };
+
+    const dateMerged = (rowData) => {
+        return (
+            <p>
+                <span>{rowData.startDate + ' - ' + rowData.endDate}</span>
+            </p>
+        );
+    };
+
+    const edit = (rowData) => {
+        return (
+            <div className="datatable-button">
+                <Button
+                    label="Szerkesztés"
+                    className="p-button-info"
+                    onClick={() => editClickHandler(rowData)}
+                />
+            </div>
+        );
+    };
+
+    const editClickHandler = (rowData) => {
+        setCurrentRowDataValue(rowData.description);
+        setDescriptionDialog(true);
+    };
+
+    const hideEditDialog = () => {
+        setDescriptionDialog(false);
+        setCurrentRowDataValue(null);
+    };
+
+    const dialogDescriptionFooter = (
+        <React.Fragment>
+            <Button
+                label="Rendben"
+                icon="pi pi-check"
+                className="p-button-text"
+                onClick={hideEditDialog}/>
+        </React.Fragment>
+    );
 
 
     return (
-        <div>
-            {courses
-                ? <div className="datatable-crud-demo">
-                    <Toast ref={toast}/>
+        <React.Fragment>
+            <div className="datatable-container">
+                <DataTable
+                    value={myCourses}
+                    loading={!myCourses && !auth.uid}
+                    selection={selectedCourses}
+                    onSelectionChange={(e) => setSelectedCourses(e.value)}
+                    paginator
+                    responsiveLayout="scroll"
+                    rows={10}
+                    dataKey="id"
+                    filters={filters}
+                    filterDisplay="row"
+                    header={header}
+                    emptyMessage="Nem található kurzus."
+                >
+                    <Column
+                        selectionMode="multiple"
+                        headerStyle={{ width: '3rem' }}
+                        exportable={false}
 
-                    <div className="card">
-                        <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}/>
+                    />
 
-                        <DataTable ref={dt} value={courses} selection={selectedCourses}
-                                   onSelectionChange={(e) => setSelectedCourses(e.value)}
-                                   dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
-                                   paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                                   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
-                                   globalFilter={globalFilter}
-                        >
-                            <Column selectionMode="multiple" headerStyle={{width: '3rem'}} exportable={false}/>
-                            <Column field="subject" header="Tantárgy" sortable style={{minWidth: '5rem'}}/>
-                            <Column field="price" header="Ár(Ft)" sortable style={{minWidth: '3rem'}}/>
-                            <Column field="limit" header="Létszám(fő)" sortable style={{minWidth: '3rem'}}/>
-                            <Column field="startDate" header="Mettől" sortable style={{minWidth: '12rem'}}/>
-                            <Column field="endDate" header="Meddig" sortable style={{minWidth: '12rem'}}/>
+                    <Column
+                        field="subject"
+                        header="Tantárgy"
+                        filter
+                        showFilterMenu={false}
+                        exportable={false}
+                        filterPlaceholder="Keresés..."
+                        sortable
+                        style={{minWidth: '13rem', maxWidth: '13rem', textAlign: 'center'}}
+                    />
+                    <Column
+                        field="price"
+                        header="Ár (Ft / fő)"
+                        showFilterMenu={false}
+                        sortable
+                        style={{minWidth: '8rem', maxWidth: '8rem', textAlign: 'center'}}
+                    />
+                    <Column
+                        field="applicants"
+                        header="Létszám"
+                        body={limit}
+                        exportable={false}
+                        sortable
+                        style={{minWidth: '8rem', maxWidth: '8rem', textAlign: 'center'}}
+                    />
+                    <Column
+                        field="startDate"
+                        header="Időpont"
+                        body={dateMerged}
+                        exportable={false}
+                        sortable
+                        style={{minWidth: '20rem', maxWidth: '20rem', textAlign: 'center'}}
+                    />
+                    <Column
+                        body={edit}
+                        exportable={false}
+                        style={{minWidth: '10rem', maxWidth: '10rem'}}
+                    />
+                </DataTable>
+            </div>
 
-                            <Column body={actionBodyTemplate} exportable={false} style={{minWidth: '8rem'}}/>
-                        </DataTable>
+            <div>
+                <Dialog
+                    visible={descriptionDialog}
+                    style={{width: '30em'}}
+                    header="Szerkesztés"
+                    modal
+                    className="p-fluid"
+                    footer={dialogDescriptionFooter}
+                    onHide={hideEditDialog}
+                >
+
+                    <div className="field">
+                        <InputTextarea
+                            value={currentRowDataValue ? currentRowDataValue : ''}
+                            rows={15}
+                            cols={25}
+                            style={{opacity: '1'}}
+                            autoResize
+                            disabled
+                        />
                     </div>
 
-                </div>
-                // : <div> LOADING....... </div> TODO: HA URES ITT KEZELJUK LE IF ELSEVEL REACT FRAGMENTTEL
-                : <div> LOADING....... </div>
-            }
-        </div>
-    );
+                </Dialog>
+
+                <CourseDialog>
+
+                </CourseDialog>
+
+            </div>
+        </React.Fragment>
+
+    )
 }
+
 
 const mapStateToProps = state => {
     return {
         courses: state.firestore.ordered.courses,
-        auth: state.firebase.auth
+        users: state.firestore.ordered.users,
+        auth: state.firebase.auth,
+        error: state.courses.modificationError,
+        success: state.courses.modificationSuccess,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        modifyCourseApplicants: (courseID, newApplicants) => dispatch(modifyCourseApplicants(courseID, newApplicants)),
+        clearCourses: () => dispatch(clearCourses())
     };
 };
 
 export default compose(
-    connect(mapStateToProps),
-    firestoreConnect([{collection: "courses", orderBy: ["startDate", "asc"]}])
+    connect(mapStateToProps, mapDispatchToProps),
+    firestoreConnect([{collection: "courses", orderBy: ["startDate", "asc"]}]),
+    firestoreConnect([{collection: "users"}])
 )(MyCourses);
