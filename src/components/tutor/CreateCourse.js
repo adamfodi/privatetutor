@@ -178,12 +178,13 @@ const CreateCourse = props => {
                                                     id={field.name}
                                                     value={field.value}
                                                     onChange={(e) => {
-                                                        setStartDate(e.value);
+                                                        setStartDate(e.target.value);
                                                         field.onChange(e.target.value)
                                                     }}
                                                     dateFormat="yy/mm/dd"
                                                     minDate={new Date()}
                                                     locale="hu"
+                                                    selectOtherMonths
                                                     showTime
                                                     showIcon
                                                 />
@@ -201,7 +202,7 @@ const CreateCourse = props => {
                                                     id={field.name}
                                                     value={field.value}
                                                     onChange={(e) => {
-                                                        setEndDate(e.value);
+                                                        setEndDate(e.target.value);
                                                         field.onChange(e.target.value)
                                                     }}
                                                     dateFormat="yy/mm/dd"

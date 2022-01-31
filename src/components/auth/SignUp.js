@@ -42,6 +42,10 @@ const SignUp = props => {
         weekHeader: 'Hét'
     });
 
+    const yearNavigatorTemplate = (e) => {
+        return <Dropdown value={e.value} options={e.options} onChange={(event) => e.onChange(event.originalEvent, event.value)} className="ml-2" style={{ lineHeight: 1 }} />;
+    }
+
     useEffect(() => {
         if (!(auth.isLoaded && auth.isEmpty)) {
             navigate("/main")
@@ -199,7 +203,9 @@ const SignUp = props => {
                                                     dateFormat="yy/mm/dd"
                                                     maxDate={new Date()}
                                                     yearNavigator
+                                                    yearNavigatorTemplate={yearNavigatorTemplate}
                                                     yearRange="1900:2022"
+                                                    selectOtherMonths
                                                     locale="hu"
                                                     showIcon
                                                 />
