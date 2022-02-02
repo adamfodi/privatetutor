@@ -5,7 +5,6 @@ const initState = {
     modificationSuccess: false,
     updateError: null,
     updateSuccess: false,
-    showCourseDialog: false
 };
 
 const courseReducer = (state = initState, action) => {
@@ -45,20 +44,6 @@ const courseReducer = (state = initState, action) => {
                 ...initState,
                 updateError: action.err.message,
             };
-
-
-        case "SHOW_COURSE_DIALOG_TRUE":
-            return {
-                ...state,
-                showCourseDialog: true,
-            };
-
-        case "SHOW_COURSE_DIALOG_FALSE":
-            return {
-                ...state,
-                showCourseDialog: false,
-            };
-
 
         case "CLEAR_COURSES":
             return initState;

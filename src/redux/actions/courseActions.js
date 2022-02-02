@@ -63,15 +63,6 @@ export const modifyCourseApplicants = (courseID,newApplicants) => {
     };
 };
 
-export const showCourseDialog = (show) => {
-    return (dispatch) => {
-        if (show){
-            dispatch({type: "SHOW_COURSE_DIALOG_TRUE"});
-        }
-        dispatch({type: "SHOW_COURSE_DIALOG_FALSE"});
-    };
-};
-
 export const clearCourses = () => {
     return (dispatch) => {
         dispatch({type: "CLEAR_COURSES"});

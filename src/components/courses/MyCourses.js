@@ -11,17 +11,19 @@ import {Dialog} from "primereact/dialog";
 import {InputTextarea} from "primereact/inputtextarea";
 import {clearCourses, modifyCourseApplicants} from "../../redux/actions/courseActions";
 import CourseDialog from "./CourseDialog";
+import {useNavigate} from "react-router-dom";
 
 const MyCourses = props => {
-    const {auth, courses, error, success} = props;
+    const {auth, courses, creationError, creationSuccess, user} = props;
     const [myCourses, setMyCourses] = useState([]);
-    const [selectedCourses, setSelectedCourses] = useState([]);
+    const [selectedCourses, setSelectedCourses] = useState(null);
     const [descriptionDialog, setDescriptionDialog] = useState(false);
     const [currentRowDataValue, setCurrentRowDataValue] = useState(null);
-    const [successDialog, setSuccessDialog] = useState(false);
-    const [errorDialog, setErrorDialog] = useState(false);
-    const [successValue, setSuccessValue] = useState(null);
+    // const [creationSuccess, setShowCreationSuccess] = useState(false);
+    // const [creationError, setShowCreationError] = useState(false);
+    const [showCourseDialog, setShowCourseDialog] = useState(false);
 
+    const navigate = useNavigate();
 
     const filters = {
         'subject': {value: null, matchMode: FilterMatchMode.STARTS_WITH},
@@ -36,38 +38,31 @@ const MyCourses = props => {
     }
 
     useEffect(() => {
+        if (!user.displayName) {
+            navigate("/main")
+        }
+
         if (courses) {
             setMyCourses(filterCourses());
         }
 
-        if (success) {
-            setSuccessDialog(true);
-        }
-
-        if (error) {
-            setErrorDialog(true);
-        }
-
-        return () => {
-            props.clearCourses();
-        }
-
-    }, [success, error, props, courses]);
+    }, [props]);
 
     const header = () => {
         return (
             <div className="datatable-title">
                 <span>Meghirdetett kurzusaim</span>
                 <div>
-                    <Button label="Új kurzus felvétele" icon="pi pi-plus" className="p-button-success mr-2" />
-                    <Button label="Törlés" icon="pi pi-trash" className="p-button-danger"/>
+                    <Button label="Új kurzus meghirdetése" icon="pi pi-plus" className="p-button-success mr-2"
+                            onClick={() => setShowCourseDialog(true)}/>
+                    <Button label="Törlés" icon="pi pi-trash" className="p-button-danger" disabled/>
                 </div>
             </div>
         )
     };
 
 
-    const limit = (rowData) => {
+    const limitTemplate = (rowData) => {
         return (
             <p>
                 <span>{rowData.applicants.length + '/' + rowData.limit}</span>
@@ -75,21 +70,30 @@ const MyCourses = props => {
         );
     };
 
-    const dateMerged = (rowData) => {
+    const dateTemplate = (rowData) => {
         return (
             <p>
-                <span>{rowData.startDate + ' - ' + rowData.endDate}</span>
+                <span>{rowData.date}</span>
             </p>
         );
     };
 
-    const edit = (rowData) => {
+    const timeTemplate = (rowData) => {
+        return (
+            <p>
+                <span>{rowData.startTime + ' - ' + rowData.endTime}</span>
+            </p>
+        );
+    };
+
+    const editTemplate = (rowData) => {
         return (
             <div className="datatable-button">
                 <Button
                     label="Szerkesztés"
                     className="p-button-info"
                     onClick={() => editClickHandler(rowData)}
+                    disabled
                 />
             </div>
         );
@@ -115,7 +119,6 @@ const MyCourses = props => {
         </React.Fragment>
     );
 
-
     return (
         <React.Fragment>
             <div className="datatable-container">
@@ -135,11 +138,10 @@ const MyCourses = props => {
                 >
                     <Column
                         selectionMode="multiple"
-                        headerStyle={{ width: '3rem' }}
+                        headerStyle={{width: '3rem'}}
                         exportable={false}
 
                     />
-
                     <Column
                         field="subject"
                         header="Tantárgy"
@@ -160,21 +162,29 @@ const MyCourses = props => {
                     <Column
                         field="applicants"
                         header="Létszám"
-                        body={limit}
+                        body={limitTemplate}
                         exportable={false}
                         sortable
                         style={{minWidth: '8rem', maxWidth: '8rem', textAlign: 'center'}}
                     />
                     <Column
                         field="startDate"
-                        header="Időpont"
-                        body={dateMerged}
+                        header="Dátum"
+                        body={dateTemplate}
                         exportable={false}
                         sortable
                         style={{minWidth: '20rem', maxWidth: '20rem', textAlign: 'center'}}
                     />
                     <Column
-                        body={edit}
+                        field="startTime"
+                        header="Időpont"
+                        body={timeTemplate}
+                        exportable={false}
+                        sortable
+                        style={{minWidth: '20rem', maxWidth: '20rem', textAlign: 'center'}}
+                    />
+                    <Column
+                        body={editTemplate}
                         exportable={false}
                         style={{minWidth: '10rem', maxWidth: '10rem'}}
                     />
@@ -205,13 +215,21 @@ const MyCourses = props => {
 
                 </Dialog>
 
-                <CourseDialog>
 
-                </CourseDialog>
-
+                {showCourseDialog
+                    ? <Dialog
+                        visible={showCourseDialog}
+                        style={{width: '40%'}}
+                        header="Új kurzus meghirdetése"
+                        modal
+                        onHide={() => setShowCourseDialog(false)}
+                    >
+                        <CourseDialog showCourseDialog={showCourseDialog} setShowCourseDialog={setShowCourseDialog}/>
+                    </Dialog>
+                    : null
+                }
             </div>
         </React.Fragment>
-
     )
 }
 
@@ -221,8 +239,9 @@ const mapStateToProps = state => {
         courses: state.firestore.ordered.courses,
         users: state.firestore.ordered.users,
         auth: state.firebase.auth,
-        error: state.courses.modificationError,
-        success: state.courses.modificationSuccess,
+        creationError: state.courses.creationError,
+        creationSuccess: state.courses.creationSuccess,
+        user: state.user
     };
 };
 
@@ -235,6 +254,6 @@ const mapDispatchToProps = dispatch => {
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
-    firestoreConnect([{collection: "courses", orderBy: ["startDate", "asc"]}]),
+    firestoreConnect([{collection: "courses", orderBy: ["date", "asc"]}]),
     firestoreConnect([{collection: "users"}])
 )(MyCourses);

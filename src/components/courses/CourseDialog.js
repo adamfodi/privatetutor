@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {Button} from 'primereact/button';
 import {connect} from "react-redux";
-import {useNavigate} from "react-router-dom";
 import {Calendar} from "primereact/calendar";
 import {Dropdown} from "primereact/dropdown";
 import {addLocale} from 'primereact/api';
@@ -10,25 +9,36 @@ import {InputNumber} from "primereact/inputnumber";
 import {InputTextarea} from "primereact/inputtextarea";
 import {clearCourses, createCourse} from "../../redux/actions/courseActions";
 import moment from "moment";
-import {Dialog} from "primereact/dialog";
+import 'moment/locale/hu';
+import "../../assets/css/courseDialog.css"
+import {InputText} from "primereact/inputtext";
 
 const CourseDialog = props => {
-    const {auth,displayName, error} = props;
-    const navigate = useNavigate();
-
-    const dateOffset = new Date();
-    dateOffset.setHours(dateOffset.getHours() + 1);
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(dateOffset);
+    const {auth, displayName, success, error} = props;
     const [descriptionLength, setDescriptionLength] = useState(0);
+    const [startTime, setStartTime] = useState('14:00');
+    const [endTime, setEndTime] = useState('15:00');
+
+    useEffect(() => {
+        if (success) {
+            props.setShowCourseDialog(false);
+        }
+        return () => {
+            props.clearCourses();
+        }
+
+    }, [props]);
+
+    moment.locale('hu');
 
     const subjectList = ["Matematika", "Fizika", "Kémia", "Biológia", "Történelem", "Informatika"];
     const defaultValues = {
         subject: subjectList[0],
         price: '1000',
         limit: '1',
-        startDate: new Date(),
-        endDate: dateOffset,
+        date: new Date(),
+        startTime: null,
+        endTime: null,
         applicants: [],
         description: '',
         tutorUID: auth.uid,
@@ -37,7 +47,7 @@ const CourseDialog = props => {
 
     addLocale('hu', {
         firstDayOfWeek: 1,
-        dayNames: ["Vasárnap", "Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat"],
+        dayNames: ["vasárnap", "hétfő", "kedd", "szerda", "csütörtök", "péntek", "szombat"],
         dayNamesShort: ["Vasá", "Hétf", "Kedd", "Szer", "Csüt", "Pént", "Szom"],
         dayNamesMin: ["Va", "Hé", "Ke", "Sz", "Cs", "Pé", "Sz"],
         monthNames: ["Január", "Február", "Március", "Április", "Május", "Június", "Július", "Augusztus", "Szeptember", "Október", "November", "December"],
@@ -51,26 +61,22 @@ const CourseDialog = props => {
 
     const onSubmit = (data) => {
 
-        if (startDate < endDate && descriptionLength >= 50 && descriptionLength <= 1000) {
-            console.log(data)
-            console.log(defaultValues.tutorUID)
+        if (descriptionLength >= 50 && descriptionLength <= 1000) {
             props.createCourse(
                 {
                     ...data,
-                    startDate: moment(data.startDate).format('YYYY.MM.DD HH:mm').toString(),
-                    endDate: moment(data.endDate).format('YYYY.MM.DD HH:mm').toString(),
+                    date: moment(data.date).format('YYYY.MM.DD').toString(),
+                    startTime: startTime,
+                    endTime: endTime
                 });
         }
     };
 
     return (
-        <Dialog
-            visible={true}
-        >
-             <div className="form">
+        <div className="courseDialogForm">
             <div className="card">
                 <div className="card-name">
-                    <h1>Új kurzus létrehozása</h1>
+                    <h1>Új kurzus</h1>
                 </div>
 
                 <div className="card-content">
@@ -157,67 +163,82 @@ const CourseDialog = props => {
                         </div>
 
                         <div className="card-field">
-                            <p className="card-field-name">Mettől</p>
+                            <p className="card-field-name">Dátum</p>
                             <span className="p-float-label">
-                                <Controller name="startDate"
+                                <Controller name="date"
                                             control={control}
                                             render={({field}) => (
                                                 <Calendar
                                                     id={field.name}
                                                     value={field.value}
                                                     onChange={(e) => {
-                                                        setStartDate(e.value);
                                                         field.onChange(e.target.value)
                                                     }}
-                                                    dateFormat="yy/mm/dd"
+                                                    dateFormat="yy/mm/dd - DD"
                                                     minDate={new Date()}
                                                     locale="hu"
-                                                    showTime
                                                     showIcon
+                                                    selectOtherMonths
+                                                    required
                                                 />
                                             )}/>
                             </span>
                         </div>
 
-                        <div className="card-field">
-                            <p className="card-field-name">Meddig</p>
-                            <span className="p-float-label">
-                                <Controller name="endDate"
-                                            control={control}
-                                            render={({field}) => (
-                                                <Calendar
-                                                    id={field.name}
-                                                    value={field.value}
-                                                    onChange={(e) => {
-                                                        setEndDate(e.value);
-                                                        field.onChange(e.target.value)
-                                                    }}
-                                                    dateFormat="yy/mm/dd"
-                                                    minDate={startDate}
-                                                    locale="hu"
-                                                    showTime
-                                                    showIcon
-                                                />
-                                            )}/>
-                            </span>
-                            {startDate >= endDate
-                                ? <p className="card-field-error">A dátumok nem megfelelőek!</p>
-                                : null
-                            }
+                        <div className="card-field-container">
+
+                            <div className="card-field">
+                                <p className="card-field-name">Mettől</p>
+                                <span className="p-float-label">
+                                    <Controller name="startTime"
+                                                control={control}
+                                                render={({field}) => (
+                                                    <InputText
+                                                        id={field.name}
+                                                        value={startTime}
+                                                        onChange={(e) => setStartTime(e.target.value)}
+                                                        pattern="^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"
+                                                        required
+                                                    />
+                                                )}/>
+                                </span>
+                            </div>
+
+                            <div className="card-field">
+                                <p className="card-field-name">Meddig</p>
+                                <span className="p-float-label">
+                                    <Controller name="endTime"
+                                                control={control}
+                                                render={({field}) => (
+                                                    <InputText
+                                                        id={field.name}
+                                                        value={endTime}
+                                                        onChange={(e) => setEndTime(e.target.value)}
+                                                        pattern="^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"
+                                                        required
+                                                    />
+                                                )}/>
+                                </span>
+                            </div>
                         </div>
+                        {startTime >= endTime
+                            ? <p style={{textAlign: "center"}} className="card-field-error">Az időintervallum nem
+                                megfelelő!</p>
+                            : null
+                        }
 
                         <Button type="submit" label="Meghirdetés" className="card-button"/>
                         {
                             error
-                                ? <p className="card-auth-error">Probléma merült fel! Kérem próbálja újra
-                                    később!</p>
+                                ? <p className="card-auth-error">
+                                    Probléma merült fel! Kérem próbálja újra később!
+                                </p>
                                 : null
                         }
                     </form>
                 </div>
             </div>
         </div>
-        </Dialog>
     );
 };
 
@@ -227,7 +248,6 @@ const mapStateToProps = state => {
         displayName: state.user.displayName,
         error: state.courses.creationError,
         success: state.courses.creationSuccess,
-
     };
 };
 

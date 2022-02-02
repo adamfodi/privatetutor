@@ -74,7 +74,7 @@ const Main = props => {
         }
     }
 
-    const limit = (rowData) => {
+    const limitTemplate = (rowData) => {
         return (
             <p>
                 <span>{rowData.applicants.length + '/' + rowData.limit}</span>
@@ -82,15 +82,23 @@ const Main = props => {
         );
     };
 
-    const dateMerged = (rowData) => {
+    const dateTemplate = (rowData) => {
         return (
             <p>
-                <span>{rowData.startDate + ' - ' + rowData.endDate}</span>
+                <span>{rowData.date}</span>
             </p>
         );
     };
 
-    const tutor = (rowData) => {
+    const timeTemplate = (rowData) => {
+        return (
+            <p>
+                <span>{rowData.startTime + ' - ' + rowData.endTime}</span>
+            </p>
+        );
+    };
+
+    const tutorTemplate = (rowData) => {
         return (
             <p>
                 <span
@@ -124,7 +132,7 @@ const Main = props => {
         </React.Fragment>
     );
 
-    const description = (rowData) => {
+    const descriptionTemplate = (rowData) => {
         return (
             <div className="datatable-button">
                 <Button
@@ -221,24 +229,33 @@ const Main = props => {
                         field="price"
                         header="Ár (Ft / fő)"
                         showFilterMenu={false}
+                        exportable={false}
                         sortable
                         style={{minWidth: '8rem', maxWidth: '8rem', textAlign: 'center'}}
                     />
                     <Column
                         field="applicants"
                         header="Létszám"
-                        body={limit}
+                        body={limitTemplate}
                         exportable={false}
                         sortable
                         style={{minWidth: '8rem', maxWidth: '8rem', textAlign: 'center'}}
                     />
                     <Column
-                        field="startDate"
-                        header="Időpont"
-                        body={dateMerged}
+                        field="date"
+                        header="Dátum"
+                        body={dateTemplate}
                         exportable={false}
                         sortable
-                        style={{minWidth: '20rem', maxWidth: '20rem', textAlign: 'center'}}
+                        style={{minWidth: '10rem', maxWidth: '10rem', textAlign: 'center'}}
+                    />
+                    <Column
+                        field="startTime"
+                        header="Időpont"
+                        body={timeTemplate}
+                        exportable={false}
+                        sortable
+                        style={{minWidth: '10rem', maxWidth: '10rem', textAlign: 'center'}}
                     />
                     <Column
                         field="tutorFullName"
@@ -246,7 +263,7 @@ const Main = props => {
                         filter
                         showFilterMenu={false}
                         filterPlaceholder="Keresés..."
-                        body={tutor}
+                        body={tutorTemplate}
                         exportable={false}
                         sortable
                         style={{minWidth: '12rem', maxWidth: '12rem', textAlign: 'center'}}
@@ -254,9 +271,9 @@ const Main = props => {
                     <Column
                         field="description"
                         header="Leírás"
-                        body={description}
+                        body={descriptionTemplate}
                         exportable={false}
-                        style={{minWidth: '10rem', maxWidth: '10rem'}}
+                        style={{minWidth: '12rem', maxWidth: '12rem'}}
                     />
                 </DataTable>
             </div>
@@ -378,6 +395,6 @@ const mapDispatchToProps = dispatch => {
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
-    firestoreConnect([{collection: "courses", orderBy: ["startDate", "asc"]}]),
+    firestoreConnect([{collection: "courses", orderBy: ["date", "asc"]}]),
     firestoreConnect([{collection: "users"}])
 )(Main);

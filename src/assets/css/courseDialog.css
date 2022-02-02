@@ -1,0 +1,80 @@
+.courseDialogForm .card {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 90%;
+    margin: 3% auto;
+    background-color: #252525;
+}
+
+.courseDialogForm .card-name {
+    text-align: center;
+    color: #DEDEDE;
+    font-size: 1.5em;
+}
+
+.courseDialogForm .card-name h1 {
+    font-family: "Verdana", "Times New Roman", serif;
+    color: white;
+    text-decoration: underline;
+    margin-bottom: 0;
+}
+
+.courseDialogForm .card-content {
+    text-align: center;
+    font-size: 1em;
+    margin: 5%;
+}
+
+.courseDialogForm .card-field {
+    margin-bottom: 0.3em;
+}
+
+.courseDialogForm .card-field-container {
+    display:flex;
+    justify-content: space-evenly;
+
+}
+
+.courseDialogForm .card-field-name {
+    color: white;
+    font-size: 1.2em;
+    margin-bottom: 0.2em;
+    margin-left: 0.2em;
+    text-align: left;
+}
+
+.courseDialogForm .card-field-error {
+    text-align: left;
+    color: #ef9a9a;
+    margin: 0.2em 0.2em;
+}
+
+.courseDialogForm .card-button {
+    font-size: 1.5em;
+    margin-top: 1.5em;
+    padding: 0.5em;
+}
+
+.courseDialogForm .card-auth-error {
+    text-align: center;
+    font-size: 1.5em;
+    color: #ef9a9a;
+    padding-top: 1em;
+}
+
+.courseDialogForm .student-button {
+    margin-bottom: 1em;
+}
+
+@media screen and (max-width: 960px) {
+    .courseDialogForm .card {
+        max-width: 50%;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .courseDialogForm .card {
+        max-width: 80%;
+    }
+}

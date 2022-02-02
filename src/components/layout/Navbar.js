@@ -40,19 +40,20 @@ const Navbar = props => {
             icon: 'pi pi-fw pi-table',
             items: [
                 {
-                    label: 'Létrehozás',
+                    label: 'Jelentkezett',
                     icon: 'pi pi-fw pi-pencil',
                     command: () => {
-                        navigate("/createcourse")
-                    }
+                        navigate("")
+                    },
+                    disabled: true
                 },
                 {
-                    label: 'Kurzusaim',
+                    label: 'Saját',
                     icon: 'pi pi-fw pi-align-right',
                     command: () => {
                         navigate("/mycourses")
                     },
-                    disabled: true
+                    disabled: !displayName
                 },
             ]
         },

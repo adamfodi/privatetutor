@@ -8,9 +8,8 @@ import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 import SignIn from "./components/auth/SignIn";
 import SignUp from "./components/auth/SignUp";
-import CreateCourse from "./components/tutor/CreateCourse";
 import Main from "./components/Main";
-import MyCourses from "./components/tutor/MyCourses";
+import MyCourses from "./components/courses/MyCourses";
 
 const App = () => {
     return (
@@ -20,7 +19,6 @@ const App = () => {
                 <Route exact path="/signin" element={<SignIn/>}/>
                 <Route exact path="/signup" element={<SignUp/>}/>
                 <Route exact path="/main" element={<Main/>}/>
-                <Route exact path="/createcourse" element={<CreateCourse/>}/>
                 <Route exact path="/mycourses" element={<MyCourses/>}/>
                 <Route path="*" element={<Navigate to="/main"/>}/>
             </Routes>
