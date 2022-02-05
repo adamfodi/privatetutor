@@ -4,23 +4,24 @@ import {compose} from "redux";
 import {firestoreConnect} from "react-redux-firebase";
 import {DataTable} from "primereact/datatable";
 import {FilterMatchMode} from "primereact/api";
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import "../../assets/css/main.css"
 import {Button} from "primereact/button";
 import {Dialog} from "primereact/dialog";
 import {InputTextarea} from "primereact/inputtextarea";
-import {clearCourses, modifyCourseApplicants} from "../../redux/actions/courseActions";
+import {modifyCourseApplicants} from "../../redux/actions/courseActions";
 import CourseDialog from "./CourseDialog";
 import {useNavigate} from "react-router-dom";
+import {CourseService} from "../../services/CourseService";
+import Swal from 'sweetalert2/src/sweetalert2.js'
+import '@sweetalert2/theme-dark/';
 
 const MyCourses = props => {
-    const {auth, courses, creationError, creationSuccess, user} = props;
+    const {auth, courses} = props;
     const [myCourses, setMyCourses] = useState([]);
     const [selectedCourses, setSelectedCourses] = useState(null);
     const [descriptionDialog, setDescriptionDialog] = useState(false);
     const [currentRowDataValue, setCurrentRowDataValue] = useState(null);
-    // const [creationSuccess, setShowCreationSuccess] = useState(false);
-    // const [creationError, setShowCreationError] = useState(false);
     const [showCourseDialog, setShowCourseDialog] = useState(false);
 
     const navigate = useNavigate();
@@ -30,15 +31,14 @@ const MyCourses = props => {
         'tutorFullName': {value: null, matchMode: FilterMatchMode.STARTS_WITH},
     };
 
-    const filterCourses = () => {
+    const filterCourses = useCallback(() => {
         return courses.filter(function (course) {
             return course.tutorUID === auth.uid;
         });
-
-    }
+    }, [auth.uid, courses])
 
     useEffect(() => {
-        if (!user.displayName) {
+        if (!auth.uid) {
             navigate("/main")
         }
 
@@ -46,7 +46,7 @@ const MyCourses = props => {
             setMyCourses(filterCourses());
         }
 
-    }, [props]);
+    }, [auth.uid, courses, filterCourses, navigate]);
 
     const header = () => {
         return (
@@ -55,11 +55,50 @@ const MyCourses = props => {
                 <div>
                     <Button label="Új kurzus meghirdetése" icon="pi pi-plus" className="p-button-success mr-2"
                             onClick={() => setShowCourseDialog(true)}/>
-                    <Button label="Törlés" icon="pi pi-trash" className="p-button-danger" disabled/>
+                    <Button label="Törlés" icon="pi pi-trash" className="p-button-danger" disabled={!selectedCourses || selectedCourses.length === 0}
+                            onClick={() => deleteClickHandler()}/>
                 </div>
             </div>
         )
     };
+
+    const deleteClickHandler = () => {
+        Swal.fire({
+            title: 'Biztosan törölni szeretné?',
+            icon: 'warning',
+            iconColor: '#c91e1e',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Igen',
+            cancelButtonColor: '#c91e1e',
+            cancelButtonText: 'Mégse',
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                CourseService.deleteCourses(selectedCourses)
+                    .then(() => {
+                        setSelectedCourses(null);
+                        Swal.fire({
+                            position: 'center',
+                            confirmButtonColor: '#3085d6',
+                            allowOutsideClick: false,
+                            icon: 'success',
+                            title: 'Sikeres törlés!'
+                        })
+                    })
+                    .catch(() => {
+                        Swal.fire({
+                            position: 'center',
+                            confirmButtonColor: '#3085d6',
+                            allowOutsideClick: false,
+                            icon: 'error',
+                            title: 'Probléma történt!\n Kérem próbálja újra később!'
+                        });
+                    })
+            }
+        })
+
+    }
 
 
     const limitTemplate = (rowData) => {
@@ -128,6 +167,8 @@ const MyCourses = props => {
                     selection={selectedCourses}
                     onSelectionChange={(e) => setSelectedCourses(e.value)}
                     paginator
+                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
+                    currentPageReportTemplate="Meghirdetett kurzusaim száma: {totalRecords}"
                     responsiveLayout="scroll"
                     rows={10}
                     dataKey="id"
@@ -236,19 +277,15 @@ const MyCourses = props => {
 
 const mapStateToProps = state => {
     return {
+        auth: state.firebase.auth,
         courses: state.firestore.ordered.courses,
         users: state.firestore.ordered.users,
-        auth: state.firebase.auth,
-        creationError: state.courses.creationError,
-        creationSuccess: state.courses.creationSuccess,
-        user: state.user
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         modifyCourseApplicants: (courseID, newApplicants) => dispatch(modifyCourseApplicants(courseID, newApplicants)),
-        clearCourses: () => dispatch(clearCourses())
     };
 };
 

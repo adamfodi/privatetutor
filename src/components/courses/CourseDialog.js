@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {Button} from 'primereact/button';
 import {connect} from "react-redux";
@@ -7,31 +7,22 @@ import {Dropdown} from "primereact/dropdown";
 import {addLocale} from 'primereact/api';
 import {InputNumber} from "primereact/inputnumber";
 import {InputTextarea} from "primereact/inputtextarea";
-import {clearCourses, createCourse} from "../../redux/actions/courseActions";
 import moment from "moment";
 import 'moment/locale/hu';
 import "../../assets/css/courseDialog.css"
 import {InputText} from "primereact/inputtext";
+import {CourseService} from "../../services/CourseService";
+import Swal from 'sweetalert2/src/sweetalert2.js'
+import '@sweetalert2/theme-dark/';
+import {addLocaleHu} from "../../util/CalendarHu";
+import {subjectList} from "../../util/SubjectList";
 
 const CourseDialog = props => {
-    const {auth, displayName, success, error} = props;
+    const {auth, profile} = props;
     const [descriptionLength, setDescriptionLength] = useState(0);
     const [startTime, setStartTime] = useState('14:00');
     const [endTime, setEndTime] = useState('15:00');
 
-    useEffect(() => {
-        if (success) {
-            props.setShowCourseDialog(false);
-        }
-        return () => {
-            props.clearCourses();
-        }
-
-    }, [props]);
-
-    moment.locale('hu');
-
-    const subjectList = ["Matematika", "Fizika", "Kémia", "Biológia", "Történelem", "Informatika"];
     const defaultValues = {
         subject: subjectList[0],
         price: '1000',
@@ -42,35 +33,47 @@ const CourseDialog = props => {
         applicants: [],
         description: '',
         tutorUID: auth.uid,
-        tutorFullName: displayName
+        tutorFullName: profile.fullName
     };
 
-    addLocale('hu', {
-        firstDayOfWeek: 1,
-        dayNames: ["vasárnap", "hétfő", "kedd", "szerda", "csütörtök", "péntek", "szombat"],
-        dayNamesShort: ["Vasá", "Hétf", "Kedd", "Szer", "Csüt", "Pént", "Szom"],
-        dayNamesMin: ["Va", "Hé", "Ke", "Sz", "Cs", "Pé", "Sz"],
-        monthNames: ["Január", "Február", "Március", "Április", "Május", "Június", "Július", "Augusztus", "Szeptember", "Október", "November", "December"],
-        monthNamesShort: ["Jan", "Feb", "Már", "Ápr", "Máj", "Jún", "Júl", "Aug", "Sze", "Okt", "Nov", "Dec"],
-        today: 'Ma',
-        clear: 'Tisztítás',
-        weekHeader: 'Hét'
-    });
+    moment.locale('hu');
+    addLocale('hu', addLocaleHu);
 
     const {control, handleSubmit} = useForm({defaultValues});
 
     const onSubmit = (data) => {
 
         if (descriptionLength >= 50 && descriptionLength <= 1000) {
-            props.createCourse(
+            CourseService.createCourse(
                 {
                     ...data,
                     date: moment(data.date).format('YYYY.MM.DD').toString(),
                     startTime: startTime,
                     endTime: endTime
-                });
+                })
+                .then(() => {
+                    Swal.fire({
+                        position: 'center',
+                        confirmButtonColor: '#3085d6',
+                        allowOutsideClick: false,
+                        icon: 'success',
+                        title: 'Sikeres kurzus létrehozás!'
+                    }).then(
+                        props.setShowCourseDialog(false)
+                    )
+                })
+                .catch(() => {
+                    Swal.fire({
+                        position: 'center',
+                        confirmButtonColor: '#3085d6',
+                        allowOutsideClick: false,
+                        icon: 'error',
+                        iconColor: '#c91e1e',
+                        title: 'Probléma történt!\n Kérem próbálja újra később!'
+                    });
+                })
         }
-    };
+    }
 
     return (
         <div className="courseDialogForm">
@@ -222,19 +225,13 @@ const CourseDialog = props => {
                             </div>
                         </div>
                         {startTime >= endTime
-                            ? <p style={{textAlign: "center"}} className="card-field-error">Az időintervallum nem
-                                megfelelő!</p>
+                            ? <p style={{textAlign: "center"}} className="card-field-error">
+                                Az időintervallum nem megfelelő!
+                            </p>
                             : null
                         }
 
                         <Button type="submit" label="Meghirdetés" className="card-button"/>
-                        {
-                            error
-                                ? <p className="card-auth-error">
-                                    Probléma merült fel! Kérem próbálja újra később!
-                                </p>
-                                : null
-                        }
                     </form>
                 </div>
             </div>
@@ -245,18 +242,9 @@ const CourseDialog = props => {
 const mapStateToProps = state => {
     return {
         auth: state.firebase.auth,
-        displayName: state.user.displayName,
-        error: state.courses.creationError,
-        success: state.courses.creationSuccess,
+        profile: state.firebase.profile,
     };
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        createCourse: course => dispatch(createCourse(course)),
-        clearCourses: () => dispatch(clearCourses())
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(CourseDialog);
+export default connect(mapStateToProps)(CourseDialog);
 

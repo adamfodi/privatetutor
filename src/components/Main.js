@@ -202,6 +202,8 @@ const Main = props => {
                     value={courses}
                     loading={!courses && !auth.uid}
                     paginator
+                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
+                    currentPageReportTemplate="Összes meghirdetett kurzus száma: {totalRecords}"
                     responsiveLayout="scroll"
                     rows={10}
                     dataKey="id"
