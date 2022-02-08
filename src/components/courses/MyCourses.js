@@ -8,23 +8,22 @@ import React, {useCallback, useEffect, useState} from "react";
 import "../../assets/css/main.css"
 import {Button} from "primereact/button";
 import {Dialog} from "primereact/dialog";
-import {InputTextarea} from "primereact/inputtextarea";
-import {modifyCourseApplicants} from "../../redux/actions/courseActions";
 import CourseDialog from "./CourseDialog";
 import {useNavigate} from "react-router-dom";
 import {CourseService} from "../../services/CourseService";
 import Swal from 'sweetalert2/src/sweetalert2.js'
 import '@sweetalert2/theme-dark/';
+import moment from "moment";
 
 const MyCourses = props => {
     const {auth, courses} = props;
     const [myCourses, setMyCourses] = useState([]);
     const [selectedCourses, setSelectedCourses] = useState(null);
-    const [descriptionDialog, setDescriptionDialog] = useState(false);
-    const [currentRowDataValue, setCurrentRowDataValue] = useState(null);
+    const [editableRowData, setEditableRowData] = useState(null);
     const [showCourseDialog, setShowCourseDialog] = useState(false);
 
     const navigate = useNavigate();
+    moment.updateLocale('hu', null);
 
     const filters = {
         'subject': {value: null, matchMode: FilterMatchMode.STARTS_WITH},
@@ -55,7 +54,8 @@ const MyCourses = props => {
                 <div>
                     <Button label="Új kurzus meghirdetése" icon="pi pi-plus" className="p-button-success mr-2"
                             onClick={() => setShowCourseDialog(true)}/>
-                    <Button label="Törlés" icon="pi pi-trash" className="p-button-danger" disabled={!selectedCourses || selectedCourses.length === 0}
+                    <Button label="Törlés" icon="pi pi-trash" className="p-button-danger"
+                            disabled={!selectedCourses || selectedCourses.length === 0}
                             onClick={() => deleteClickHandler()}/>
                 </div>
             </div>
@@ -100,7 +100,6 @@ const MyCourses = props => {
 
     }
 
-
     const limitTemplate = (rowData) => {
         return (
             <p>
@@ -112,7 +111,7 @@ const MyCourses = props => {
     const dateTemplate = (rowData) => {
         return (
             <p>
-                <span>{rowData.date}</span>
+                <span>{moment(rowData.date.toDate()).format('YYYY. MMMM DD. - dddd ')}</span>
             </p>
         );
     };
@@ -131,32 +130,14 @@ const MyCourses = props => {
                 <Button
                     label="Szerkesztés"
                     className="p-button-info"
-                    onClick={() => editClickHandler(rowData)}
-                    disabled
+                    onClick={() => {
+                        setEditableRowData({...rowData, date: rowData.date.toDate()});
+                        setShowCourseDialog(true);
+                    }}
                 />
             </div>
         );
     };
-
-    const editClickHandler = (rowData) => {
-        setCurrentRowDataValue(rowData.description);
-        setDescriptionDialog(true);
-    };
-
-    const hideEditDialog = () => {
-        setDescriptionDialog(false);
-        setCurrentRowDataValue(null);
-    };
-
-    const dialogDescriptionFooter = (
-        <React.Fragment>
-            <Button
-                label="Rendben"
-                icon="pi pi-check"
-                className="p-button-text"
-                onClick={hideEditDialog}/>
-        </React.Fragment>
-    );
 
     return (
         <React.Fragment>
@@ -233,39 +214,20 @@ const MyCourses = props => {
             </div>
 
             <div>
-                <Dialog
-                    visible={descriptionDialog}
-                    style={{width: '30em'}}
-                    header="Szerkesztés"
-                    modal
-                    className="p-fluid"
-                    footer={dialogDescriptionFooter}
-                    onHide={hideEditDialog}
-                >
-
-                    <div className="field">
-                        <InputTextarea
-                            value={currentRowDataValue ? currentRowDataValue : ''}
-                            rows={15}
-                            cols={25}
-                            style={{opacity: '1'}}
-                            autoResize
-                            disabled
-                        />
-                    </div>
-
-                </Dialog>
-
-
                 {showCourseDialog
                     ? <Dialog
                         visible={showCourseDialog}
                         style={{width: '40%'}}
-                        header="Új kurzus meghirdetése"
+                        header={editableRowData ? "Kurzus szerkesztése" : "Új kurzus meghirdetése"}
                         modal
                         onHide={() => setShowCourseDialog(false)}
                     >
-                        <CourseDialog showCourseDialog={showCourseDialog} setShowCourseDialog={setShowCourseDialog}/>
+                        <CourseDialog
+                            showCourseDialog={showCourseDialog}
+                            setShowCourseDialog={setShowCourseDialog}
+                            editableRowData={editableRowData}
+                            setEditableRowData={setEditableRowData}
+                        />
                     </Dialog>
                     : null
                 }
@@ -279,18 +241,12 @@ const mapStateToProps = state => {
     return {
         auth: state.firebase.auth,
         courses: state.firestore.ordered.courses,
-        users: state.firestore.ordered.users,
-    };
-};
-
-const mapDispatchToProps = dispatch => {
-    return {
-        modifyCourseApplicants: (courseID, newApplicants) => dispatch(modifyCourseApplicants(courseID, newApplicants)),
+        users: state.firestore.ordered.users
     };
 };
 
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(mapStateToProps),
     firestoreConnect([{collection: "courses", orderBy: ["date", "asc"]}]),
     firestoreConnect([{collection: "users"}])
 )(MyCourses);

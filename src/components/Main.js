@@ -9,36 +9,21 @@ import "../assets/css/main.css"
 import {Button} from "primereact/button";
 import {Dialog} from "primereact/dialog";
 import {InputTextarea} from "primereact/inputtextarea";
-import {clearCourses, modifyCourseApplicants} from "../redux/actions/courseActions";
+import moment from "moment";
+import {CourseService} from "../services/CourseService";
+import Swal from 'sweetalert2/src/sweetalert2.js'
+import '@sweetalert2/theme-dark/';
 
 const Main = props => {
-    const {auth, courses, users, error, success} = props;
+    const {auth, courses, users} = props;
     const [descriptionDialog, setDescriptionDialog] = useState(false);
     const [tutorDialog, setTutorDialog] = useState(false);
     const [currentRowDataValue, setCurrentRowDataValue] = useState(null);
-    const [successDialog, setSuccessDialog] = useState(false);
-    const [errorDialog, setErrorDialog] = useState(false);
-    const [successValue, setSuccessValue] = useState(null);
 
     const filters = {
         'subject': {value: null, matchMode: FilterMatchMode.STARTS_WITH},
         'tutorFullName': {value: null, matchMode: FilterMatchMode.STARTS_WITH},
     };
-
-    useEffect(() => {
-        if (success) {
-            setSuccessDialog(true);
-        }
-
-        if (error) {
-            setErrorDialog(true);
-        }
-
-        return () => {
-            props.clearCourses();
-        }
-
-    }, [success, error, props]);
 
     const header = () => {
         return (
@@ -85,7 +70,7 @@ const Main = props => {
     const dateTemplate = (rowData) => {
         return (
             <p>
-                <span>{rowData.date}</span>
+                <span>{moment(rowData.date.toDate()).format('YYYY. MMMM DD. - dddd ')}</span>
             </p>
         );
     };
@@ -165,35 +150,55 @@ const Main = props => {
     );
 
     const applyCourse = (rowData) => {
-        setSuccessValue("apply");
         let newApplicants = [...rowData.applicants];
         newApplicants.push(auth.uid);
-        props.modifyCourseApplicants(rowData.id, newApplicants);
+        CourseService.modifyCourseApplicants(rowData.id, newApplicants)
+            .then(() => {
+                Swal.fire({
+                    position: 'center',
+                    confirmButtonColor: '#3085d6',
+                    allowOutsideClick: false,
+                    icon: 'success',
+                    title: 'Sikeres jelentkezés!'
+                })
+            })
+            .catch(() => {
+                Swal.fire({
+                    position: 'center',
+                    confirmButtonColor: '#3085d6',
+                    allowOutsideClick: false,
+                    icon: 'error',
+                    iconColor: '#c91e1e',
+                    title: 'Sikertelen jelentkezés!'
+                });
+            });
     };
 
     const dropCourse = (rowData) => {
-        setSuccessValue("drop");
         let newApplicants = [...rowData.applicants];
         let index = newApplicants.findIndex(() => auth.uid);
         newApplicants.splice(index, 1);
-        props.modifyCourseApplicants(rowData.id, newApplicants);
+        CourseService.modifyCourseApplicants(rowData.id, newApplicants)
+            .then(() => {
+                Swal.fire({
+                    position: 'center',
+                    confirmButtonColor: '#3085d6',
+                    allowOutsideClick: false,
+                    icon: 'success',
+                    title: 'Sikeres lejelentkezés!'
+                })
+            })
+            .catch(() => {
+                Swal.fire({
+                    position: 'center',
+                    confirmButtonColor: '#3085d6',
+                    allowOutsideClick: false,
+                    icon: 'error',
+                    iconColor: '#c91e1e',
+                    title: 'Sikertelen lejelentkezés!'
+                });
+            });
     };
-
-    const hideCourseDialog = () => {
-        setSuccessValue(null);
-        setSuccessDialog(null);
-        setErrorDialog(null);
-    };
-
-    const dialogCourseFooter = (
-        <React.Fragment>
-            <Button
-                label="Rendben"
-                icon="pi pi-check"
-                className="p-button-text"
-                onClick={hideCourseDialog}/>
-        </React.Fragment>
-    );
 
     return (
         <React.Fragment>
@@ -330,47 +335,6 @@ const Main = props => {
                     </div>
 
                 </Dialog>
-
-
-                <Dialog
-                    visible={successDialog}
-                    style={{width: '30em'}}
-                    modal
-                    className="p-fluid"
-                    footer={dialogCourseFooter}
-                    onHide={hideCourseDialog}
-                >
-
-                    <div className="field">
-                        {
-                            successValue === 'apply'
-                                ? <span className="successCourse"> Sikeres jelentkezés!</span>
-                                : null
-                        }
-
-                        {
-                            successValue === 'drop'
-                                ? <span className="successCourse"> Sikeres lejelentkezés!</span>
-                                : null
-                        }
-                    </div>
-
-                </Dialog>
-
-                <Dialog
-                    visible={errorDialog}
-                    style={{width: '30em'}}
-                    modal
-                    className="p-fluid"
-                    footer={dialogCourseFooter}
-                    onHide={hideCourseDialog}
-                >
-
-                    <div className="field">
-                        <span className="errorCourse">Hiba történt!</span>
-                    </div>
-
-                </Dialog>
             </div>
         </React.Fragment>
 
@@ -380,23 +344,14 @@ const Main = props => {
 
 const mapStateToProps = state => {
     return {
-        courses: state.firestore.ordered.courses,
-        users: state.firestore.ordered.users,
         auth: state.firebase.auth,
-        error: state.courses.modificationError,
-        success: state.courses.modificationSuccess,
-    };
-};
-
-const mapDispatchToProps = dispatch => {
-    return {
-        modifyCourseApplicants: (courseID, newApplicants) => dispatch(modifyCourseApplicants(courseID, newApplicants)),
-        clearCourses: () => dispatch(clearCourses())
+        courses: state.firestore.ordered.courses,
+        users: state.firestore.ordered.users
     };
 };
 
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(mapStateToProps),
     firestoreConnect([{collection: "courses", orderBy: ["date", "asc"]}]),
     firestoreConnect([{collection: "users"}])
 )(Main);

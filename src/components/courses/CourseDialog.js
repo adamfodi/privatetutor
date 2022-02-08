@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {Button} from 'primereact/button';
 import {connect} from "react-redux";
@@ -7,7 +7,6 @@ import {Dropdown} from "primereact/dropdown";
 import {addLocale} from 'primereact/api';
 import {InputNumber} from "primereact/inputnumber";
 import {InputTextarea} from "primereact/inputtextarea";
-import moment from "moment";
 import 'moment/locale/hu';
 import "../../assets/css/courseDialog.css"
 import {InputText} from "primereact/inputtext";
@@ -19,11 +18,11 @@ import {subjectList} from "../../util/SubjectList";
 
 const CourseDialog = props => {
     const {auth, profile} = props;
-    const [descriptionLength, setDescriptionLength] = useState(0);
-    const [startTime, setStartTime] = useState('14:00');
-    const [endTime, setEndTime] = useState('15:00');
+    const [descriptionLength, setDescriptionLength] = useState(props.editableRowData ? props.editableRowData.description.length : 0);
+    const [startTime, setStartTime] = useState(props.editableRowData ? props.editableRowData.startTime : '14:00');
+    const [endTime, setEndTime] = useState(props.editableRowData ? props.editableRowData.endTime : '15:00');
 
-    const defaultValues = {
+    const emptyValues = {
         subject: subjectList[0],
         price: '1000',
         limit: '1',
@@ -36,50 +35,92 @@ const CourseDialog = props => {
         tutorFullName: profile.fullName
     };
 
-    moment.locale('hu');
+    const defaultValues = props.editableRowData ? props.editableRowData : emptyValues;
+
+    useEffect(() => {
+        return () => {
+            props.setEditableRowData(null);
+        }
+    }, [props]);
+
     addLocale('hu', addLocaleHu);
 
     const {control, handleSubmit} = useForm({defaultValues});
 
     const onSubmit = (data) => {
-
         if (descriptionLength >= 50 && descriptionLength <= 1000) {
-            CourseService.createCourse(
-                {
-                    ...data,
-                    date: moment(data.date).format('YYYY.MM.DD').toString(),
-                    startTime: startTime,
-                    endTime: endTime
-                })
-                .then(() => {
-                    Swal.fire({
-                        position: 'center',
-                        confirmButtonColor: '#3085d6',
-                        allowOutsideClick: false,
-                        icon: 'success',
-                        title: 'Sikeres kurzus létrehozás!'
-                    }).then(
-                        props.setShowCourseDialog(false)
-                    )
-                })
-                .catch(() => {
-                    Swal.fire({
-                        position: 'center',
-                        confirmButtonColor: '#3085d6',
-                        allowOutsideClick: false,
-                        icon: 'error',
-                        iconColor: '#c91e1e',
-                        title: 'Probléma történt!\n Kérem próbálja újra később!'
-                    });
-                })
+            if (props.editableRowData) {
+                CourseService.updateCourse(
+                    props.editableRowData.id,
+                    {
+                        ...data,
+                        startTime: startTime,
+                        endTime: endTime
+                    })
+                    .then(() => {
+                        Swal.fire({
+                            position: 'center',
+                            confirmButtonColor: '#3085d6',
+                            allowOutsideClick: false,
+                            icon: 'success',
+                            title: 'Sikeres kurzus módosítás!'
+                        }).then(
+                            props.setShowCourseDialog(false)
+                        )
+                    })
+                    .catch(() => {
+                        Swal.fire({
+                            position: 'center',
+                            confirmButtonColor: '#3085d6',
+                            allowOutsideClick: false,
+                            icon: 'error',
+                            iconColor: '#c91e1e',
+                            title: 'Probléma történt!\n Kérem próbálja újra később!'
+                        });
+                    })
+            } else {
+                CourseService.createCourse(
+                    {
+                        ...data,
+                        startTime: startTime,
+                        endTime: endTime
+                    })
+                    .then(() => {
+                        Swal.fire({
+                            position: 'center',
+                            confirmButtonColor: '#3085d6',
+                            allowOutsideClick: false,
+                            icon: 'success',
+                            title: 'Sikeres kurzus létrehozás!'
+                        }).then(
+                            props.setShowCourseDialog(false)
+                        )
+                    })
+                    .catch(() => {
+                        Swal.fire({
+                            position: 'center',
+                            confirmButtonColor: '#3085d6',
+                            allowOutsideClick: false,
+                            icon: 'error',
+                            iconColor: '#c91e1e',
+                            title: 'Probléma történt!\n Kérem próbálja újra később!'
+                        });
+                    })
+            }
         }
     }
+
 
     return (
         <div className="courseDialogForm">
             <div className="card">
                 <div className="card-name">
-                    <h1>Új kurzus</h1>
+                    <h1>
+                        {props.editableRowData
+                            ? <span>Szerkesztés</span>
+                            : <span>Új kurzus</span>
+                        }
+                    </h1>
                 </div>
 
                 <div className="card-content">
@@ -231,7 +272,9 @@ const CourseDialog = props => {
                             : null
                         }
 
-                        <Button type="submit" label="Meghirdetés" className="card-button"/>
+                        <Button type="submit"
+                                label={props.editableRowData ? "Módosítás" : "Meghirdetés"}
+                                className="card-button"/>
                     </form>
                 </div>
             </div>
