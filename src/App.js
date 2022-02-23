@@ -10,6 +10,7 @@ import SignIn from "./components/auth/SignIn";
 import SignUp from "./components/auth/SignUp";
 import Main from "./components/Main";
 import MyCourses from "./components/courses/MyCourses";
+import Profile from "./components/Profile";
 
 const App = () => {
     return (
@@ -20,6 +21,7 @@ const App = () => {
                 <Route exact path="/signup" element={<SignUp/>}/>
                 <Route exact path="/main" element={<Main/>}/>
                 <Route exact path="/mycourses" element={<MyCourses/>}/>
+                <Route exact path="/profile" element={<Profile/>}/>
                 <Route path="*" element={<Navigate to="/main"/>}/>
             </Routes>
         </BrowserRouter>

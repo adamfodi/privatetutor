@@ -82,9 +82,8 @@ const Navbar = props => {
             label: 'Profil',
             icon: 'pi pi-user',
             command: () => {
-                navigate("")
+                navigate("/profile")
             },
-            disabled: true
         },
 
         {

@@ -31,7 +31,7 @@ const MyCourses = props => {
     };
 
     const filterCourses = useCallback(() => {
-        return courses.filter(function (course) {
+        return courses.filter((course) => {
             return course.tutorUID === auth.uid;
         });
     }, [auth.uid, courses])

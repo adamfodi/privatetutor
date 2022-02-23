@@ -1,5 +1,6 @@
 const initState = {
-    displayName: null
+    displayName: null,
+    email: null
 };
 
 const userReducer = (state = initState, action) => {
@@ -7,7 +8,8 @@ const userReducer = (state = initState, action) => {
         case "SIGNIN_SUCCESS":
             return {
                 ...state,
-                displayName: action.displayName
+                displayName: action.displayName,
+                email: action.email
             };
 
         case "SIGNIN_ERROR":

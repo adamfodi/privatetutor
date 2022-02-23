@@ -199,7 +199,7 @@ const SignUp = props => {
                                                 <Calendar
                                                     id={field.name}
                                                     value={field.value}
-                                                    onChange={(e) => field.onChange(e.value)}
+                                                    onChange={(e) => field.onChange(e.target.value)}
                                                     dateFormat="yy/mm/dd"
                                                     maxDate={new Date()}
                                                     yearNavigator

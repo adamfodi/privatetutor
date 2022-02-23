@@ -16,7 +16,8 @@ export const signIn = credentials => {
                             .then(function (doc) {
                                 dispatch({
                                     type: "SIGNIN_SUCCESS",
-                                    displayName: doc.data().fullName
+                                    displayName: doc.data().fullName,
+                                    email: credentials.email
                                 });
                             })
                     }
