@@ -1,5 +1,5 @@
 import React from 'react';
-import "primereact/resources/themes/luna-green/theme.css";
+import "primereact/resources/themes/fluent-light/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
@@ -11,6 +11,7 @@ import SignUp from "./components/auth/SignUp";
 import Main from "./components/Main";
 import MyCourses from "./components/courses/MyCourses";
 import Profile from "./components/Profile";
+import {Test} from "./components/Test";
 
 const App = () => {
     return (
@@ -22,6 +23,7 @@ const App = () => {
                 <Route exact path="/main" element={<Main/>}/>
                 <Route exact path="/mycourses" element={<MyCourses/>}/>
                 <Route exact path="/profile" element={<Profile/>}/>
+                <Route exact path="/test" element={<Test/>}/>
                 <Route path="*" element={<Navigate to="/main"/>}/>
             </Routes>
         </BrowserRouter>

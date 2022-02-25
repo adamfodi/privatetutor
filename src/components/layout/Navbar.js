@@ -27,6 +27,13 @@ const Navbar = props => {
         },
 
         {
+            label: 'Test',
+            command: () => {
+                navigate("/test")
+            }
+        },
+
+        {
             label: 'Órarend',
             icon: 'pi pi-fw pi-calendar',
             command: () => {
