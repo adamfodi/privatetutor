@@ -1,5 +1,8 @@
 const initState = {
-    error: null,
+    errors: {
+        signUp: null,
+        signIn: null
+    },
     loggedIn: false,
     displayName: null
 };
@@ -7,28 +10,39 @@ const initState = {
 const authReducer = (state = initState, action) => {
     switch (action.type) {
         case "SIGNUP_SUCCESS":
-            return action.payload;
+            return {
+                ...initState,
+                loggedIn: action.payload.loggedIn,
+                displayName: action.payload.displayName
+            };
 
         case "SIGNUP_ERROR":
             return {
                 ...initState,
-                error: action.payload.error,
+                errors: {...initState.errors, signUp: action.payload.error},
             };
 
         case "SIGNIN_SUCCESS":
-            return action.payload;
+            return {
+                ...initState,
+                loggedIn: action.payload.loggedIn,
+                displayName: action.payload.displayName
+            };
 
         case "SIGNIN_ERROR":
             return {
                 ...initState,
-                error: action.payload.error,
+                errors: {...initState.errors, signIn: action.payload.error},
             };
 
         case "SIGNOUT_SUCCESS":
             return initState;
 
-        case "CLEAR_AUTH":
-            return initState;
+        case "CLEAR_ERRORS":
+            return {
+                ...state,
+                errors: {...state.errors, signUp: null, signIn: null},
+            };
 
         default:
             return state;

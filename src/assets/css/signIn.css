@@ -1,0 +1,84 @@
+.signIn-container {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 35%;
+    background-color: white;
+    margin: 3em auto;
+    border-radius: 1em;
+    overflow: auto;
+}
+
+.signIn-header {
+    width: 80%;
+    font-size: 4em;
+    margin: 0.25em auto 0 auto;
+    padding: 0.2em 0;
+    color: white;
+    text-align:center;
+    font-family: "Calibri, sans-serif", serif;
+    background-color: #19616b;
+    border-radius: 0.3em;
+}
+
+.signIn-content-container {
+    display: flex;
+    justify-content: center;
+    margin: 2em auto;
+    width: 90%;
+    border-radius: 0.5em;
+    box-shadow: 1px 3px 7px 3px #19616b;
+    background-color: white;
+}
+
+.signIn-content {
+    background-color: #19616b;
+    display: flex;
+    margin: 0.8em;
+    flex-direction: column;
+    border-radius: 0.5em;
+    overflow: hidden;
+    width: 97%;
+}
+
+.signIn-field:first-of-type {
+    margin: 1.75em 1.75em 0 1.75em;
+}
+
+.signIn-field:last-of-type {
+    margin: 1.75em;
+}
+
+.signIn-field span{
+    width: 100%;
+}
+
+.p-inputtext {
+    width: 100%;
+    font-size: 1.5em !important;
+    border: none;
+    border-radius: 0.2em;
+}
+
+.p-invalid {
+    border: none !important;
+}
+
+.p-password {
+    width: 100% ;
+}
+
+.signIn-content button {
+    display: flex;
+    margin: 0 auto 1em auto;
+    width: 50%;
+    padding: 1em;
+    font-size: 2em;
+    border-radius: 0.25em;
+}
+
+.error {
+    margin: 0.5em 0 0 0.2em;
+    color: orange;
+}

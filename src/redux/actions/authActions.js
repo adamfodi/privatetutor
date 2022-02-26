@@ -17,7 +17,6 @@ export const signUp = newUser => {
                             {
                                 type: "SIGNUP_SUCCESS",
                                 payload: {
-                                    error: null,
                                     loggedIn: true,
                                     displayName: newUser.lastName + ' ' + newUser.firstName
                                 }
@@ -48,7 +47,6 @@ export const signIn = credentials => {
                             {
                                 type: "SIGNIN_SUCCESS",
                                 payload: {
-                                    error: null,
                                     loggedIn: true,
                                     displayName: snapShot.data().lastName + ' ' + snapShot.data().firstName
                                 }
@@ -78,8 +76,8 @@ export const signOut = () => {
     };
 };
 
-// export const clearAuth = () => {
-//     return (dispatch) => {
-//         dispatch({type: "CLEAR_AUTH"});
-//     };
-// };
+export const clearErrors = () => {
+    return (dispatch) => {
+        dispatch({type: "CLEAR_ERRORS"});
+    };
+};

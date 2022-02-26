@@ -11,8 +11,7 @@ import {Dialog} from "primereact/dialog";
 import {InputTextarea} from "primereact/inputtextarea";
 import moment from "moment";
 import {CourseService} from "../services/CourseService";
-import Swal from 'sweetalert2/src/sweetalert2.js'
-import '@sweetalert2/theme-dark/';
+import Swal from "sweetalert2";
 
 const Main = props => {
     const {auth, courses, users} = props;

@@ -1,8 +1,7 @@
 body {
-  height: 1700px;
   background-image: url("assets/img/bg3.jpg");
   background-size: cover;
-  background-color: #19616b;
+  background-color: white;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',

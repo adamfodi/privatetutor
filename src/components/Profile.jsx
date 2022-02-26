@@ -104,7 +104,6 @@ const Profile = props => {
         </div>
     );
 
-
     return (
         <div className="profile-container">
             <p className="profile-header">Profil</p>

@@ -13,7 +13,6 @@ const rootPersistConfig = {
     key: 'root',
     storage: storage,
     // blacklist: ['auth', 'courses'] // AUTH'S PREVIOUS STATE WILL NOT BE LOADED! SO IT STARTS EMPTY
-    // blacklist:['auth']
 }
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer)

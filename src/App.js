@@ -12,22 +12,34 @@ import Main from "./components/Main";
 import MyCourses from "./components/courses/MyCourses";
 import Profile from "./components/Profile";
 import {Test} from "./components/Test";
+import {connect} from "react-redux";
 
-const App = () => {
+const App = (props) => {
+    const {auth} = props;
+
     return (
         <BrowserRouter>
             <Navbar/>
             <Routes>
-                <Route exact path="/signin" element={<SignIn/>}/>
-                <Route exact path="/signup" element={<SignUp/>}/>
                 <Route exact path="/main" element={<Main/>}/>
+
+                <Route exact path="/signin" element={!auth.loggedIn ? <SignIn/> : <Navigate to="/main"/>}/>
+                <Route exact path="/signup" element={!auth.loggedIn ? <SignUp/> : <Navigate to="/main"/>}/>
+
                 <Route exact path="/mycourses" element={<MyCourses/>}/>
                 <Route exact path="/profile" element={<Profile/>}/>
+
                 <Route exact path="/test" element={<Test/>}/>
                 <Route path="*" element={<Navigate to="/main"/>}/>
             </Routes>
         </BrowserRouter>
     );
-}
+};
 
-export default App;
+const mapStateToProps = state => {
+    return {
+        auth: state.auth
+    };
+};
+
+export default connect(mapStateToProps)(App);

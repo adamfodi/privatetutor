@@ -11,9 +11,8 @@ import {Dialog} from "primereact/dialog";
 import CourseDialog from "./CourseDialog";
 import {useNavigate} from "react-router-dom";
 import {CourseService} from "../../services/CourseService";
-import Swal from 'sweetalert2/src/sweetalert2.js'
-import '@sweetalert2/theme-dark/';
 import moment from "moment";
+import Swal from "sweetalert2";
 
 const MyCourses = props => {
     const {auth, courses} = props;

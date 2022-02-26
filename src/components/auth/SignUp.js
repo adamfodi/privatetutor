@@ -4,7 +4,7 @@ import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
 import {Password} from 'primereact/password';
 import {classNames} from 'primereact/utils';
-import {signUp} from "../../redux/actions/authActions";
+import {clearErrors, signUp} from "../../redux/actions/authActions";
 import {connect} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {Calendar} from "primereact/calendar";
@@ -54,9 +54,9 @@ const SignUp = props => {
             navigate("/signin")
         }
 
-        // return () => {
-        //     props.clearAuth();
-        // }
+        return () => {
+            props.clearErrors();
+        }
 
     }, [auth, navigate, props, passwordsAreIdentical, signUpSuccess]);
 
@@ -264,7 +264,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        signUp: credentials => dispatch(signUp(credentials))
+        signUp: credentials => dispatch(signUp(credentials)),
+        clearErrors: () => dispatch(clearErrors())
     };
 };
 
