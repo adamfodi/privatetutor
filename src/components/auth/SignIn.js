@@ -4,7 +4,7 @@ import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
 import {Password} from 'primereact/password';
 import {classNames} from 'primereact/utils';
-import {clearAuth, signIn} from "../../redux/actions/authActions";
+import {signIn} from "../../redux/actions/authActions";
 import {connect} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
@@ -19,13 +19,13 @@ const SignIn = props => {
 
 
     useEffect(() => {
-        if (!(auth.isLoaded && auth.isEmpty)) {
+        if (auth.loggedIn) {
             navigate("/main")
         }
 
-        return () => {
-            props.clearAuth();
-        }
+        // return () => {
+        //     props.clearAuth();
+        // }
 
     }, [auth, navigate]);
 
@@ -101,14 +101,13 @@ const SignIn = props => {
 const mapStateToProps = state => {
     return {
         signInError: state.auth.signInError,
-        auth: state.firebase.auth
+        auth: state.auth
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        signIn: credentials => dispatch(signIn(credentials)),
-        clearAuth: () => dispatch(clearAuth())
+        signIn: credentials => dispatch(signIn(credentials))
     };
 };
 

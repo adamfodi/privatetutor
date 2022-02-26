@@ -9,13 +9,14 @@ import thunk from "redux-thunk";
 import {persistReducer, persistStore} from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 
-const persistConfig = {
+const rootPersistConfig = {
     key: 'root',
-    storage,
-    blacklist: ['auth', 'courses'] // AUTH'S PREVIOUS STATE WILL NOT BE LOADED! SO IT STARTS EMPTY
+    storage: storage,
+    // blacklist: ['auth', 'courses'] // AUTH'S PREVIOUS STATE WILL NOT BE LOADED! SO IT STARTS EMPTY
+    // blacklist:['auth']
 }
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+const persistedReducer = persistReducer(rootPersistConfig, rootReducer)
 
 const firebaseConfig = {
     apiKey: "AIzaSyClHuL2aknLUGzHOLokYKNiUwYIKAcw5kk",

@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {Menubar} from 'primereact/menubar';
 import {Button} from "primereact/button";
@@ -11,10 +11,24 @@ import "../../App.css"
 
 
 const Navbar = props => {
-
     const navigate = useNavigate();
     const menu = useRef(null);
-    const {auth,displayName} = props;
+    const {auth, users} = props;
+    const [displayName, setDisplayName] = useState(null);
+
+    // console.log(displayName)
+
+    // useEffect(() => {
+    //     if (users && auth.isLoaded && !auth.isEmpty) {
+    //         for (let user of users) {
+    //             console.log(user)
+    //             if (user.uid === auth.uid) {
+    //                 setDisplayName(user.fullName);
+    //                 break;
+    //             }
+    //         }
+    //     }
+    // }, [users, auth]);
 
 
     const mainItems = [
@@ -60,7 +74,7 @@ const Navbar = props => {
                     command: () => {
                         navigate("/mycourses")
                     },
-                    disabled: !displayName
+                    disabled: true
                 },
             ]
         },
@@ -117,7 +131,7 @@ const Navbar = props => {
         <div>
             <Menubar
                 model={mainItems}
-                end={!auth.uid
+                end={!auth.loggedIn
                     ? <React.Fragment>
                         <Button
                             onClick={() => navigate("/signup")}
@@ -142,7 +156,7 @@ const Navbar = props => {
                             ref={menu}
                             id="popup_menu"/>
                         <Button
-                            label={displayName}
+                            label={auth.displayName}
                             icon="pi pi-chevron-down"
                             iconPos="right"
                             onClick={(event) => menu.current.toggle(event)}
@@ -159,8 +173,7 @@ const Navbar = props => {
 const mapStateToProps = state => {
     return {
         users: state.firestore.ordered.users,
-        auth: state.firebase.auth,
-        displayName: state.user.displayName
+        auth: state.auth
     };
 };
 

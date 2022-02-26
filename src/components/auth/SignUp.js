@@ -4,7 +4,7 @@ import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
 import {Password} from 'primereact/password';
 import {classNames} from 'primereact/utils';
-import {clearAuth, signUp} from "../../redux/actions/authActions";
+import {signUp} from "../../redux/actions/authActions";
 import {connect} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {Calendar} from "primereact/calendar";
@@ -20,9 +20,8 @@ const SignUp = props => {
         email: '',
         password: '',
         password2: '',
-        lastname: '',
-        firstname: '',
-        fullname: '',
+        lastName: '',
+        firstName: '',
         birthday: null,
         gender: genderList[0]
     };
@@ -47,7 +46,7 @@ const SignUp = props => {
     }
 
     useEffect(() => {
-        if (!(auth.isLoaded && auth.isEmpty)) {
+        if (auth.loggedIn) {
             navigate("/main")
         }
 
@@ -55,9 +54,9 @@ const SignUp = props => {
             navigate("/signin")
         }
 
-        return () => {
-            props.clearAuth();
-        }
+        // return () => {
+        //     props.clearAuth();
+        // }
 
     }, [auth, navigate, props, passwordsAreIdentical, signUpSuccess]);
 
@@ -66,7 +65,7 @@ const SignUp = props => {
         if (data.password === data.password2) {
             console.log(data)
             setPasswordsAreIdentical(true);
-            props.signUp({...data, fullname: data.lastname + ' ' + data.firstname});
+            props.signUp(data);
         } else {
             setPasswordsAreIdentical(false);
         }
@@ -152,7 +151,7 @@ const SignUp = props => {
 
                         <div className="card-field">
                             <span className="p-float-label">
-                                <Controller name="lastname"
+                                <Controller name="lastName"
                                             control={control}
                                             rules={{
                                                 required: 'Vezetéknév megadása kötelező!'
@@ -163,15 +162,15 @@ const SignUp = props => {
                                                            className={classNames({'p-invalid': fieldState.invalid})}
                                                 />
                                             )}/>
-                                <label htmlFor="lastname"
-                                       className={classNames({'p-error': !!errors.lastname})}>Vezetéknév*</label>
+                                <label htmlFor="lastName"
+                                       className={classNames({'p-error': !!errors.lastName})}>Vezetéknév*</label>
                             </span>
-                            {getFormErrorMessage('lastname')}
+                            {getFormErrorMessage('lastName')}
                         </div>
 
                         <div className="card-field">
                             <span className="p-float-label">
-                                <Controller name="firstname"
+                                <Controller name="firstName"
                                             control={control}
                                             rules={{
                                                 required: 'Keresztnév megadása kötelező!'
@@ -182,10 +181,10 @@ const SignUp = props => {
                                                            className={classNames({'p-invalid': fieldState.invalid})}
                                                 />
                                             )}/>
-                                <label htmlFor="firstname"
-                                       className={classNames({'p-error': !!errors.lastname})}>Keresztnév*</label>
+                                <label htmlFor="firstName"
+                                       className={classNames({'p-error': !!errors.lastName})}>Keresztnév*</label>
                             </span>
-                            {getFormErrorMessage('firstname')}
+                            {getFormErrorMessage('firstName')}
                         </div>
 
                         <div className="card-field">
@@ -259,14 +258,13 @@ const mapStateToProps = state => {
     return {
         signUpError: state.auth.signUpError,
         signUpSuccess: state.auth.signUpSuccess,
-        auth: state.firebase.auth
+        auth: state.auth
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        signUp: credentials => dispatch(signUp(credentials)),
-        clearAuth: () => dispatch(clearAuth())
+        signUp: credentials => dispatch(signUp(credentials))
     };
 };
 
