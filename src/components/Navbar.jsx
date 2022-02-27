@@ -3,11 +3,11 @@ import {useNavigate} from "react-router-dom";
 import {Menubar} from 'primereact/menubar';
 import {Button} from "primereact/button";
 import {connect} from "react-redux";
-import {signOut} from "../../redux/actions/authActions";
+import {signOut} from "../redux/actions/authActions";
 import {compose} from "redux";
 import {firestoreConnect} from "react-redux-firebase";
 import {Menu} from "primereact/menu";
-import "../../App.css"
+import "../App.css"
 
 
 const Navbar = props => {
@@ -135,7 +135,7 @@ const Navbar = props => {
                     ? <React.Fragment>
                         <Button
                             onClick={() => navigate("/signup")}
-                            className="p-button-info"
+                            className="p-button-primary"
                             label="Regisztráció"
                             icon="pi pi-user-plus"
                             style={{marginRight: 20, fontSize: 18}}
@@ -157,6 +157,7 @@ const Navbar = props => {
                             id="popup_menu"/>
                         <Button
                             label={auth.displayName}
+                            className="p-button-danger"
                             icon="pi pi-chevron-down"
                             iconPos="right"
                             onClick={(event) => menu.current.toggle(event)}

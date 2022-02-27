@@ -1,5 +1,5 @@
-.signIn-container {
-    display:flex;
+.signUp-container {
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -10,19 +10,19 @@
     overflow: auto;
 }
 
-.signIn-header {
+.signUp-header {
     width: 80%;
     font-size: 4em;
     margin: 0.25em auto 0 auto;
     padding: 0.2em 0;
     color: white;
-    text-align:center;
+    text-align: center;
     font-family: "Calibri, sans-serif", serif;
     background-color: #19616b;
     border-radius: 0.3em;
 }
 
-.signIn-content-container {
+.signUp-content-container {
     display: flex;
     justify-content: center;
     margin: 2em auto;
@@ -32,7 +32,7 @@
     background-color: white;
 }
 
-.signIn-content {
+.signUp-content {
     background-color: #19616b;
     display: flex;
     margin: 0.8em;
@@ -42,15 +42,15 @@
     width: 97%;
 }
 
-.signIn-field{
+.signUp-field {
     margin: 1em;
 }
 
-.signIn-field:first-of-type{
-    margin-top: 2em;
+.signUp-field:first-of-type {
+    margin: 1.75em 1em 1em 1em;
 }
 
-.signIn-field span{
+.signUp-field span {
     width: 100%;
 }
 
@@ -61,15 +61,57 @@
     border-radius: 0.2em;
 }
 
-.p-invalid {
-    border: none !important;
-}
-
 .p-password {
-    width: 100% ;
+    width: 100%;
 }
 
-.signIn-content button {
+.p-calendar input {
+    width: 100% !important;
+    font-size: 1.5em !important;
+    border-radius: 0.2em !important;
+}
+
+.p-datepicker-title {
+    margin: auto !important;
+    display:flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+
+}
+
+.p-datepicker-month {
+    font-size: 1.75em !important;
+}
+
+.p-datepicker-today span {
+    background-color: orangered !important;
+    border-radius: 0 !important;
+}
+
+.p-datepicker table td > span:hover {
+    background-color: #19616b !important;
+    color:white !important;
+    border-radius: 0 !important;
+}
+
+.p-highlight {
+    background-color: #19616b !important;
+    color:white !important;
+    border-radius: 0 !important;
+}
+
+.p-dropdown {
+    width: 100%;
+    border-radius: 0.2em !important;
+}
+
+.p-dropdown-item.p-highlight {
+    background-color: transparent !important;
+    color:#19616b !important;
+    font-weight: bold !important;
+}
+
+.signUp-content button {
     display: flex;
     justify-content: center;
     margin: 1em auto;
@@ -84,10 +126,14 @@
     border: none !important;
 }
 
-.signIn-content button:hover{
+.signUp-content button:hover{
     background-color: orangered !important;
     color:white !important;
     font-weight: bold !important;
+    border: none !important;
+}
+
+.p-invalid {
     border: none !important;
 }
 

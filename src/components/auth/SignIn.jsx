@@ -16,6 +16,7 @@ const SignIn = props => {
         email: '',
         password: ''
     };
+
     const {control, formState: {errors}, handleSubmit, reset} = useForm({defaultValues});
 
     useEffect(() => {
@@ -26,7 +27,6 @@ const SignIn = props => {
                 title: "Hibás felhasználónév vagy jelszó!",
                 allowOutsideClick: false,
             });
-
         }
     }, [auth.errors.signIn, clearErrors]);
 
@@ -92,7 +92,6 @@ const SignIn = props => {
                         </div>
                         <Button type="submit"
                                 label="Bejelentkezés"
-                                className="p-button-danger"
                         />
                     </form>
                 </div>
