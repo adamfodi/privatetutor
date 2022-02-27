@@ -54,18 +54,23 @@
     width: 100%;
 }
 
-.p-inputtext {
+.signIn-container .p-inputtext {
     width: 100%;
     font-size: 1.5em !important;
     border: none;
     border-radius: 0.2em;
+    box-shadow: none !important;
 }
 
-.p-invalid {
+.signIn-container .p-inputtext:focus {
+    box-shadow: 0 0 1px 3px orangered !important;
+}
+
+.signIn-container .p-invalid {
     border: none !important;
 }
 
-.p-password {
+.signIn-container .p-password {
     width: 100% ;
 }
 
@@ -82,12 +87,17 @@
     color:#19616b !important;
     font-weight: bold !important;
     border: none !important;
+    transition: none !important;
 }
 
 .signIn-content button:hover{
     background-color: orangered !important;
     color:white !important;
     font-weight: bold !important;
+    border: none !important;
+}
+
+.signIn-container .p-invalid {
     border: none !important;
 }
 

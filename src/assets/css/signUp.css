@@ -54,14 +54,18 @@
     width: 100%;
 }
 
-.p-inputtext {
+.signUp-container .p-inputtext {
     width: 100%;
     font-size: 1.5em !important;
     border: none;
     border-radius: 0.2em;
 }
 
-.p-password {
+.signUp-container .p-inputtext:focus {
+    box-shadow: 0 0 1px 3px orangered !important;
+}
+
+.signUp-container .p-password {
     width: 100%;
 }
 
@@ -73,14 +77,33 @@
 
 .p-datepicker-title {
     margin: auto !important;
-    display:flex !important;
-    justify-content: space-between !important;
+    display:flex;
     align-items: center !important;
+}
 
+.p-datepicker-title .p-dropdown-label {
+    font-size: 1.4em !important;
+    color:#19616b !important;
+    font-weight: bold !important;
+    padding: 0 !important;
+}
+
+.p-datepicker-title .p-dropdown-trigger {
+    font-size: 1.4em !important;
+    color:#19616b !important;
+    font-weight: bold !important;
+    padding: 0 !important;
+}
+
+.p-datepicker-title>div {
+    box-shadow: none !important;
 }
 
 .p-datepicker-month {
-    font-size: 1.75em !important;
+    font-size: 1.4em !important;
+    font-weight: bold !important;
+    color:#19616b !important;
+    padding: 0 !important;
 }
 
 .p-datepicker-today span {
@@ -94,7 +117,7 @@
     border-radius: 0 !important;
 }
 
-.p-highlight {
+.p-datepicker-calendar tbody tr td .p-highlight {
     background-color: #19616b !important;
     color:white !important;
     border-radius: 0 !important;
@@ -103,9 +126,15 @@
 .p-dropdown {
     width: 100%;
     border-radius: 0.2em !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
-.p-dropdown-item.p-highlight {
+.p-focus {
+    box-shadow: 0 0 1px 3px orangered !important;
+}
+
+.p-dropdown-items .p-highlight {
     background-color: transparent !important;
     color:#19616b !important;
     font-weight: bold !important;
@@ -124,6 +153,7 @@
     color:#19616b !important;
     font-weight: bold !important;
     border: none !important;
+    transition: none !important;
 }
 
 .signUp-content button:hover{
@@ -133,7 +163,7 @@
     border: none !important;
 }
 
-.p-invalid {
+.signUp-container .p-invalid {
     border: none !important;
 }
 
