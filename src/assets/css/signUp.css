@@ -78,6 +78,7 @@
 .p-datepicker-title {
     margin: auto !important;
     display:flex;
+    justify-content: center !important;
     align-items: center !important;
 }
 
@@ -86,6 +87,7 @@
     color:#19616b !important;
     font-weight: bold !important;
     padding: 0 !important;
+    margin: 0 !important;
 }
 
 .p-datepicker-title .p-dropdown-trigger {
@@ -93,6 +95,7 @@
     color:#19616b !important;
     font-weight: bold !important;
     padding: 0 !important;
+    margin: 0 !important;
 }
 
 .p-datepicker-title>div {
@@ -104,6 +107,7 @@
     font-weight: bold !important;
     color:#19616b !important;
     padding: 0 !important;
+    line-height: 1.4em;
 }
 
 .p-datepicker-today span {

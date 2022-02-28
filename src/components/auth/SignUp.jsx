@@ -38,7 +38,7 @@ const SignUp = props => {
                          className="ml-2"
                          style={{lineHeight: 1}}
         />
-    }
+    };
 
     useEffect(() => {
         if (auth.errors.signUp !== null) {
@@ -68,6 +68,8 @@ const SignUp = props => {
     const getFormErrorMessage = (name) => {
         return errors[name] && <p className="error">{errors[name].message}</p>
     };
+
+    console.log(control)
 
     return (
         <div className="signUp-container">
@@ -221,7 +223,7 @@ const SignUp = props => {
                                                  <Dropdown
                                                      id={field.name}
                                                      value={field.value}
-                                                     onChange={(e) => field.onChange(e.value)}
+                                                     onChange={(e) => field.onChange(e.target.value)}
                                                      options={genderList}
                                                  />
                                              )}

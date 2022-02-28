@@ -1,7 +1,7 @@
 import {createUserWithEmailAndPassword, getAuth} from "firebase/auth";
 import {getFirebase} from "react-redux-firebase";
 
-export const signUp = newUser => {
+export const signUp = (newUser) => {
     return (dispatch) => {
         createUserWithEmailAndPassword(getAuth(), newUser.email, newUser.password)
             .then((userCredential) => {
@@ -35,7 +35,7 @@ export const signUp = newUser => {
     }
 };
 
-export const signIn = credentials => {
+export const signIn = (credentials) => {
     return (dispatch) => {
         getFirebase()
             .auth()
@@ -79,5 +79,16 @@ export const signOut = () => {
 export const clearErrors = () => {
     return (dispatch) => {
         dispatch({type: "CLEAR_ERRORS"});
+    };
+};
+
+export const updateDisplayName = (displayName) => {
+    return (dispatch) => {
+        dispatch(
+            {
+                type: "UPDATE_DISPLAYNAME",
+                payload: displayName
+            }
+        );
     };
 };

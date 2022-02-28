@@ -44,6 +44,12 @@ const authReducer = (state = initState, action) => {
                 errors: {...state.errors, signUp: null, signIn: null},
             };
 
+        case "UPDATE_DISPLAYNAME":
+            return {
+                ...state,
+                displayName: action.payload
+            };
+
         default:
             return state;
     }

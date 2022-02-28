@@ -10,7 +10,7 @@ import SignIn from "./components/auth/SignIn";
 import SignUp from "./components/auth/SignUp";
 import Main from "./components/Main";
 import MyCourses from "./components/courses/MyCourses";
-import Profile from "./components/Profile";
+import Profile from "./components/profile/Profile";
 import {Test} from "./components/Test";
 import {connect} from "react-redux";
 
@@ -27,7 +27,7 @@ const App = (props) => {
                 <Route exact path="/signup" element={!auth.loggedIn ? <SignUp/> : <Navigate to="/main"/>}/>
 
                 <Route exact path="/mycourses" element={<MyCourses/>}/>
-                <Route exact path="/profile" element={<Profile/>}/>
+                <Route exact path="/profile" element={auth.loggedIn ? <Profile/> : <Navigate to="/main"/>}/>
 
                 <Route exact path="/test" element={<Test/>}/>
                 <Route path="*" element={<Navigate to="/main"/>}/>

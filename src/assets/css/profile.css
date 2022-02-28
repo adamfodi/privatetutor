@@ -4,36 +4,14 @@
     justify-content: center;
     align-items: center;
     width: 80%;
-    background-color: #edf8fa;
+    background-color: white;
     margin: 3em auto;
     border-radius: 1em;
     overflow: auto;
 }
 
-.p-fieldset-legend {
-    background-color: #19616b !important;
-    border-radius: 0.5em !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-
-.p-fieldset-legend a {
-    background-color: #19616b !important;
-    border-radius: 1em !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-
-.p-fieldset-toggler {
-    color: white !important;
-}
-
-.p-fieldset-legend-text {
-    color: white !important;
-}
-
 .profile-header {
-    width: 80%;
+    width: 60%;
     font-size: 4em;
     margin: 0.5em auto 0 auto;
     padding: 0.2em 0;
@@ -44,16 +22,29 @@
     border-radius: 0.3em;
 }
 
-.profile-fieldset {
-    margin: 3em auto;
-    width: 80%;
-    border-radius: 0.5em;
-    box-shadow: 1px 3px 7px 3px #19616b;
-    overflow: auto;
+.profile-container .p-tabview {
+    width: 90%;
+    margin-top: 2em;
+}
+
+.p-tabview-nav-link{
+    background-color: #19616b !important;
+    color: white !important;
+    font-size: 1.5em !important;
+}
+
+.p-tabview-nav .p-tabview-selected .p-tabview-nav-link {
+    background-color: orangered !important;
+}
+
+.p-unselectable-text:first-of-type{
+    margin-left: 2em !important;
 }
 
 .profile-content {
-    background-color: #CADFE2;
+    background-color: #19616b;
+    color: white;
+    font-weight: bold;
     display: flex;
     margin: auto;
     border-radius: 0.5em;
@@ -64,28 +55,35 @@
     width: 60%;
 }
 
-.profile-text-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.profile-text-field {
     margin-left: 3em;
     margin-right: 3em;
 }
 
-.profile-text-content p {
-    font-size: 1.5em;
+.profile-text-field-data {
+    display: flex;
+    align-items: center;
 }
 
-.profile-text-content input {
-    width: 50%;
+.profile-text-field p {
+    width: 40%;
+    font-size: 1.5em !important;
+    font-weight: bold;
 }
 
-.profile-calendar {
-    width: 50%;
+.profile-text-field span {
+    width:100%;
 }
 
-.profile-dropdown {
-    width: 50%;
+.profile-text-field .p-inputtext {
+    width:100%;
+    font-size: 1.5em !important;
+    border: none;
+    border-radius: 0.2em;
+}
+
+.profile-text-field .p-inputtext:focus {
+    box-shadow: 0 0 1px 3px orangered !important;
 }
 
 .profile-picture-content {
@@ -94,7 +92,75 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: #19616b;
+    border-radius: 0.5em;
+    width: 50%;
+    overflow: auto;
 }
+
+.profile-picture-content-picture {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    margin: 3em 0 1em 0;
+    /*box-shadow: 0 0 0 20px white;*/
+    border-bottom: 2.2em solid white;
+    border-left: 2.2em solid white;
+    border-right: 2.2em solid white;
+}
+
+.profile-picture-content-picture>span {
+    background-color: white;
+    width: 100%;
+    text-align: right;
+    margin-bottom: -1em;
+}
+
+.profile-picture-content-picture>span>button {
+    padding: 1.0em !important;
+    margin-top: 0.1em !important;
+    border: none !important;
+    box-shadow: none !important;
+    background-color: red !important;
+    margin-right: -1.5em;
+}
+
+.profile-picture-content-picture>span>button:hover{
+    background-color: darkred !important;
+}
+
+.profile-picture-content-upload {
+    display:flex;
+    justify-content: center;
+}
+
+.profile-picture-content-upload button {
+    margin: 0.5em 0.5em 1.5em 0.5em;
+    font-size: 1.5em;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/*.p-image-mask{*/
+/*    box-shadow: none !important;*/
+/*    border: none !important;*/
+/*}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .profile-stars {
     margin: auto;
@@ -163,4 +229,9 @@
     color: white !important;
     border-radius: 0.3em !important;
     margin-bottom: 0.5em;
+}
+
+.error {
+    margin: 0.5em 0;
+    color:orange;
 }

@@ -1,31 +1,33 @@
-import {Sidebar} from "primereact/sidebar";
-import {useState} from "react";
-import {Button} from "primereact/button";
-import {Card} from "primereact/card";
+import {cloneDeep} from "lodash";
 
 export const Test = () => {
-    const [visibleLeft,setVisibleLeft] = useState(false);
+
+    const x = {
+        a: 5,
+        b: [1, 2, 3, 4, 5],
+        c: {
+            c1: 66,
+            c2: [2, 3, 4, 5],
+            c3: {asd: 5, def: 6}
+        }
+    }
+
+    const n = cloneDeep(x);
+
+    console.log(x)
+    console.log(n)
+
+
+    n.c.c1=99;
+    console.log(x)
+    console.log(n)
+
+
+
 
 
     return (
         <>
-            <div>
-                <Button label="Left" onClick={() => setVisibleLeft(!visibleLeft)}/>
-            </div>
-            <Sidebar
-                visible={visibleLeft}
-                onHide={() => setVisibleLeft(false)}
-                style={{marginLeft: "40px",marginTop: "200px"}}
-                modal={false}
-                showCloseIcon={false}
-                baseZIndex={0}
-            >
-                <h3>Left Sidebar</h3>
-            </Sidebar>
-            <Card style={{width:"900px", height:"200px"}}>
-
-            </Card>
-
         </>
 
     )
