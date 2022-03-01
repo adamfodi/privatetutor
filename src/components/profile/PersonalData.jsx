@@ -14,8 +14,8 @@ import {Button} from "primereact/button";
 import {UserService} from "../../services/UserService";
 
 const PersonalData = (props) => {
-    const {firebaseAuth, userProfile, updateDisplayName} = props;
-    const {control, formState: {errors}, handleSubmit} = useForm({defaultValues: userProfile});
+    const {firebaseAuth, personalData, updateDisplayName} = props;
+    const {control, formState: {errors}, handleSubmit} = useForm({defaultValues: personalData});
 
     addLocale('hu', addLocaleHu);
 
@@ -31,7 +31,7 @@ const PersonalData = (props) => {
     const onSubmit = (data) => {
         console.log(data)
         updateDisplayName(data.lastName + ' ' + data.firstName);
-        UserService.updateProfile(firebaseAuth.uid, data)
+        UserService.updatePersonalData(firebaseAuth.uid, data)
             .then(() => {
                 Swal.fire({
                     timer: 1500,

@@ -1,24 +1,15 @@
-import {connect, useSelector} from "react-redux";
-import React, {useCallback, useEffect, useMemo, useState} from "react";
-import {useFirestoreConnect} from "react-redux-firebase";
-import {addLocale} from "primereact/api";
-import {addLocaleHu} from "../../util/CalendarHu";
-import {Controller, useForm} from "react-hook-form";
+import {connect} from "react-redux";
+import React, {useEffect, useState} from "react";
 import {InputText} from "primereact/inputtext";
 import {Calendar} from "primereact/calendar";
 import {Dropdown} from "primereact/dropdown";
 import "../../assets/css/profile.css"
 import {Image} from "primereact/image";
 import {FileUpload} from "primereact/fileupload";
-import {genderList} from "../../util/FormFields";
 import {ProgressSpinner} from "primereact/progressspinner";
 import {TabPanel, TabView} from "primereact/tabview";
-import Swal from "sweetalert2";
 import {clearErrors, signUp} from "../../redux/actions/authActions";
-import {classNames} from "primereact/utils";
-import {Button} from "primereact/button";
 import PersonalProfile from "./PersonalData";
-import {cloneDeep} from "lodash";
 import ProfilePicture from "./ProfilePicture";
 
 const Profile = props => {
@@ -28,9 +19,14 @@ const Profile = props => {
     useEffect(() => {
         if (userProfile) {
             console.log("ONLY OVERRIDES THE PROFILE IF THAT CHANGES!")
-            setProfile({...userProfile,birthday: userProfile.birthday.toDate()})
+            setProfile({
+                ...userProfile,
+                personalData: {...userProfile.personalData, birthday: userProfile.personalData.birthday.toDate()}
+            })
         }
     }, [userProfile]);
+
+    console.log(profile)
 
     return (
         <div className="profile-container">
@@ -38,7 +34,7 @@ const Profile = props => {
             {profile
                 ? <TabView>
                     <TabPanel header="Személyes adatok">
-                        <PersonalProfile userProfile={profile}/>
+                        <PersonalProfile personalData={profile.personalData}/>
                     </TabPanel>
                     <TabPanel header="Profilkép">
                         <ProfilePicture/>

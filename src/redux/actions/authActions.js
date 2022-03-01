@@ -1,26 +1,38 @@
 import {createUserWithEmailAndPassword, getAuth} from "firebase/auth";
 import {getFirebase} from "react-redux-firebase";
+import {getStorage, ref, uploadBytes} from "firebase/storage";
+import {createPlaceholderFile} from "../../util/FileUtil";
 
 export const signUp = (newUser) => {
     return (dispatch) => {
         createUserWithEmailAndPassword(getAuth(), newUser.email, newUser.password)
             .then((userCredential) => {
                 getFirebase().firestore().collection("users").doc(userCredential.user.uid).set({
-                    firstName: newUser.firstName,
-                    lastName: newUser.lastName,
-                    email: newUser.email,
-                    birthday: newUser.birthday,
-                    gender: newUser.gender
+                    personalData: {
+                        firstName: newUser.firstName,
+                        lastName: newUser.lastName,
+                        email: newUser.email,
+                        birthday: newUser.birthday,
+                        gender: newUser.gender
+                    },
+                    professionalData: {}
                 })
                     .then(() => {
-                        dispatch(
-                            {
-                                type: "SIGNUP_SUCCESS",
-                                payload: {
-                                    loggedIn: true,
-                                    displayName: newUser.lastName + ' ' + newUser.firstName
-                                }
-                            });
+                        const storage = getStorage();
+                        const storageRef = ref(storage, 'profilePictures/' + userCredential.user.uid);
+                        createPlaceholderFile(userCredential.user.uid).then((file) => {
+                            uploadBytes(storageRef, file)
+                                .then(() => {
+                                    dispatch(
+                                        {
+                                            type: "SIGNUP_SUCCESS",
+                                            payload: {
+                                                loggedIn: true,
+                                                displayName: newUser.lastName + ' ' + newUser.firstName
+                                            }
+                                        });
+                                })
+                        })
                     })
             })
             .catch((error) => {

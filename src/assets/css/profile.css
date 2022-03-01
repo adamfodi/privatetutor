@@ -105,29 +105,44 @@
     align-items: center;
     background-color: white;
     margin: 3em 0 1em 0;
-    /*box-shadow: 0 0 0 20px white;*/
-    border-bottom: 2.2em solid white;
-    border-left: 2.2em solid white;
-    border-right: 2.2em solid white;
+    border-bottom: 2.45em solid white;
+    border-left: 1.75em solid white;
+    border-right: 1.75em solid white;
 }
 
 .profile-picture-content-picture>span {
+    display:flex;
+    justify-content: space-between;
     background-color: white;
     width: 100%;
-    text-align: right;
     margin-bottom: -1em;
 }
 
-.profile-picture-content-picture>span>button {
+.profile-picture-content-picture>span>button:first-of-type {
+    padding: 1.0em !important;
+    margin-top: 0.1em !important;
+    border: none !important;
+    box-shadow: none !important;
+    background-color: green !important;
+    margin-left: -1.5em;
+    z-index: 3;
+}
+
+.profile-picture-content-picture>span>button:first-of-type:hover{
+    background-color: darkgreen !important;
+}
+
+.profile-picture-content-picture>span>button:last-of-type {
     padding: 1.0em !important;
     margin-top: 0.1em !important;
     border: none !important;
     box-shadow: none !important;
     background-color: red !important;
     margin-right: -1.5em;
+    z-index: 3;
 }
 
-.profile-picture-content-picture>span>button:hover{
+.profile-picture-content-picture>span>button:last-of-type:hover{
     background-color: darkred !important;
 }
 
