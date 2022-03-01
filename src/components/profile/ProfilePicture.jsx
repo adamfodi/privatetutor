@@ -19,17 +19,20 @@ const ProfilePicture = (props) => {
     const storage = getStorage();
     const storageRef = ref(storage, 'profilePictures/' + firebaseAuth.uid);
 
-    getMetadata(storageRef)
-        .then((metadata) => {
-            if (metadata.customMetadata) {
-                setPlaceholder(metadata.customMetadata.placeholder)
-            } else {
+    const getPlaceholder = () => {
+        console.log("asd")
+        getMetadata(storageRef)
+            .then((metadata) => {
+                if (metadata.customMetadata) {
+                    setPlaceholder(metadata.customMetadata.placeholder)
+                } else {
+                    setPlaceholder("false")
+                }
+            })
+            .catch(() => {
                 setPlaceholder("false")
-            }
-        })
-        .catch(() => {
-            setPlaceholder("false")
-        });
+            });
+    }
 
 
     const getProfilePicture = () => {
@@ -46,6 +49,7 @@ const ProfilePicture = (props) => {
 
     useEffect(() => {
         getProfilePicture();
+        getPlaceholder();
     }, []);
 
     const uploadButtonClick = (fileRef) => {
@@ -76,16 +80,17 @@ const ProfilePicture = (props) => {
     const uploadPicture = () => {
         uploadBytes(storageRef, file)
             .then(() => {
+                getPlaceholder();
                 setCurrUrl(tempUrl);
                 setFile(null);
-                    Swal.fire({
-                        timer: 1500,
-                        icon: "success",
-                        title: "Sikeres módosítás!",
-                        showConfirmButton: false,
-                        allowOutsideClick: false,
-                    })
+                Swal.fire({
+                    timer: 1500,
+                    icon: "success",
+                    title: "Sikeres módosítás!",
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
                 })
+            })
             .catch(() => {
                 Swal.fire({
                     icon: "error",
@@ -111,8 +116,9 @@ const ProfilePicture = (props) => {
                         }
                     };
                     uploadBytes(storageRef, file, metadata)
-                        .then((result) => {
+                        .then(() => {
                             getProfilePicture();
+                            getPlaceholder();
                             setFile(null);
                             Swal.fire({
                                 timer: 1500,
