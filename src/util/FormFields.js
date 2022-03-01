@@ -2,6 +2,19 @@ import React from "react";
 
 export const genderList = ["Férfi", "Nő", "Egyéb"];
 
+export const subjectList = [
+    {name: "Matematika"},
+    {name: "Fizika"},
+    {name: "Kémia"},
+    {name: "Biológia"},
+    {name: "Földrajz"},
+    {name: "Informatika"},
+    {name: "Történelem"},
+    {name: "Irodalom"},
+    {name: "Nyelvtan"},
+    {name: "Ének"}
+]
+
 export const addLocaleHu = {
     firstDayOfWeek: 1,
     dayNames: ["vasárnap", "hétfő", "kedd", "szerda", "csütörtök", "péntek", "szombat"],
@@ -12,7 +25,7 @@ export const addLocaleHu = {
     today: 'Ma',
     clear: 'Tisztítás',
     weekHeader: 'Hét'
-}
+};
 
 export const editorHeader = (
     <div id="standalone-container">

@@ -132,11 +132,11 @@ const ProfilePicture = (props) => {
                     />
                 </span>
                 {!tempUrl
-                    ? <ProgressSpinner style={{width: "300px", height: "300px"}}/>
+                    ? <ProgressSpinner style={{width: "300px", height: "284px"}}/>
                     : <Image src={tempUrl}
                              alt="Profile Picture"
-                             width="300"
-                             height="300"
+                             width="300px"
+                             height="300px"
                              preview
                              downloadable
                     />

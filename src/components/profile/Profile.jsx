@@ -1,19 +1,14 @@
 import {connect} from "react-redux";
 import React, {useEffect, useState} from "react";
-import {InputText} from "primereact/inputtext";
-import {Calendar} from "primereact/calendar";
-import {Dropdown} from "primereact/dropdown";
 import "../../assets/css/profile.css"
-import {Image} from "primereact/image";
-import {FileUpload} from "primereact/fileupload";
 import {ProgressSpinner} from "primereact/progressspinner";
 import {TabPanel, TabView} from "primereact/tabview";
-import {clearErrors, signUp} from "../../redux/actions/authActions";
-import PersonalProfile from "./PersonalData";
+import PersonalData from "./PersonalData";
 import ProfilePicture from "./ProfilePicture";
+import ProfessionalData from "./ProfessionalData";
 
 const Profile = props => {
-    const {auth, userProfile, signUp, clearErrors} = props;
+    const {userProfile} = props;
     const [profile, setProfile] = useState(null);
 
     useEffect(() => {
@@ -34,80 +29,14 @@ const Profile = props => {
             {profile
                 ? <TabView>
                     <TabPanel header="Személyes adatok">
-                        <PersonalProfile personalData={profile.personalData}/>
+                        <PersonalData personalData={profile.personalData}/>
                     </TabPanel>
                     <TabPanel header="Profilkép">
                         <ProfilePicture/>
                     </TabPanel>
                     <TabPanel header="Oktatói adatok">
-
+                        <ProfessionalData professionalData={profile.professionalData}/>
                     </TabPanel>
-
-                    {/*<Fieldset className="profile-fieldset"*/}
-                    {/*          legend="Oktatói adatok"*/}
-                    {/*          toggleable*/}
-                    {/*>*/}
-                    {/*    <div className="profile-content">*/}
-                    {/*        <div className="profile-text-content">*/}
-                    {/*            <div className="profile-text-row">*/}
-                    {/*                <p>Képzettség</p>*/}
-                    {/*                <InputText placeholder="vezeteknev"/>*/}
-                    {/*            </div>*/}
-                    {/*            <div className="profile-text-row">*/}
-                    {/*                <p>Oktatott tárgyak</p>*/}
-                    {/*                <div className="profile-multiSelectDiv">*/}
-                    {/*                    <MultiSelect className="profile-multiSelect"*/}
-                    {/*                                 value={selectedSubjects}*/}
-                    {/*                                 options={subjects}*/}
-                    {/*                                 onChange={(e) => setSelectedSubjects(e.value)}*/}
-                    {/*                                 optionLabel="name"*/}
-                    {/*                                 placeholder="Tantárgyak"*/}
-                    {/*                                 showClear*/}
-                    {/*                                 filter*/}
-                    {/*                                 filterBy="name"*/}
-                    {/*                                 filterMatchMode="startsWith"*/}
-                    {/*                                 emptyFilterMessage="Nem található..."*/}
-                    {/*                                 selectedItemsLabel={"(" + (selectedSubjects ? selectedSubjects.size : 0) + ")"}*/}
-
-                    {/*                    />*/}
-                    {/*                </div>*/}
-                    {/*            </div>*/}
-                    {/*            <div className="profile-text-row3">*/}
-                    {/*                <Chips value={selectedSubjects ? selectedSubjects.map(s => s.name) : null}*/}
-                    {/*                       separator=","*/}
-                    {/*                       disabled*/}
-                    {/*                />*/}
-                    {/*            </div>*/}
-                    {/*            <div className="profile-text-row2">*/}
-                    {/*                <p>Bemutatkozás</p>*/}
-                    {/*                <div>*/}
-                    {/*                    <Editor*/}
-                    {/*                        headerTemplate={editorHeader}*/}
-                    {/*                        value={null}*/}
-                    {/*                        onTextChange={(e) => ({})}*/}
-                    {/*                        style={{height: "250px"}}*/}
-                    {/*                    />*/}
-                    {/*                </div>*/}
-                    {/*            </div>*/}
-                    {/*            <div className="profile-text-row">*/}
-                    {/*                <p>Oktatott tárgyak</p>*/}
-                    {/*                <Dropdown className="profile-dropdown"> </Dropdown>*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*        <div className="profile-stars">*/}
-                    {/*            <p className="profile-stars-number">4.2</p>*/}
-                    {/*            <StarRatings*/}
-                    {/*                title="asdasd"*/}
-                    {/*                rating={4.2}*/}
-                    {/*                starRatedColor="orange"*/}
-                    {/*                numberOfStars={5}*/}
-                    {/*                starDimension={"40px"}*/}
-                    {/*                name='rating'*/}
-                    {/*            />*/}
-                    {/*            <p className="profile-stars-text">15 visszajelzés alapján</p>*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*</Fieldset>*/}
                 </TabView>
                 : <div>
                     <ProgressSpinner/>
@@ -117,23 +46,10 @@ const Profile = props => {
     )
 }
 
-
 const mapStateToProps = state => {
-    // console.log("MAPSTATETOPROPS")
-    // console.log(state)
     return {
-        firebaseAuth: state.firebase.auth,
-        auth: state.auth,
-        users: state.firestore.data.users,
         userProfile: state.firebase.auth.isLoaded && state.firestore.data.users ? state.firestore.data.users[state.firebase.auth.uid] : null
     };
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        signUp: credentials => dispatch(signUp(credentials)),
-        clearErrors: () => dispatch(clearErrors())
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps)(Profile);
