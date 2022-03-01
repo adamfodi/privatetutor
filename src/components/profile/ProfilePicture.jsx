@@ -2,7 +2,7 @@ import {Image} from "primereact/image";
 import {Button} from "primereact/button";
 import Swal from "sweetalert2";
 import {useEffect, useRef, useState} from "react";
-import {getDownloadURL, getStorage, ref, uploadBytes} from "firebase/storage";
+import {getDownloadURL, getStorage, ref, uploadBytes, getMetadata} from "firebase/storage";
 import {connect} from "react-redux";
 import {ProgressSpinner} from "primereact/progressspinner";
 import profilePicturePlaceholder from "../../assets/img/profile-picture-placeholder.png"
@@ -11,6 +11,7 @@ import {createPlaceholderFile} from "../../util/FileUtil";
 const ProfilePicture = (props) => {
     const {firebaseAuth} = props;
     const [file, setFile] = useState(null);
+    const [placeholder, setPlaceholder] = useState("true");
     const [tempUrl, setTempUrl] = useState(null);
     const [currUrl, setCurrUrl] = useState(null);
 
@@ -18,10 +19,22 @@ const ProfilePicture = (props) => {
     const storage = getStorage();
     const storageRef = ref(storage, 'profilePictures/' + firebaseAuth.uid);
 
+    getMetadata(storageRef)
+        .then((metadata) => {
+            if (metadata.customMetadata) {
+                setPlaceholder(metadata.customMetadata.placeholder)
+            } else {
+                setPlaceholder("false")
+            }
+        })
+        .catch(() => {
+            setPlaceholder("false")
+        });
+
+
     const getProfilePicture = () => {
         getDownloadURL(storageRef)
             .then((url) => {
-                console.log(url)
                 setTempUrl(url);
                 setCurrUrl(url);
             })
@@ -64,14 +77,15 @@ const ProfilePicture = (props) => {
         uploadBytes(storageRef, file)
             .then(() => {
                 setCurrUrl(tempUrl);
-                Swal.fire({
-                    timer: 1500,
-                    icon: "success",
-                    title: "Sikeres módosítás!",
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
+                setFile(null);
+                    Swal.fire({
+                        timer: 1500,
+                        icon: "success",
+                        title: "Sikeres módosítás!",
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                    })
                 })
-            })
             .catch(() => {
                 Swal.fire({
                     icon: "error",
@@ -91,9 +105,15 @@ const ProfilePicture = (props) => {
         }).then((result) => {
             if (result.isConfirmed) {
                 createPlaceholderFile(firebaseAuth.uid).then((file) => {
-                    uploadBytes(storageRef, file)
+                    const metadata = {
+                        customMetadata: {
+                            'placeholder': 'true'
+                        }
+                    };
+                    uploadBytes(storageRef, file, metadata)
                         .then((result) => {
                             getProfilePicture();
+                            setFile(null);
                             Swal.fire({
                                 timer: 1500,
                                 icon: "success",
@@ -122,13 +142,18 @@ const ProfilePicture = (props) => {
                             icon="pi pi-replay"
                             className="p-button-rounded"
                             tooltip="Profilkép visszaállítása"
-                            onClick={() => setTempUrl(currUrl)}
+                            onClick={() => {
+                                setTempUrl(currUrl);
+                                setFile(null)
+                            }}
+                            disabled={!tempUrl}
                     />
                     <Button type="button"
                             icon="pi pi-times"
                             className="p-button-rounded"
                             tooltip="Profilkép törlése"
                             onClick={() => resetToDefault()}
+                            disabled={!tempUrl || placeholder === "true"}
                     />
                 </span>
                 {!tempUrl
@@ -147,19 +172,20 @@ const ProfilePicture = (props) => {
                         label="Kiválasztás..."
                         className="p-button-primary"
                         onClick={() => uploadButtonClick(fileRef)}
+                        disabled={!tempUrl}
                 />
                 <input type="file"
                        accept="image/*"
                        id="file"
                        ref={fileRef}
                        style={{display: "none"}}
-                       onChange={event => uploadChangeFile(event, fileRef)
-                       }
+                       onChange={event => uploadChangeFile(event, fileRef)}
                 />
                 <Button type="button"
                         label="Feltöltés"
                         className="p-button-success"
                         onClick={() => uploadPicture()}
+                        disabled={!tempUrl || !file}
                 />
             </div>
         </div>

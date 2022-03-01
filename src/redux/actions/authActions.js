@@ -21,7 +21,12 @@ export const signUp = (newUser) => {
                         const storage = getStorage();
                         const storageRef = ref(storage, 'profilePictures/' + userCredential.user.uid);
                         createPlaceholderFile(userCredential.user.uid).then((file) => {
-                            uploadBytes(storageRef, file)
+                            const metadata = {
+                                customMetadata: {
+                                    'placeholder': 'true'
+                                }
+                            };
+                            uploadBytes(storageRef, file, metadata)
                                 .then(() => {
                                     dispatch(
                                         {
