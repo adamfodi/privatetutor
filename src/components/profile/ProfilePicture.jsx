@@ -115,8 +115,8 @@ const ProfilePicture = (props) => {
     }
 
     return (
-        <div className="profile-picture-content">
-            <div className="profile-picture-content-picture">
+        <div className="profile-picture-container">
+            <div className="profile-picture-image-container">
                 <span>
                     <Button type="button"
                             icon="pi pi-replay"
@@ -142,7 +142,7 @@ const ProfilePicture = (props) => {
                     />
                 }
             </div>
-            <div className="profile-picture-content-upload">
+            <div className="profile-picture-button-container">
                 <Button type="button"
                         label="Kiválasztás..."
                         className="p-button-primary"
@@ -161,7 +161,6 @@ const ProfilePicture = (props) => {
                         className="p-button-success"
                         onClick={() => uploadPicture()}
                 />
-
             </div>
         </div>
     )

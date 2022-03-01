@@ -40,47 +40,7 @@ const Profile = props => {
                         <ProfilePicture/>
                     </TabPanel>
                     <TabPanel header="Oktatói adatok">
-                        <div className="profile-content">
-                            <div className="profile-text-content">
-                                <div className="profile-text-field">
-                                    <p>asdasddas</p>
-                                    <InputText placeholder="vezeteknev"/>
-                                </div>
-                                <div className="profile-text-field">
-                                    <p>asdasd</p>
-                                    <InputText placeholder="vezeteknev"/>
-                                </div>
-                                <div className="profile-text-field">
-                                    <p>Születésnap</p>
-                                    <Calendar className="profile-calendar"/>
-                                </div>
-                                <div className="profile-text-field">
-                                    <p>Nem</p>
-                                    <Dropdown className="profile-dropdown"> </Dropdown>
-                                </div>
 
-                            </div>
-                            <div className="profile-picture-content">
-                                <Image src="https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png"
-                                       alt="Image"
-                                       width="250"
-                                       height="250"
-                                       preview
-                                       downloadable
-                                />
-                                <FileUpload
-                                    mode="basic"
-                                    name="demo[]"
-                                    url="https://primefaces.org/primereact/showcase/upload.php"
-                                    accept="image/*"
-                                    maxFileSize={1000000}
-                                    onUpload={() => {
-                                    }}
-                                    auto
-                                    chooseLabel="Feltöltés"
-                                />
-                            </div>
-                        </div>
                     </TabPanel>
 
                     {/*<Fieldset className="profile-fieldset"*/}

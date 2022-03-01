@@ -56,10 +56,10 @@ const PersonalData = (props) => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="profile-content">
-                <div className="profile-text-content">
-                    <div className="profile-text-field">
-                        <div className="profile-text-field-data">
+            <div className="personal-data-field-container">
+                <div className="personal-data-fields">
+                    <div className="personal-data-field">
+                        <div className="personal-data-field-data">
                             <p>Vezetéknév</p>
                             <span>
                                 <Controller name="lastName"
@@ -79,8 +79,8 @@ const PersonalData = (props) => {
                         </div>
                         {getFormErrorMessage('lastName')}
                     </div>
-                    <div className="profile-text-field">
-                        <div className="profile-text-field-data">
+                    <div className="personal-data-field">
+                        <div className="personal-data-field-data">
                             <p>Keresztnév</p>
                             <span>
                                 <Controller name="firstName"
@@ -100,8 +100,8 @@ const PersonalData = (props) => {
                         </div>
                         {getFormErrorMessage('firstName')}
                     </div>
-                    <div className="profile-text-field">
-                        <div className="profile-text-field-data">
+                    <div className="personal-data-field">
+                        <div className="personal-data-field-data">
                             <p>Születésnap</p>
                             <span>
                                 <Controller name="birthday"
@@ -131,8 +131,8 @@ const PersonalData = (props) => {
                         </div>
                         {getFormErrorMessage('birthday')}
                     </div>
-                    <div className="profile-text-field">
-                        <div className="profile-text-field-data">
+                    <div className="personal-data-field">
+                        <div className="personal-data-field-data">
                             <p>Nem</p>
                             <span>
                                 <Controller name="gender"
@@ -151,9 +151,12 @@ const PersonalData = (props) => {
                     </div>
                 </div>
             </div>
-            <Button type="submit"
-                    label="Módosítások mentése"
-            />
+            <div className="personal-data-button-container">
+                <Button type="submit"
+                        label="Módosítások mentése"
+                        className="personal-data-submit-button p-button-success"
+                />
+            </div>
         </form>
     )
 }
