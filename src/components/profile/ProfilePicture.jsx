@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 import {ProgressSpinner} from "primereact/progressspinner";
 import profilePicturePlaceholder from "../../assets/img/profile-picture-placeholder.png"
 import {createPlaceholderFile} from "../../util/FileUtil";
+import "../../assets/css/profile/profile-picture.css"
 
 const ProfilePicture = (props) => {
     const {firebaseAuth} = props;
@@ -33,7 +34,6 @@ const ProfilePicture = (props) => {
                 setPlaceholder("false")
             });
     }
-
 
     const getProfilePicture = () => {
         getDownloadURL(storageRef)
@@ -163,11 +163,9 @@ const ProfilePicture = (props) => {
                     />
                 </span>
                 {!tempUrl
-                    ? <ProgressSpinner style={{width: "300px", height: "284px"}}/>
+                    ? <ProgressSpinner style={{width: "35vh", height: "33.5vh"}}/>
                     : <Image src={tempUrl}
                              alt="Profile Picture"
-                             width="300px"
-                             height="300px"
                              preview
                              downloadable
                     />

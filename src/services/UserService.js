@@ -13,6 +13,17 @@ export const UserService = {
             })
     },
 
+    async updateProfessionalData(uid, professionalData) {
+
+        await getFirebase()
+            .firestore()
+            .collection("users")
+            .doc(uid)
+            .update({
+                professionalData: professionalData
+            })
+    },
+
 }
 
 

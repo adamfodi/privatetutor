@@ -5,7 +5,8 @@ import {Controller, useForm} from "react-hook-form";
 import {InputText} from "primereact/inputtext";
 import {Calendar} from "primereact/calendar";
 import {Dropdown} from "primereact/dropdown";
-import "../../assets/css/profile.css"
+import "../../assets/css/profile/personal-data.css"
+import "../../assets/css/util/calendar.css"
 import {genderList} from "../../util/FormFields";
 import Swal from "sweetalert2";
 import {updateDisplayName} from "../../redux/actions/authActions";
@@ -51,7 +52,7 @@ const PersonalData = (props) => {
     };
 
     const getFormErrorMessage = (name) => {
-        return errors[name] && <span className="error">{errors[name].message}</span>
+        return errors[name] && <span className="sign-up-error">{errors[name].message}</span>
     };
 
     return (

@@ -2,7 +2,15 @@ import React from "react";
 
 export const genderList = ["Férfi", "Nő", "Egyéb"];
 
-export const subjectList = [
+export const educationLevelList = [
+    {name: "Általános iskola"},
+    {name: "Szakközép"},
+    {name: "Gimnázium"},
+    {name: "Főiskola"},
+    {name: "Egyetem"}
+]
+
+export const subjectsList = [
     {name: "Matematika"},
     {name: "Fizika"},
     {name: "Kémia"},
@@ -31,7 +39,7 @@ export const editorHeader = (
     <div id="standalone-container">
         <div id="toolbar-container">
                 <span className="ql-formats">
-                    <select className="ql-size"/>
+                    <select className="ql-size" />
                 </span>
             <span className="ql-formats">
                     <button className="ql-bold"/>

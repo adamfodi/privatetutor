@@ -1,0 +1,92 @@
+.profile-picture-container {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #19616b;
+    border-radius: 0.5em;
+    width: 50vh;
+}
+
+.profile-picture-image-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    margin: 4vh 0 1vh 0;
+    border-bottom: 4vh solid white;
+    border-left: 3vh solid white;
+    border-right: 3vh solid white;
+}
+
+.profile-picture-image-container .p-image img {
+    height: 35vh !important;
+    width: 35vh !important;
+}
+
+.profile-picture-image-container .p-button-icon {
+    font-size: 2vh;
+    padding: 5vh !important;
+}
+
+.profile-picture-image-container .p-button-icon-only {
+    width: 2vw !important;
+    height: 2vw !important;
+}
+
+.profile-picture-image-container > span {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    width: 100%;
+    margin-bottom: -1.5vh;
+}
+
+.profile-picture-image-container > span > button:first-of-type {
+    padding: 1em !important;
+    margin-top: 0.5vh !important;
+    border: none !important;
+    box-shadow: none !important;
+    background-color: green !important;
+    margin-left: -2.5vh;
+    z-index: 3;
+    font-size: 0.5vh;
+    height: 2vw;
+    width: 2vw;
+}
+
+.profile-picture-image-container > span > button:first-of-type:hover {
+    background-color: darkgreen !important;
+}
+
+.profile-picture-image-container > span > button:last-of-type {
+    padding: 1em !important;
+    margin-top: 0.5vh !important;
+    border: none !important;
+    box-shadow: none !important;
+    background-color: red !important;
+    margin-right: -2.5vh;
+    z-index: 3;
+    font-size: 0.5vh;
+    height: 2vw;
+    width: 2vw;
+}
+
+.profile-picture-image-container > span > button:last-of-type:hover {
+    background-color: darkred !important;
+}
+
+.profile-picture-button-container {
+    display: flex;
+    justify-content: center;
+}
+
+.profile-picture-button-container button {
+    margin: 1.5vh 1.5vh 2.5vh 1.5vh;
+    font-size: 3vh;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 1vh;
+}

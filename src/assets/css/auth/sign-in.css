@@ -1,107 +1,112 @@
-.signIn-container {
-    display:flex;
+.sign-in-container {
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 35%;
     background-color: white;
-    margin: 3em auto;
+    margin: 5vh auto;
     border-radius: 1em;
     overflow: auto;
 }
 
-.signIn-header {
+.sign-in-header {
     width: 80%;
-    font-size: 4em;
-    margin: 0.25em auto 0 auto;
-    padding: 0.2em 0;
+    font-size: 7vh;
+    margin: 2vh auto 0 auto;
+    padding: 0.8vh 0;
     color: white;
-    text-align:center;
+    text-align: center;
     font-family: "Calibri, sans-serif", serif;
     background-color: #19616b;
     border-radius: 0.3em;
 }
 
-.signIn-content-container {
+.sign-in-content-container {
     display: flex;
     justify-content: center;
-    margin: 2em auto;
+    margin: 4vh auto;
     width: 90%;
     border-radius: 0.5em;
     box-shadow: 1px 3px 7px 3px #19616b;
     background-color: white;
 }
 
-.signIn-content {
+.sign-in-content {
     background-color: #19616b;
     display: flex;
-    margin: 0.8em;
+    margin: 2vh;
     flex-direction: column;
     border-radius: 0.5em;
     overflow: hidden;
     width: 97%;
 }
 
-.signIn-field{
-    margin: 1em;
+.sign-in-field {
+    margin: 3vh 2vh;
 }
 
-.signIn-field:first-of-type{
-    margin-top: 2em;
+.sign-in-field:first-of-type {
+    margin-top: 4vh;
 }
 
-.signIn-field span{
+.sign-in-field-pw {
+    margin-top: 0;
+}
+
+.sign-in-field span {
     width: 100%;
 }
 
-.signIn-container .p-inputtext {
+.sign-in-container .p-inputtext {
     width: 100%;
-    font-size: 2em !important;
+    font-size: 4vh !important;
     border: none;
     border-radius: 0.2em;
     box-shadow: none !important;
 }
 
-.signIn-container .p-inputtext:focus {
+.sign-in-container .p-inputtext:focus {
     box-shadow: 0 0 1px 3px orangered !important;
 }
 
-.signIn-container .p-invalid {
+.sign-in-container .p-invalid {
     border: none !important;
 }
 
-.signIn-container .p-password {
-    width: 100% ;
+.sign-in-container .p-password {
+    width: 100%;
 }
 
-.signIn-content button {
+.sign-in-content button {
     display: flex;
     justify-content: center;
-    margin: 1em auto;
+    margin: 4vh auto;
     text-align: center !important;
-    padding: 0.75em 1em;
+    padding: 2vh 2vh;
     width: 50%;
-    font-size: 2.5em;
+    font-size: 4.5vh;
     border-radius: 0.25em;
     background-color: white !important;
-    color:#19616b !important;
+    color: #19616b !important;
     font-weight: bold !important;
     border: none !important;
     transition: none !important;
 }
 
-.signIn-content button:hover{
+.sign-in-content button:hover {
     background-color: orangered !important;
-    color:white !important;
+    color: white !important;
     font-weight: bold !important;
     border: none !important;
 }
 
-.signIn-container .p-invalid {
+.sign-in-container .p-invalid {
     border: none !important;
 }
 
-.error {
-    margin: 0.5em 0 0 0.2em;
+.sign-in-error {
+    margin: 1vh 0 0 1vh;
     color: orange;
+    font-size: 3vh;
 }

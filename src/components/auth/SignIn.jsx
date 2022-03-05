@@ -4,7 +4,7 @@ import {InputText} from 'primereact/inputtext';
 import {classNames} from 'primereact/utils';
 import {clearErrors, signIn} from "../../redux/actions/authActions";
 import {connect} from "react-redux";
-import "../../assets/css/signIn.css"
+import "../../assets/css/auth/sign-in.css"
 import {Password} from "primereact/password";
 import {Button} from "primereact/button";
 import Swal from "sweetalert2";
@@ -31,21 +31,30 @@ const SignIn = props => {
     }, [auth.errors.signIn, clearErrors]);
 
     const onSubmit = (data) => {
+        // Swal.fire({
+        //     didOpen: () => {
+        //         Swal.showLoading();
+        //     },
+        //     title: "Bejelentkezés...",
+        //     allowOutsideClick: false,
+        //     allowEscapeKey: false
+        //
+        // });
         signIn(data);
         reset();
     };
 
     const getFormErrorMessage = (name) => {
-        return errors[name] && <p className="error">{errors[name].message}</p>
+        return errors[name] && <p className="sign-in-error">{errors[name].message}</p>
     };
 
     return (
-        <div className="signIn-container">
-            <p className="signIn-header">Bejelentkezés</p>
-            <div className="signIn-content-container">
-                <div className="signIn-content">
+        <div className="sign-in-container">
+            <p className="sign-in-header">Bejelentkezés</p>
+            <div className="sign-in-content-container">
+                <div className="sign-in-content">
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="signIn-field">
+                        <div className="sign-in-field">
                         <span className="p-float-label p-input-icon-right">
                             <i className="pi pi-envelope"/>
                                  <Controller name="email"
@@ -69,7 +78,7 @@ const SignIn = props => {
                         </span>
                             {getFormErrorMessage('email')}
                         </div>
-                        <div className="signIn-field">
+                        <div className="sign-in-field">
                         <span className="p-float-label">
                                  <Controller name="password"
                                              control={control}

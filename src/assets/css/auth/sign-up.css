@@ -1,0 +1,124 @@
+.sign-up-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 35%;
+    background-color: white;
+    margin: 5vh auto;
+    border-radius: 1em;
+    overflow: auto;
+}
+
+.sign-up-header {
+    width: 80%;
+    font-size: 7vh;
+    margin: 2vh auto 0 auto;
+    padding: 0.8vh 0;
+    color: white;
+    text-align: center;
+    font-family: "Calibri, sans-serif", serif;
+    background-color: #19616b;
+    border-radius: 0.3em;
+}
+
+.sign-up-content-container {
+    display: flex;
+    justify-content: center;
+    margin: 4vh auto;
+    width: 90%;
+    border-radius: 0.5em;
+    box-shadow: 1px 3px 7px 3px #19616b;
+    background-color: white;
+}
+
+.sign-up-content {
+    background-color: #19616b;
+    display: flex;
+    margin: 2vh;
+    flex-direction: column;
+    border-radius: 0.5em;
+    overflow: hidden;
+    width: 97%;
+}
+
+.sign-up-field {
+    margin: 3vh 2vh;
+}
+
+.sign-up-field:first-of-type {
+    margin-top: 2vh;
+}
+
+.sign-up-field span {
+    width: 100%;
+}
+
+.sign-up-container .p-inputtext {
+    width: 100%;
+    font-size: 3vh !important;
+    border: none;
+}
+
+.sign-up-container .p-inputtext:focus {
+    box-shadow: 0 0 1px 2px orangered !important;
+    border: none !important;
+}
+
+.sign-up-container .p-inputwrapper-focus {
+    box-shadow: 0 0 1px 2px orangered !important;
+    border: none !important;
+}
+
+.sign-up-container .p-dropdown-trigger-icon {
+    text-align: right;
+    margin-right: 1vh;
+    font-size: 3vh;
+}
+
+.sign-up-container .p-password {
+    width: 100%;
+}
+
+.sign-up-container .p-calendar input {
+    width: 100% !important;
+}
+
+.sign-up-container .p-dropdown {
+    width: 100%;
+    border: none;
+    box-shadow: none;
+}
+
+.sign-up-content button {
+    display: flex;
+    justify-content: center;
+    margin: 4vh auto;
+    text-align: center !important;
+    padding: 2vh 2vh;
+    width: 50%;
+    font-size: 4.5vh;
+    border-radius: 0.25em;
+    background-color: white !important;
+    color: #19616b !important;
+    font-weight: bold !important;
+    border: none !important;
+    transition: none !important;
+}
+
+.sign-up-content button:hover {
+    background-color: orangered !important;
+    color: white !important;
+    font-weight: bold !important;
+    border: none !important;
+}
+
+.sign-up-container .p-invalid {
+    border: none !important;
+}
+
+.sign-up-error {
+    margin: 1vh 0 0 0.5vh;
+    color: orange;
+    font-size: 1.5vh;
+}

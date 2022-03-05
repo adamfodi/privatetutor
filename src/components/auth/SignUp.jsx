@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
@@ -9,7 +9,8 @@ import {connect} from "react-redux";
 import {Calendar} from "primereact/calendar";
 import {Dropdown} from "primereact/dropdown";
 import {addLocale} from 'primereact/api';
-import "../../assets/css/signUp.css"
+import "../../assets/css/auth/sign-up.css"
+import "../../assets/css/util/calendar.css"
 import {genderList} from "../../util/FormFields";
 import {addLocaleHu} from "../../util/CalendarHu";
 import Swal from "sweetalert2";
@@ -52,9 +53,16 @@ const SignUp = props => {
     }, [auth.errors.signUp, clearErrors]);
 
     const onSubmit = (data) => {
-        console.log(data)
-
         if (data.password === data.password2) {
+            // Swal.fire({
+            //     didOpen: () => {
+            //         Swal.showLoading();
+            //     },
+            //     title: "Regisztráció...",
+            //     allowOutsideClick: false,
+            //     allowEscapeKey: false
+            //
+            // });
             signUp(data);
         } else {
             Swal.fire({
@@ -66,18 +74,18 @@ const SignUp = props => {
     };
 
     const getFormErrorMessage = (name) => {
-        return errors[name] && <p className="error">{errors[name].message}</p>
+        return errors[name] && <p className="sign-up-error">{errors[name].message}</p>
     };
 
     console.log(control)
 
     return (
-        <div className="signUp-container">
-            <p className="signUp-header">Regisztráció</p>
-            <div className="signUp-content-container">
-                <div className="signUp-content">
+        <div className="sign-up-container">
+            <p className="sign-up-header">Regisztráció</p>
+            <div className="sign-up-content-container">
+                <div className="sign-up-content">
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="signUp-field">
+                        <div className="sign-up-field">
                         <span className="p-float-label p-input-icon-right">
                             <i className="pi pi-envelope"/>
                                  <Controller name="email"
@@ -101,7 +109,7 @@ const SignUp = props => {
                         </span>
                             {getFormErrorMessage('email')}
                         </div>
-                        <div className="signUp-field">
+                        <div className="sign-up-field">
                         <span className="p-float-label">
                                  <Controller name="password"
                                              control={control}
@@ -127,7 +135,7 @@ const SignUp = props => {
                         </span>
                             {getFormErrorMessage('password')}
                         </div>
-                        <div className="signUp-field">
+                        <div className="sign-up-field">
                         <span className="p-float-label">
                                  <Controller name="password2"
                                              control={control}
@@ -149,7 +157,7 @@ const SignUp = props => {
                         </span>
                             {getFormErrorMessage('password2')}
                         </div>
-                        <div className="signUp-field">
+                        <div className="sign-up-field">
                         <span className="p-float-label">
                                  <Controller name="lastName"
                                              control={control}
@@ -168,7 +176,7 @@ const SignUp = props => {
                         </span>
                             {getFormErrorMessage('lastName')}
                         </div>
-                        <div className="signUp-field">
+                        <div className="sign-up-field">
                         <span className="p-float-label">
                                  <Controller name="firstName"
                                              control={control}
@@ -187,7 +195,7 @@ const SignUp = props => {
                         </span>
                             {getFormErrorMessage('firstName')}
                         </div>
-                        <div className="signUp-field">
+                        <div className="sign-up-field">
                         <span className="p-float-label">
                                  <Controller name="birthday"
                                              control={control}
@@ -215,7 +223,7 @@ const SignUp = props => {
                         </span>
                             {getFormErrorMessage('birthday')}
                         </div>
-                        <div className="signUp-field">
+                        <div className="sign-up-field">
                         <span className="p-float-label">
                                  <Controller name="gender"
                                              control={control}

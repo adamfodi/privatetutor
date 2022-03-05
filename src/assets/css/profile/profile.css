@@ -1,0 +1,42 @@
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    background-color: white;
+    margin: 5vh auto;
+    border-radius: 1em;
+    overflow: auto;
+}
+
+.profile-header {
+    width: 60%;
+    font-size: 7vh;
+    margin: 2vh auto 0 auto;
+    padding: 0.8vh 0;
+    color: white;
+    text-align: center;
+    font-family: "Calibri, sans-serif", serif;
+    background-color: #19616b;
+    border-radius: 0.3em;
+}
+
+.profile-container .p-tabview {
+    width: 90%;
+    margin-top: 4vh;
+}
+
+.profile-container .p-tabview-nav-link {
+    background-color: #19616b !important;
+    color: white !important;
+    font-size: 3vh !important;
+}
+
+.profile-container .p-tabview-nav .p-tabview-selected .p-tabview-nav-link {
+    background-color: orangered !important;
+}
+
+.p-unselectable-text:first-of-type {
+    margin-left: 3vh !important;
+}

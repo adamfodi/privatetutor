@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 import React, {useEffect, useState} from "react";
-import "../../assets/css/profile.css"
+import "../../assets/css/profile/profile.css"
 import {ProgressSpinner} from "primereact/progressspinner";
 import {TabPanel, TabView} from "primereact/tabview";
 import PersonalData from "./PersonalData";
