@@ -2,6 +2,7 @@ import {createUserWithEmailAndPassword, getAuth} from "firebase/auth";
 import {getFirebase} from "react-redux-firebase";
 import {getStorage, ref, uploadBytes} from "firebase/storage";
 import {createPlaceholderFile} from "../../util/FileUtil";
+import {createEmptyTimetable} from "../../util/CreateEmptyTimetable";
 
 export const signUp = (newUser) => {
     return (dispatch) => {
@@ -15,7 +16,13 @@ export const signUp = (newUser) => {
                         birthday: newUser.birthday,
                         gender: newUser.gender
                     },
-                    professionalData: {}
+                    professionalData: {
+                        educationLevel: null,
+                        subjects: null,
+                        introduction: null,
+                        timetable: createEmptyTimetable(),
+                        status: "inactive"
+                    }
                 })
                     .then(() => {
                         const storage = getStorage();

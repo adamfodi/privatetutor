@@ -9,10 +9,17 @@ import {UserService} from "../../services/UserService";
 import StarRatings from "react-star-ratings/build/star-ratings";
 import {MultiSelect} from "primereact/multiselect";
 import {Editor} from "primereact/editor";
+import {Divider} from "primereact/divider";
+import {Dialog} from "primereact/dialog";
+import {useState} from "react";
+import Timetable from "./Timetable";
+import {cloneDeep} from "lodash";
 
 const ProfessionalData = (props) => {
     const {auth, professionalData} = props;
     const {control, formState: {errors}, handleSubmit} = useForm({defaultValues: professionalData});
+    const [displayTimetable, setDisplayTimetable] = useState(false);
+    const [timetable, setTimetable] = useState(professionalData.timetable)
 
     const onSubmit = (data) => {
         Swal.fire({
@@ -22,7 +29,7 @@ const ProfessionalData = (props) => {
             title: "Módosítás...",
             allowOutsideClick: false,
         });
-        UserService.updateProfessionalData(auth.uid, data)
+        UserService.updateProfessionalData(auth.uid, {...data, timetable: timetable})
             .then(() => {
                 Swal.fire({
                     timer: 1500,
@@ -64,11 +71,6 @@ const ProfessionalData = (props) => {
                             <span>
                                 <Controller name="educationLevel"
                                             control={control}
-                                            rules={
-                                                {
-                                                    required: 'Végzettség megadása kötelező!',
-                                                }
-                                            }
                                             render={({field, fieldState}) => (
                                                 <Dropdown value={field.value}
                                                           options={educationLevelList}
@@ -80,19 +82,16 @@ const ProfessionalData = (props) => {
                                 />
                             </span>
                         </div>
-                        {getFormErrorMessage('educationLevel')}
                     </div>
                     <div className="professional-data-field">
                         <div className="professional-data-field-data">
-                            <p>Oktatni kívánt tárgyak</p>
+                            <div className="subjects-div">
+                                <p>Oktatni kívánt tárgyak</p>
+                                <p>A kereső ezek alapján fog szűrni!</p>
+                            </div>
                             <span>
                                 <Controller name="subjects"
                                             control={control}
-                                            rules={
-                                                {
-                                                    required: 'Legalább 1 tantárgy megadása kötelező!',
-                                                }
-                                            }
                                             render={({field, fieldState}) => (
                                                 <MultiSelect value={field.value}
                                                              options={subjectsList}
@@ -107,12 +106,11 @@ const ProfessionalData = (props) => {
                                 />
                             </span>
                         </div>
-                        {getFormErrorMessage('subjects')}
                     </div>
                     <div className="professional-data-field">
                         <div className="professional-data-field-data">
                             <p>Bemutatkozás</p>
-                            <span>
+                            <span className="introduction-span">
                                 <Controller name="introduction"
                                             control={control}
                                             render={({field, fieldState}) => (
@@ -128,9 +126,28 @@ const ProfessionalData = (props) => {
                         </div>
                     </div>
                     <div className="professional-data-field">
+                        <Button type="button"
+                                label="Órarend beállítása"
+                                className="timetable p-button-raised p-button-secondary"
+                                onClick={() => setDisplayTimetable(true)}
+                        />
+                        <Dialog showHeader={false}
+                                visible={displayTimetable}
+                                position={"bottom"}
+                                modal
+                                onHide={() => setDisplayTimetable(false)}
+                                draggable={false}
+                                resizable={false}
+                                className="timetable-dialog"
+                        >
+                            <Timetable timetable={cloneDeep(timetable)} setTimetable={setTimetable}/>
+                        </Dialog>
+                    </div>
+                    <Divider layout="horizontal"/>
+                    <div className="professional-data-field">
                         <div className="professional-data-field-data">
                             <p className="ratings">Értékelésem</p>
-                            <div>
+                            <div className="ratings-div">
                                 <div>
                                     <span>4.2</span>
                                     <div>
