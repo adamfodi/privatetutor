@@ -4,6 +4,7 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import "./App.css"
+import "../src/assets/css/util/dialog.css"
 import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import SignIn from "./components/auth/SignIn";
@@ -13,6 +14,7 @@ import MyCourses from "./components/courses/MyCourses";
 import Profile from "./components/profile/Profile";
 import {Test} from "./components/Test";
 import {connect} from "react-redux";
+import Advertisement from "./components/tutor/Advertisement";
 
 const App = (props) => {
     const {auth} = props;
@@ -28,6 +30,8 @@ const App = (props) => {
 
                 <Route exact path="/mycourses" element={<MyCourses/>}/>
                 <Route exact path="/profile" element={auth.loggedIn ? <Profile/> : <Navigate to="/main"/>}/>
+
+                <Route exact path="/tutor/advertisement" element={auth.loggedIn ? <Advertisement/> : <Navigate to="/main"/>}/>
 
                 <Route exact path="/test" element={<Test/>}/>
                 <Route path="*" element={<Navigate to="/main"/>}/>

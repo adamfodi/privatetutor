@@ -9,19 +9,30 @@ export const signUp = (newUser) => {
         createUserWithEmailAndPassword(getAuth(), newUser.email, newUser.password)
             .then((userCredential) => {
                 getFirebase().firestore().collection("users").doc(userCredential.user.uid).set({
-                    personalData: {
-                        firstName: newUser.firstName,
-                        lastName: newUser.lastName,
-                        email: newUser.email,
-                        birthday: newUser.birthday,
-                        gender: newUser.gender
+                    profile: {
+                        personalData: {
+                            firstName: newUser.firstName,
+                            lastName: newUser.lastName,
+                            email: newUser.email,
+                            birthday: newUser.birthday,
+                            gender: newUser.gender
+                        },
+                        feedback: null
                     },
-                    professionalData: {
-                        educationLevel: null,
-                        subjects: null,
-                        introduction: null,
-                        timetable: createEmptyTimetable(),
-                        status: "inactive"
+                    student : {
+                        privateLessons: null,
+                        tests: null
+                    },
+                    tutor : {
+                        advertisement: {
+                            educationLevel: null,
+                            introduction: null,
+                            subjects: [],
+                            timetable: createEmptyTimetable(),
+                            active: false
+                        },
+                        privateLessons: null,
+                        tests: null
                     }
                 })
                     .then(() => {

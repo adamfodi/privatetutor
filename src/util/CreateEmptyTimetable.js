@@ -2,7 +2,6 @@ export const createEmptyTimetable = () => {
     let timetable = []
     const rowTemplate = {
         timeInterval: {from: null, to: null},
-        index: null,
         monday: "closed",
         tuesday: "closed",
         wednesday: "closed",

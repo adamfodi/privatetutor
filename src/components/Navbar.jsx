@@ -48,54 +48,54 @@ const Navbar = props => {
         },
 
         {
-            label: 'Órarend',
-            icon: 'pi pi-fw pi-calendar',
-            command: () => {
-                navigate("")
-            },
-            disabled: true
-        },
-
-        {
-            label: 'Kurzusok',
+            label: 'Hallgató',
             icon: 'pi pi-fw pi-table',
             items: [
                 {
-                    label: 'Jelentkezett',
+                    label: 'Magánórák',
                     icon: 'pi pi-fw pi-pencil',
                     command: () => {
                         navigate("")
                     },
-                    disabled: true
                 },
                 {
-                    label: 'Saját',
+                    label: 'Tesztek',
                     icon: 'pi pi-fw pi-align-right',
                     command: () => {
-                        navigate("/mycourses")
+                        navigate("")
                     },
-                    disabled: true
                 },
             ]
         },
 
         {
-            label: 'Privát órák',
-            icon: 'pi pi-fw pi-eye',
-            command: () => {
-                navigate("")
-            },
-            disabled: true
+            label: 'Oktató',
+            icon: 'pi pi-fw pi-table',
+            items: [
+                {
+                    label: 'Hirdetés',
+                    icon: 'pi pi-fw pi-pencil',
+                    command: () => {
+                        navigate("/tutor/advertisement")
+                    }
+                },
+                {
+                    label: 'Magánórák',
+                    icon: 'pi pi-fw pi-pencil',
+                    command: () => {
+                        navigate("")
+                    },
+                },
+                {
+                    label: 'Tesztek',
+                    icon: 'pi pi-fw pi-align-right',
+                    command: () => {
+                        navigate("")
+                    },
+                },
+            ]
         },
 
-        {
-            label: 'Tesztek',
-            icon: 'pi pi-fw pi-copy',
-            command: () => {
-                navigate("")
-            },
-            disabled: true
-        },
     ];
 
     const userItems = [

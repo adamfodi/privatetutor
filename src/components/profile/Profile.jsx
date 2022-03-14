@@ -5,37 +5,35 @@ import {ProgressSpinner} from "primereact/progressspinner";
 import {TabPanel, TabView} from "primereact/tabview";
 import PersonalData from "./PersonalData";
 import ProfilePicture from "./ProfilePicture";
-import ProfessionalData from "./ProfessionalData";
 
 const Profile = props => {
-    const {userProfile} = props;
-    const [profile, setProfile] = useState(null);
+    const {profile} = props;
+    const [newProfile, setNewProfile] = useState(null);
 
     useEffect(() => {
-        if (userProfile) {
-            console.log("ONLY OVERRIDES THE PROFILE IF THAT CHANGES!")
-            setProfile({
-                ...userProfile,
-                personalData: {...userProfile.personalData, birthday: userProfile.personalData.birthday.toDate()}
+        if (profile) {
+            setNewProfile({
+                ...profile,
+                personalData: {...profile.personalData, birthday: profile.personalData.birthday.toDate()}
             })
         }
-    }, [userProfile]);
+    }, [profile]);
 
-    console.log(profile)
+    console.log(newProfile)
 
     return (
         <div className="profile-container">
             <p className="profile-header">Profil</p>
-            {profile
+            {newProfile
                 ? <TabView>
                     <TabPanel header="Személyes adatok">
-                        <PersonalData personalData={profile.personalData}/>
+                        <PersonalData personalData={newProfile.personalData}/>
                     </TabPanel>
                     <TabPanel header="Profilkép">
                         <ProfilePicture/>
                     </TabPanel>
-                    <TabPanel header="Oktatói adatok">
-                        <ProfessionalData professionalData={profile.professionalData}/>
+                    <TabPanel header="Visszajelzések">
+
                     </TabPanel>
                 </TabView>
                 : <div>
@@ -48,7 +46,9 @@ const Profile = props => {
 
 const mapStateToProps = state => {
     return {
-        userProfile: state.firebase.auth.isLoaded && state.firestore.data.users ? state.firestore.data.users[state.firebase.auth.uid] : null
+        profile: state.firebase.auth.isLoaded && state.firestore.data.users
+            ? state.firestore.data.users[state.firebase.auth.uid]['profile']
+            : null
     };
 };
 

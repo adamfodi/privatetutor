@@ -1,16 +1,19 @@
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
-import "../../assets/css/profile/timetable.css"
+import "../../assets/css/tutor/timetable.css"
 import {Button} from "primereact/button";
 
 const Timetable = (props) => {
-    const {timetable, setTimetable} = props;
+    const {timetable, setNewAdvertisement, setDisplayTimetable} = props;
 
     const header = () => {
         return (
             <div className="flex justify-content-between align-items-center">
-                <h5 className="m-0">Órarend</h5>
-                <Button icon="pi pi-times" className="p-button-rounded p-button-danger p-button-outlined" />
+                <h1>Órarend</h1>
+                <Button icon="pi pi-times"
+                        className="p-button-rounded p-button-danger p-button-outlined"
+                        onClick={() => setDisplayTimetable(false)}
+                />
             </div>
         )
     }
@@ -31,29 +34,48 @@ const Timetable = (props) => {
                 ? <Button label="NYITOTT"
                           className="p-button-raised p-button-success"
                           onClick={() => {
-                              const newTimetable = [...timetable];
-                              newTimetable[columnData.rowIndex][columnData.field] = "closed";
-                              console.log(newTimetable)
-                              setTimetable(newTimetable);
+                              setNewAdvertisement((oldAdvertisement) => {
+                                  return {
+                                      ...oldAdvertisement,
+                                      timetable:
+                                          oldAdvertisement.timetable.map((row, idx) => {
+                                              return idx === columnData.rowIndex
+                                                  ? {...row, [columnData.field]: "closed"}
+                                                  : row
+                                          })
+
+                                  }
+                              })
                           }}
                 />
                 : <Button label="ZÁRT"
                           className="p-button-raised p-button-danger"
                           onClick={() => {
-                              const newTimetable = [...timetable];
-                              newTimetable[columnData.rowIndex][columnData.field] = "open";
-                              console.log(newTimetable)
-                              setTimetable(newTimetable);
+                              setNewAdvertisement((oldAdvertisement) => {
+                                  return {
+                                      ...oldAdvertisement,
+                                      timetable:
+                                          oldAdvertisement.timetable.map((row, idx) => {
+                                              return idx === columnData.rowIndex
+                                                  ? {...row, [columnData.field]: "open"}
+                                                  : row
+                                          })
+
+                                  }
+                              })
                           }}
                 />
         );
     }
+
+    console.log(timetable)
 
     return (
         <div className="timetable-container">
             <DataTable value={timetable}
                        responsiveLayout="scroll"
                        header={header}
+                       emptyMessage="Töltés..."
             >
                 <Column field="timeInterval"
                         header="Idősáv"

@@ -60,6 +60,42 @@
     margin-bottom: 1em;
 }
 
+.component-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    background-color: white;
+    margin: 2em auto;
+    border-radius: 1em;
+    overflow: auto;
+}
+
+.component-header {
+    width: 85%;
+    font-size: 3em;
+    margin: 0.5em auto 0 auto;
+    padding: 0.2em 0;
+    color: white;
+    text-align: center;
+    font-family: "Calibri, sans-serif", serif;
+    background-color: #19616b;
+    border-radius: 0.3em;
+}
+
+.component-content {
+    display:flex;
+    flex-direction: column;
+    width: 85%;
+    background-color: #19616b;
+    color: white;
+    margin: 2em auto;
+    border-radius: 0.5em;
+    overflow: auto;
+}
+
+
 @media screen and (max-width: 960px) {
     .form .card {
         max-width: 50%;

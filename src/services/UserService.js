@@ -9,18 +9,18 @@ export const UserService = {
             .collection("users")
             .doc(uid)
             .update({
-                personalData: personalData
+                'profile.personalData': personalData
             })
     },
 
-    async updateProfessionalData(uid, professionalData) {
+    async updateTutorAdvertisement(uid, advertisement) {
 
         await getFirebase()
             .firestore()
             .collection("users")
             .doc(uid)
             .update({
-                professionalData: professionalData
+                'tutor.advertisement': advertisement
             })
     },
 
