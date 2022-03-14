@@ -36,6 +36,14 @@ const Advertisement = (props) => {
     };
 
     const onSubmit = () => {
+        Swal.fire({
+            didOpen: () => {
+                Swal.showLoading();
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false
+
+        });
         UserService.updateTutorAdvertisement(firebaseAuth.uid, newAdvertisement)
             .then(() => {
                 Swal.fire({
@@ -179,8 +187,8 @@ const Advertisement = (props) => {
 const mapStateToProps = state => {
     return {
         firebaseAuth: state.firebase.auth,
-        advertisement: !state.firebase.auth.isEmpty && state.firestore.data.users
-            ? state.firestore.data.users[state.firebase.auth.uid]['tutor']['advertisement']
+        advertisement: !state.firebase.auth.isEmpty && !state.firebase.profile.isEmpty
+            ? state.firebase.profile.tutor.advertisement
             : null
     };
 };

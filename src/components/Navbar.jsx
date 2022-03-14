@@ -12,7 +12,7 @@ import "../App.css"
 const Navbar = props => {
     const navigate = useNavigate();
     const menu = useRef(null);
-    const {auth,personalData} = props;
+    const {auth, personalData} = props;
     const displayName = personalData ? personalData.lastName + ' ' + personalData.firstName : null;
 
     const mainItems = [
@@ -160,8 +160,8 @@ const Navbar = props => {
 const mapStateToProps = state => {
     return {
         auth: state.firebase.auth,
-        personalData: !state.firebase.auth.isEmpty && state.firestore.data.users
-            ? state.firestore.data.users[state.firebase.auth.uid]['profile']['personalData']
+        personalData: !state.firebase.auth.isEmpty && !state.firebase.profile.isEmpty
+            ? state.firebase.profile.profile.personalData
             : null
     };
 };

@@ -77,8 +77,6 @@ const SignUp = props => {
         return errors[name] && <p className="sign-up-error">{errors[name].message}</p>
     };
 
-    console.log(control)
-
     return (
         <div className="sign-up-container">
             <p className="sign-up-header">Regisztráció</p>
