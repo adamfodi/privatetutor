@@ -25,13 +25,13 @@ const App = (props) => {
             <Routes>
                 <Route exact path="/main" element={<Main/>}/>
 
-                <Route exact path="/signin" element={!auth.loggedIn ? <SignIn/> : <Navigate to="/main"/>}/>
-                <Route exact path="/signup" element={!auth.loggedIn ? <SignUp/> : <Navigate to="/main"/>}/>
+                <Route exact path="/signin" element={auth.isEmpty ? <SignIn/> : <Navigate to="/main"/>}/>
+                <Route exact path="/signup" element={auth.isEmpty ? <SignUp/> : <Navigate to="/main"/>}/>
 
                 <Route exact path="/mycourses" element={<MyCourses/>}/>
-                <Route exact path="/profile" element={auth.loggedIn ? <Profile/> : <Navigate to="/main"/>}/>
+                <Route exact path="/profile" element={!auth.isEmpty ? <Profile/> : <Navigate to="/main"/>}/>
 
-                <Route exact path="/tutor/advertisement" element={auth.loggedIn ? <Advertisement/> : <Navigate to="/main"/>}/>
+                <Route exact path="/tutor/advertisement" element={!auth.isEmpty ? <Advertisement/> : <Navigate to="/main"/>}/>
 
                 <Route exact path="/test" element={<Test/>}/>
                 <Route path="*" element={<Navigate to="/main"/>}/>
@@ -42,7 +42,7 @@ const App = (props) => {
 
 const mapStateToProps = state => {
     return {
-        auth: state.auth
+        auth: state.firebase.auth
     };
 };
 

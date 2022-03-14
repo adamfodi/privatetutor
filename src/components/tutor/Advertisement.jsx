@@ -179,7 +179,7 @@ const Advertisement = (props) => {
 const mapStateToProps = state => {
     return {
         firebaseAuth: state.firebase.auth,
-        advertisement: state.firebase.auth.isLoaded && state.firestore.data.users
+        advertisement: !state.firebase.auth.isEmpty && state.firestore.data.users
             ? state.firestore.data.users[state.firebase.auth.uid]['tutor']['advertisement']
             : null
     };

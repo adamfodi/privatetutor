@@ -46,7 +46,7 @@ const Profile = props => {
 
 const mapStateToProps = state => {
     return {
-        profile: state.firebase.auth.isLoaded && state.firestore.data.users
+        profile: !state.firebase.auth.isEmpty && state.firestore.data.users
             ? state.firestore.data.users[state.firebase.auth.uid]['profile']
             : null
     };

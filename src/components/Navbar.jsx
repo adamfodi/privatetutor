@@ -5,7 +5,6 @@ import {Button} from "primereact/button";
 import {connect} from "react-redux";
 import {signOut} from "../redux/actions/authActions";
 import {compose} from "redux";
-import {firestoreConnect} from "react-redux-firebase";
 import {Menu} from "primereact/menu";
 import "../App.css"
 
@@ -13,23 +12,8 @@ import "../App.css"
 const Navbar = props => {
     const navigate = useNavigate();
     const menu = useRef(null);
-    const {auth, users} = props;
-    const [displayName, setDisplayName] = useState(null);
-
-    // console.log(displayName)
-
-    // useEffect(() => {
-    //     if (users && auth.isLoaded && !auth.isEmpty) {
-    //         for (let user of users) {
-    //             console.log(user)
-    //             if (user.uid === auth.uid) {
-    //                 setDisplayName(user.fullName);
-    //                 break;
-    //             }
-    //         }
-    //     }
-    // }, [users, auth]);
-
+    const {auth,personalData} = props;
+    const displayName = personalData ? personalData.lastName + ' ' + personalData.firstName : null;
 
     const mainItems = [
         {
@@ -131,7 +115,7 @@ const Navbar = props => {
         <div>
             <Menubar
                 model={mainItems}
-                end={!auth.loggedIn
+                end={auth.isEmpty
                     ? <React.Fragment>
                         <Button
                             onClick={() => navigate("/signup")}
@@ -154,14 +138,16 @@ const Navbar = props => {
                             model={userItems}
                             popup
                             ref={menu}
-                            id="popup_menu"/>
+                            id="popup_menu"
+                        />
                         <Button
-                            label={auth.displayName}
-                            className="p-button-danger"
+                            label={displayName ? displayName : "Loading..."}
+                            className="p-button-outlined p-button-danger"
                             icon="pi pi-chevron-down"
                             iconPos="right"
                             onClick={(event) => menu.current.toggle(event)}
-                            aria-controls="popup_menu" aria-haspopup
+                            aria-controls="popup_menu"
+                            aria-haspopup
                             style={{marginRight: 10, fontSize: 18}}
                         />
                     </React.Fragment>
@@ -173,8 +159,10 @@ const Navbar = props => {
 
 const mapStateToProps = state => {
     return {
-        users: state.firestore.ordered.users,
-        auth: state.auth
+        auth: state.firebase.auth,
+        personalData: !state.firebase.auth.isEmpty && state.firestore.data.users
+            ? state.firestore.data.users[state.firebase.auth.uid]['profile']['personalData']
+            : null
     };
 };
 
@@ -185,6 +173,4 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    firestoreConnect(() => ['users'])
-)(Navbar);
+    connect(mapStateToProps, mapDispatchToProps))(Navbar);
