@@ -1,7 +1,5 @@
 import {createUserWithEmailAndPassword, getAuth} from "firebase/auth";
 import {getFirebase} from "react-redux-firebase";
-import {getStorage, ref, uploadBytes} from "firebase/storage";
-import {createPlaceholderFile} from "../../util/FileUtil";
 import {createEmptyTimetable} from "../../util/CreateEmptyTimetable";
 
 export const signUp = (newUser) => {
@@ -17,13 +15,14 @@ export const signUp = (newUser) => {
                             birthday: newUser.birthday,
                             gender: newUser.gender
                         },
+                        profilePictureUrl: null,
                         feedback: null
                     },
-                    student : {
+                    student: {
                         privateLessons: null,
                         tests: null
                     },
-                    tutor : {
+                    tutor: {
                         advertisement: {
                             educationLevel: null,
                             introduction: null,
@@ -36,36 +35,19 @@ export const signUp = (newUser) => {
                     }
                 })
                     .then(() => {
-                        const storage = getStorage();
-                        const storageRef = ref(storage, 'profilePictures/' + userCredential.user.uid);
-                        createPlaceholderFile(userCredential.user.uid).then((file) => {
-                            const metadata = {
-                                customMetadata: {
-                                    'placeholder': 'true'
-                                }
-                            };
-                            uploadBytes(storageRef, file, metadata)
-                                .then(() => {
-                                    dispatch(
-                                        {
-                                            type: "SIGNUP_SUCCESS",
-                                            payload: {
-                                                loggedIn: true,
-                                                displayName: newUser.lastName + ' ' + newUser.firstName
-                                            }
-                                        });
-                                })
-                        })
+                        dispatch({
+                            type: "SIGNUP_SUCCESS", payload: {
+                                loggedIn: true, displayName: newUser.lastName + ' ' + newUser.firstName
+                            }
+                        });
                     })
-            })
-            .catch((error) => {
-                dispatch(
-                    {
-                        type: "SIGNUP_ERROR",
-                        payload: {
-                            error: error.message
-                        }
-                    });
+                    .catch((error) => {
+                        dispatch({
+                            type: "SIGNUP_ERROR", payload: {
+                                error: error.message
+                            }
+                        });
+                    })
             })
     }
 };
@@ -78,24 +60,19 @@ export const signIn = (credentials) => {
             .then((userCredential) => {
                 getFirebase().firestore().collection("users").doc(userCredential.user.uid).get()
                     .then(snapShot => {
-                        dispatch(
-                            {
-                                type: "SIGNIN_SUCCESS",
-                                payload: {
-                                    loggedIn: true,
-                                    displayName: snapShot.data().lastName + ' ' + snapShot.data().firstName
-                                }
-                            });
+                        dispatch({
+                            type: "SIGNIN_SUCCESS", payload: {
+                                loggedIn: true, displayName: snapShot.data().lastName + ' ' + snapShot.data().firstName
+                            }
+                        });
                     })
             })
             .catch((error) => {
-                dispatch(
-                    {
-                        type: "SIGNIN_ERROR",
-                        payload: {
-                            error: error.message
-                        }
-                    });
+                dispatch({
+                    type: "SIGNIN_ERROR", payload: {
+                        error: error.message
+                    }
+                });
             })
     };
 };
@@ -119,11 +96,8 @@ export const clearErrors = () => {
 
 export const updateDisplayName = (displayName) => {
     return (dispatch) => {
-        dispatch(
-            {
-                type: "UPDATE_DISPLAYNAME",
-                payload: displayName
-            }
-        );
+        dispatch({
+            type: "UPDATE_DISPLAYNAME", payload: displayName
+        });
     };
 };

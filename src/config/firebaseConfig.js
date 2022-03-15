@@ -6,16 +6,6 @@ import {createFirestoreInstance} from 'redux-firestore'
 import rootReducer from "../redux/reducers/rootReducer";
 import {composeWithDevTools} from "redux-devtools-extension";
 import thunk from "redux-thunk";
-import {persistReducer, persistStore} from 'redux-persist'
-import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
-
-const rootPersistConfig = {
-    key: 'root',
-    storage: storage,
-    // blacklist: ['auth', 'courses'] // AUTH'S PREVIOUS STATE WILL NOT BE LOADED! SO IT STARTS EMPTY
-}
-
-const persistedReducer = persistReducer(rootPersistConfig, rootReducer)
 
 const firebaseConfig = {
     apiKey: "AIzaSyClHuL2aknLUGzHOLokYKNiUwYIKAcw5kk",
@@ -42,7 +32,7 @@ firebase.firestore();
 // Create store with reducers and initial state
 const initialState = {};
 const store = createStore(
-    persistedReducer,
+    rootReducer,
     initialState,
     composeWithDevTools(
         applyMiddleware(thunk),
@@ -57,6 +47,4 @@ const rrfProps = {
     createFirestoreInstance // NEEDED FOR FIRESTORE REDUCER!
 };
 
-const persistor = persistStore(store)
-
-export {store, persistor, rrfProps, firebaseConfig};
+export {store, rrfProps, firebaseConfig};

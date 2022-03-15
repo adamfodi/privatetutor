@@ -30,7 +30,7 @@ const Profile = props => {
                         <PersonalData personalData={newProfile.personalData}/>
                     </TabPanel>
                     <TabPanel header="Profilkép">
-                        <ProfilePicture/>
+                        <ProfilePicture profilePictureUrl={newProfile.profilePictureUrl}/>
                     </TabPanel>
                     <TabPanel header="Visszajelzések">
 
