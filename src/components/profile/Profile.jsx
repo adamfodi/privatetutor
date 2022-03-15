@@ -22,24 +22,28 @@ const Profile = props => {
     console.log(newProfile)
 
     return (
-        <div className="profile-container">
-            <p className="profile-header">Profil</p>
-            {newProfile
-                ? <TabView>
-                    <TabPanel header="Személyes adatok">
-                        <PersonalData personalData={newProfile.personalData}/>
-                    </TabPanel>
-                    <TabPanel header="Profilkép">
-                        <ProfilePicture profilePictureUrl={newProfile.profilePictureUrl}/>
-                    </TabPanel>
-                    <TabPanel header="Visszajelzések">
+        <div className="component-container">
+            <p className="component-header">Profil</p>
+            <div className="component-content">
+                <div className="profile-container">
+                    {newProfile
+                        ? <TabView>
+                            <TabPanel header="Személyes adatok">
+                                <PersonalData personalData={newProfile.personalData}/>
+                            </TabPanel>
+                            <TabPanel header="Profilkép">
+                                <ProfilePicture profilePictureUrl={newProfile.profilePictureUrl}/>
+                            </TabPanel>
+                            <TabPanel header="Visszajelzések">
 
-                    </TabPanel>
-                </TabView>
-                : <div>
-                    <ProgressSpinner/>
+                            </TabPanel>
+                        </TabView>
+                        : <div>
+                            <ProgressSpinner/>
+                        </div>
+                    }
                 </div>
-            }
+            </div>
         </div>
     )
 }

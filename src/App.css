@@ -85,10 +85,10 @@
 }
 
 .component-content {
-    display:flex;
-    flex-direction: column;
+    /*display:flex;*/
+    /*flex-direction: column;*/
     width: 85%;
-    background-color: #19616b;
+    background-color: transparent;
     color: white;
     margin: 2em auto;
     border-radius: 0.5em;

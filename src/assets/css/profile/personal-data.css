@@ -5,7 +5,7 @@
     display: flex;
     margin: auto;
     border-radius: 0.5em;
-    overflow: auto;
+    width: 100%;
 }
 
 .personal-data-fields {
@@ -13,8 +13,8 @@
 }
 
 .personal-data-field {
-    margin-left: 5vh;
-    margin-right: 5vh;
+    margin-left: 2em;
+    margin-right: 2em;
 }
 
 .personal-data-field-data {
@@ -25,7 +25,7 @@
 
 .personal-data-field-data > p {
     width: 40%;
-    font-size: 2.5vh !important;
+    font-size: 1.5em !important;
     font-weight: bold;
 }
 
@@ -44,7 +44,7 @@
 
 .personal-data-field-data .p-inputtext {
     width: 100%;
-    font-size: 2.5vh !important;
+    font-size: 1.5em !important;
     border: none;
 }
 
@@ -60,9 +60,7 @@
 
 .personal-data-field-data .p-dropdown-trigger-icon {
     width: 100%;
-    text-align: right;
-    margin-right: 1vh;
-    font-size: 2.5vh;
+    font-size: 1.5em;
 }
 
 .personal-data-button-container {
@@ -72,8 +70,8 @@
 }
 
 .personal-data-submit-button {
-    margin: 5vh 0 2vh 0;
-    padding: 3vh 4vh;
-    font-size: 3.5vh;
+    margin: 1em 0 0 0;
+    padding: 0.6em;
+    font-size: 2em;
 }
 

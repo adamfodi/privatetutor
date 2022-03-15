@@ -6,7 +6,7 @@
     align-items: center;
     background-color: #19616b;
     border-radius: 0.5em;
-    width: 50vh;
+    width: 35em;
 }
 
 .profile-picture-image-container {
@@ -15,25 +15,19 @@
     justify-content: center;
     align-items: center;
     background-color: white;
-    margin: 4vh 0 1vh 0;
-    border-bottom: 4vh solid white;
-    border-left: 3vh solid white;
-    border-right: 3vh solid white;
+    margin: 2em 0 1em 0;
+    border-bottom: 3em solid white;
+    border-left: 2em solid white;
+    border-right: 2em solid white;
 }
 
 .profile-picture-image-container .p-image img {
-    height: 35vh !important;
-    width: 35vh !important;
+    height: 20em !important;
+    width: 20em !important;
 }
 
 .profile-picture-image-container .p-button-icon {
-    font-size: 2vh;
-    padding: 5vh !important;
-}
-
-.profile-picture-image-container .p-button-icon-only {
-    width: 2vw !important;
-    height: 2vw !important;
+    font-size: 3em;
 }
 
 .profile-picture-image-container > span {
@@ -41,20 +35,20 @@
     justify-content: space-between;
     background-color: white;
     width: 100%;
-    margin-bottom: -1.5vh;
+    margin-bottom: -1em;
 }
 
 .profile-picture-image-container > span > button:first-of-type {
-    padding: 1em !important;
-    margin-top: 0.5vh !important;
+    padding: 3em !important;
+    margin-top: 1em !important;
     border: none !important;
     box-shadow: none !important;
     background-color: green !important;
-    margin-left: -2.5vh;
+    margin-left: -3em;
     z-index: 3;
-    font-size: 0.5vh;
-    height: 2vw;
-    width: 2vw;
+    font-size: 0.5em;
+    height: 1em;
+    width: 1em;
 }
 
 .profile-picture-image-container > span > button:first-of-type:hover {
@@ -62,16 +56,16 @@
 }
 
 .profile-picture-image-container > span > button:last-of-type {
-    padding: 1em !important;
-    margin-top: 0.5vh !important;
+    padding: 3em !important;
+    margin-top: 1em !important;
     border: none !important;
     box-shadow: none !important;
     background-color: red !important;
-    margin-right: -2.5vh;
+    margin-right: -3em;
     z-index: 3;
-    font-size: 0.5vh;
-    height: 2vw;
-    width: 2vw;
+    font-size: 0.5em;
+    height: 1em;
+    width: 1em;
 }
 
 .profile-picture-image-container > span > button:last-of-type:hover {
@@ -84,9 +78,9 @@
 }
 
 .profile-picture-button-container button {
-    margin: 1.5vh 1.5vh 2.5vh 1.5vh;
-    font-size: 3vh;
+    margin: 0.5em 0.5em 1em 0.5em;
+    font-size: 1.7em;
     border: none !important;
     box-shadow: none !important;
-    padding: 1vh;
+    padding: 0.5em;
 }
