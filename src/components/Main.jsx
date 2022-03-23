@@ -1,37 +1,110 @@
 import {connect} from "react-redux";
 import {compose} from "redux";
-import {FilterMatchMode} from "primereact/api";
 import React, {useEffect, useState} from "react";
 import "../assets/css/main.css"
-import Swal from "sweetalert2";
 import {firestoreConnect} from "react-redux-firebase";
 import {Column} from "primereact/column";
 import {DataTable} from "primereact/datatable";
 import {Image} from "primereact/image";
+import {subjectsList} from "../util/FormFields";
+import profilePicturePlaceholder from "../assets/img/profile-picture-placeholder.png"
+import lessonsPicture from "../assets/img/lessons.png"
+import ratingPicture from "../assets/img/star.png"
+import pricePicture from "../assets/img/money.png"
+import {Button} from "primereact/button";
+import {Chips} from "primereact/chips";
+import {InputText} from "primereact/inputtext";
+import {Dropdown} from "primereact/dropdown";
+import {Badge} from "primereact/badge";
+import {MultiSelect} from "primereact/multiselect";
 
 const Main = props => {
     const {auth, users} = props;
-    const [tutors, setTutors] = useState(null);
-    const [tutorsImg, setTutorsImg] = useState(null)
+    const [filteredTutors, setFilteredTutors] = useState([]);
+    const [nameFilter, setNameFilter] = useState('');
+    const [subjectFilter, setSubjectFilter] = useState(null);
+    const [timetableFilter, setTimetableFilter] = useState(null);
+    const [showTimetable, setShowTimetable] = useState(false);
+    const [currentTimetable, setCurrentTimetable] = useState(null);
+
+    console.log(filteredTutors)
 
     useEffect(() => {
-        console.log("tutors")
-        if (users) {
-            let tutors = users.filter((user) => user.tutor.advertisement.active === true);
+        users && setFilteredTutors(
+            users.filter((user) => {
+                const filterTutors = () => {
+                    console.log("filterTutors")
+                    return user.tutor.advertisement.active
+                }
 
-            let tutorsImg = {};
-            (async () => {
-                console.log(tutors)
-                await setTutorsImg(tutorsImg)
-                await setTutors(tutors);
-            })();
-        }
-    }, [users]);
+                const filterNames = () => {
+                    console.log("filterNames")
+                    return nameFilter.length === 0
+                        ? true
+                        : user.profile.personalData.fullName.toLowerCase().startsWith(nameFilter.toLowerCase())
+                }
 
-    const filters = {
-        'subject': {value: null, matchMode: FilterMatchMode.STARTS_WITH},
-        'tutorFullName': {value: null, matchMode: FilterMatchMode.STARTS_WITH},
-    };
+                const filterSubjects = () => {
+                    console.log("filterSubjects")
+                    return !subjectFilter
+                        ? true
+                        : user.tutor.advertisement.subjects.some((subject) => subject.name === subjectFilter.name)
+                }
+
+                return filterTutors() && filterNames() && filterSubjects()
+            })
+        )
+    }, [users, nameFilter, subjectFilter, timetableFilter])
+
+    const pictureAndProfileBodyTemplate = (rowData) => {
+        return <div>
+            <Image
+                src={rowData.profile.profilePictureUrl ? rowData.profile.profilePictureUrl : profilePicturePlaceholder}
+                alt={rowData.profile.personalData.fullName + ' profile picture'}
+                preview
+            />
+            <Button label="Profil megtekintése"/>
+        </div>
+    }
+
+    const nameAndSubjectsBodyTemplate = (rowData) => {
+        return <div>
+            <p>{rowData.profile.personalData.fullName}</p>
+            <p>Tanított tárgyak:</p>
+            <Chips value={rowData.tutor.advertisement.subjects.map((subject) => subject.name)}
+                   removable={false}
+                   readOnly
+
+            />
+        </div>
+    }
+
+    const lessonsBodyTemplate = (rowData) => {
+        return <div>
+            <div>
+                <img src={lessonsPicture}/>
+            </div>
+            <Badge value={15}/>
+        </div>
+    }
+
+    const ratingBodyTemplate = (rowData) => {
+        return <div>
+            <div>
+                <img src={ratingPicture}/>
+            </div>
+            <Badge value={4.2}/>
+        </div>
+    }
+
+    const hourlyRateBodyTemplate = (rowData) => {
+        return <div>
+            <div>
+                <img src={pricePicture}/>
+            </div>
+            <Badge value={"5000 Ft / óra"}/>
+        </div>
+    }
 
     const header =
         (
@@ -40,50 +113,106 @@ const Main = props => {
             </div>
         )
 
-    const profilePictureTemplate = (rowData) => {
-        console.log(tutorsImg ? tutorsImg[rowData.id] : null)
-        console.log(rowData)
-        return (
-            <Image src={tutorsImg ? tutorsImg[rowData.id] : null}
-                   alt="Profile Picture"
-                   preview
-                   downloadable
-            />
-
-        )
-    };
-
-    console.log(tutors)
-    console.log(tutorsImg)
-    console.log(tutorsImg ? tutorsImg['LNN9GwcwbXbxqSQFAhVkDmg9yto2'] : null)
 
     return (
-        <React.Fragment>
+        <div className="main-container">
             <div className="datatable-container">
                 <DataTable
-                    value={tutors}
-                    loading={!tutors || !tutorsImg}
+                    value={filteredTutors}
+                    loading={!users}
                     paginator
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
-                    currentPageReportTemplate="Összes meghirdetett kurzus száma: {totalRecords}"
+                    currentPageReportTemplate="Találatok száma: {totalRecords}"
                     responsiveLayout="scroll"
-                    rows={10}
-                    filters={filters}
-                    filterDisplay="row"
-                    header={header}
-                    emptyMessage="Nem található kurzus."
+                    rows={5}
+                    rowsPerPageOptions={[5, 10, 15, 20]}
+                    // header={header}
+                    emptyMessage="Nem található tanár."
                 >
-                    <Column
-                        body={profilePictureTemplate}
-                        exportable={false}
+
+                    <Column body={pictureAndProfileBodyTemplate}
+                            className="picture-and-profile-template-td"
+
+                    />
+
+                    <Column field="profile.personalData.fullName"
+                            header="Név"
+                            sortable
+                            body={nameAndSubjectsBodyTemplate}
+                            className="name-and-subjects-body-template-td"
+
+                    />
+
+                    <Column header="Megtartott órák"
+                            sortable
+                            body={lessonsBodyTemplate}
+                            className="lessons-body-template-td"
+                    />
+
+                    <Column header="Értékelés"
+                            sortable
+                            body={ratingBodyTemplate}
+                            className="rating-body-template-td"
+
+                    />
+
+                    <Column header="Óradíj"
+                            sortable
+                            body={hourlyRateBodyTemplate}
+                            className="hourly-rate-body-template-td"
+
                     />
 
                 </DataTable>
             </div>
+            <div className="filter-container">
+                <div className="filter-container-header">
+                    <p>Szűrés</p>
+                    <Button label="Szűrés törlése"
+                            className="p-button-danger p-button-text"
+                            onClick={() => {
+                                setNameFilter('')
+                                setSubjectFilter(null)
+                            }}
+                    />
+                </div>
+                <div className="filter-container-name">
+                    <p>Név</p>
+                    <InputText value={nameFilter}
+                               onChange={(e) => setNameFilter(e.target.value)}
+                               placeholder="pl. Kovács István"
+                    />
+                </div>
+                <div className="filter-container-subjects">
+                    <p>Tantárgy</p>
+                    <Dropdown value={subjectFilter}
+                              options={subjectsList}
+                              onChange={(e) => setSubjectFilter(e.value)}
+                              optionLabel="name"
+                              filter
+                              filterMatchMode="startsWith"
+                              showClear
+                              filterBy="name"
+                              placeholder="pl. Matematika"
+                              emptyFilterMessage="Nem található ilyen tárgynév"
+                    />
 
-            <div>
+                </div>
+                <div className="filter-container-timetable">
+                    <p>Időpont</p>
+                    <MultiSelect
+                        // value={selectedGroupedCities}
+                        // options={groupedCities}
+                        // onChange={(e) => setSelectedGroupedCities(e.value)}
+                        // optionLabel="label"
+                        // optionGroupLabel="label"
+                        // optionGroupChildren="items"
+                        // optionGroupTemplate={groupedItemTemplate}
+                        // placeholder="Select Cities"
+                    />
+                </div>
             </div>
-        </React.Fragment>
+        </div>
 
     )
 }

@@ -28,6 +28,7 @@ export const signUp = (newUser) => {
                             introduction: null,
                             subjects: [],
                             timetable: createEmptyTimetable(),
+                            hourlyRate: null,
                             active: false
                         },
                         privateLessons: null,

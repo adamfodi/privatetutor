@@ -1,95 +1,257 @@
-.datatable-filter .p-paginator .p-paginator-current {
-    margin-left: auto;
-}
-.datatable-filter .p-progressbar {
-    height: 0.5rem;
-    background-color: #d8dadc;
-}
-.datatable-filter .p-progressbar .p-progressbar-value {
-    background-color: #607d8b;
-}
-.datatable-filter .p-datepicker {
-    min-width: 25rem;
-}
-.datatable-filter .p-datepicker td {
-    font-weight: 400;
-}
-.datatable-filter .p-datatable.p-datatable-courses .p-datatable-header {
-    padding: 1rem;
-    text-align: left;
-    font-size: 1.5rem;
-}
-.datatable-filter .p-datatable.p-datatable-courses .p-paginator {
-    padding: 1rem;
-}
-.datatable-filter .p-datatable.p-datatable-courses .p-datatable-thead > tr > th {
-    text-align: left;
-}
-.datatable-filter .p-datatable.p-datatable-courses .p-datatable-tbody > tr > td {
-    cursor: auto;
-}
-.datatable-filter .p-datatable.p-datatable-courses .p-dropdown-label:not(.p-placeholder) {
-    text-transform: uppercase;
-}
-
-.datatable-title {
-    text-align: center;
-    font-size: 2.5em;
-    margin: 0.4em;
-}
-
-.datatable-container {
-    margin: 5em;
-    text-align:center;
-}
-
-.datatable-button {
-    display:flex;
+.main-container {
+    display: flex;
     justify-content: center;
+    width: 90%;
+    background-color: white;
+    margin: 30px auto;
+    border-radius: 15px;
 }
 
-.datatable-button button {
-    font-size: 1em;
-    padding: 0.3em 0.3em;
-    width: 8em;
+.main-container .filter-container {
+    width: 20%;
+    height: 600px;
+    margin: 2em;
+    border: 3px solid #19616b;
+    background-color: #eaf1fa;
 }
 
-.datatable-tutor {
-    font-size: 1.5em;
-    font-family: "Bahnschrift","Verdana", serif;
+.main-container .filter-container > div {
+    margin: 1em;
+}
+
+.main-container .filter-container-header {
+    margin: 0.5em;
+    display: flex;
+    justify-content: space-between;
+}
+
+.main-container .filter-container-header >p {
     font-weight: bold;
 }
 
-.datatable-tutor:hover {
-    cursor:pointer;
+.main-container .filter-container .filter-container-name input{
+    width: 100%
 }
 
-.datatable-container table td{
-    font-size: 1.2em;
+.main-container .filter-container .filter-container-subjects .p-dropdown{
+    width: 100%
 }
 
-.datatable-container table div{
+.main-container .filter-container .filter-container-timetable .p-multiselect{
+    width: 100%
+}
+
+.main-container .datatable-container {
+    width: 80%;
+    margin: 2em;
+}
+
+.main-container table {
+    table-layout: fixed !important;
+    border-collapse: separate;
+    border-spacing: 0 30px;
+}
+
+.main-container .p-column-header-content {
     display:flex;
     justify-content: center;
-    font-size: 1.2em;
-    text-align: center;
 }
 
-.datatable-title div {
+.main-container tbody tr {
+    background-color: #ffe8df;
+    background-image: linear-gradient(to right, #ffe8df, #fa906d) !important;
+}
+
+.main-container tbody td {
+    height: 200px !important;
+    padding: 6px !important;
+    border-top: 2px solid orangered !important;
+    border-bottom: 2px solid orangered !important;
+}
+
+.main-container tbody td:first-of-type {
+    border-left: 2px solid orangered !important;
+}
+
+.main-container tbody td:last-of-type {
+    border-right: 2px solid orangered !important;
+}
+
+.main-container thead th, .main-container .p-paginator-bottom {
+    border-bottom: 2px solid #19616b !important;
+}
+
+.main-container tbody .picture-and-profile-template-td {
+    width: 15% !important;
+}
+
+.main-container tbody .picture-and-profile-template-td > div {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.main-container tbody .picture-and-profile-template-td img {
+    border-radius: 50%;
+    width: 140px;
+    height: 140px;
+}
+
+.main-container tbody .picture-and-profile-template-td .p-image-preview-indicator {
+    border-radius: 50%;
+    width: 140px;
+    height: 140px;
+}
+
+.main-container tbody .name-and-subjects-body-template-td {
+    width: 40%;
+}
+
+.main-container tbody .name-and-subjects-body-template-td > div {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-container tbody .name-and-subjects-body-template-td > div > p:first-of-type {
+    height: 40px;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 30px;
+    font-weight: bold;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.main-container tbody .name-and-subjects-body-template-td > div > p:last-of-type {
+    height: 30px;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 20px;
+    font-style: italic;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.main-container tbody .name-and-subjects-body-template-td .p-chips {
+    height: 117px;
+}
+
+.main-container tbody .name-and-subjects-body-template-td .p-chips-multiple-container {
+    height: 117px;
+    width: 100%;
+    overflow: auto;
+    border: 3px solid #19616b;
+    align-items: flex-start;
+}
+
+.main-container tbody .name-and-subjects-body-template-td .p-chips-token {
+    background-color: #19616b;
+    color: white;
+    font-size: 17px;
+    margin-top: 0.2rem;
+}
+
+.main-container tbody .lessons-body-template-td {
+    width: 15%;
+    /*background-color: #fdc9b3;*/
+}
+
+.main-container tbody .lessons-body-template-td > div {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-container tbody .lessons-body-template-td > div > div {
+    margin: 0 auto;
+}
+
+.main-container tbody .lessons-body-template-td > div img {
+    height: 102px;
+    width: 121px;
+}
+
+.main-container tbody .lessons-body-template-td .p-badge{
+    font-size: 25px;
+    height: 75px;
+    width: 75px;
+    border-radius: 50%;
+    margin: auto;
     display:flex;
-    justify-content: left;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 2px;
+    background-color: yellowgreen;
+    color: darkgreen;
 }
 
-.successCourse {
-    display: flex;
-    justify-content: center;
-    color: greenyellow;
-    font-size: 2em;
+.main-container tbody .rating-body-template-td {
+    width: 15%;
+    /*background-color: #fdc9b3;*/
 }
 
-.errorCourse {
+.main-container tbody .rating-body-template-td > div {
+    height: 100%;
     display: flex;
+    flex-direction: column;
+}
+
+.main-container tbody .rating-body-template-td > div > div {
+    margin: 0 auto;
+}
+
+.main-container tbody .rating-body-template-td > div img {
+    height: 102px;
+    width: 114px;
+}
+
+.main-container tbody .rating-body-template-td .p-badge{
+    font-size: 25px;
+    height: 75px;
+    width: 75px;
+    border-radius: 50%;
+    margin: auto;
+    display:flex;
     justify-content: center;
-    color: orangered;
-    font-size: 2em;
+    align-items: center;
+    padding-bottom: 2px;
+    background-color: orangered;
+    color: yellow;
+}
+
+.main-container tbody .hourly-rate-body-template-td {
+    width: 15%;
+    /*background-color: #fdc9b3;*/
+}
+
+.main-container tbody .hourly-rate-body-template-td > div {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-container tbody .hourly-rate-body-template-td > div > div {
+    margin: 0 auto;
+}
+
+.main-container tbody .hourly-rate-body-template-td > div img {
+    height: 102px;
+    width: 102px;
+}
+
+.main-container tbody .hourly-rate-body-template-td .p-badge{
+    font-size: 25px;
+    height: 75px;
+    margin: auto;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 4px 2px 4px;
+    background-color: rebeccapurple;
+    color: white;
 }

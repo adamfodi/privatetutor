@@ -33,7 +33,8 @@ const App = (props) => {
 
                 <Route exact path="/tutor/advertisement" element={!auth.isEmpty ? <Advertisement/> : <Navigate to="/main"/>}/>
 
-                <Route exact path="/test" element={<Test/>}/>
+                <Route exact path="/test" element={<Test txt={"txt"}/>}/>
+                <Route exact path="/test2" element={<Test txt={"txt2"}/>}/>
                 <Route path="*" element={<Navigate to="/main"/>}/>
             </Routes>
         </BrowserRouter>

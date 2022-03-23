@@ -34,7 +34,7 @@
     width: 100%;
 }
 
-.tutor-advertisement-container .p-inputwrapper-focus, .p-inputtext:enabled:focus{
+.tutor-advertisement-container .p-inputwrapper-focus, .tutor-advertisement-container .p-inputtext:enabled:focus{
     box-shadow: 0 0 2px 2px orangered !important;
     border: none !important;
 }

@@ -16,6 +16,8 @@ const ProfilePicture = (props) => {
     const storage = getStorage();
     const storageRef = ref(storage, 'profilePictures/' + auth.uid);
 
+    console.log(newUrl)
+
     const uploadButtonClick = (fileRef) => {
         fileRef.current.click();
     };
@@ -26,7 +28,6 @@ const ProfilePicture = (props) => {
             fileRef.current.value = null;
 
             if (file.size <= 5000000) {
-                console.log(file)
                 setNewUrl(URL.createObjectURL(file))
                 setFile(file)
             } else {
