@@ -20,7 +20,7 @@
     margin-bottom: 2.8em;
 }
 
-.tutor-advertisement-field > p {
+.tutor-advertisement-field > p, .tutor-advertisement-timetable >p {
     font-size: 1.2em;
     font-weight: bold;
     width: 30%;
@@ -88,5 +88,13 @@
     padding: 0.8em;
     width: 10em;
     font-size: 1.6em;
+}
+
+.tutor-advertisement-container .p-editor-content {
+    font-size: 20px;
+}
+
+.tutor-advertisement-timetable {
+    width: 90%;
 }
 

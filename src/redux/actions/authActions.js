@@ -11,6 +11,7 @@ export const signUp = (newUser) => {
                         personalData: {
                             firstName: newUser.firstName,
                             lastName: newUser.lastName,
+                            fullName: newUser.lastName + ' ' + newUser.firstName,
                             email: newUser.email,
                             birthday: newUser.birthday,
                             gender: newUser.gender
@@ -24,7 +25,6 @@ export const signUp = (newUser) => {
                     },
                     tutor: {
                         advertisement: {
-                            educationLevel: null,
                             introduction: null,
                             subjects: [],
                             timetable: createEmptyTimetable(),

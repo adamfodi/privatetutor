@@ -4,35 +4,30 @@ import "../../assets/css/tutor/timetable.css"
 import {Button} from "primereact/button";
 
 const Timetable = (props) => {
-    const {timetable, setNewAdvertisement, setDisplayTimetable} = props;
+    const {timetable, setNewAdvertisement, readonly} = props;
 
-    const header = () => {
-        return (
-            <div className="flex justify-content-between align-items-center">
-                <h1>Órarend</h1>
-                <Button icon="pi pi-times"
-                        className="p-button-rounded p-button-danger p-button-outlined"
-                        onClick={() => setDisplayTimetable(false)}
-                />
-            </div>
-        )
-    }
-
-    const timeIntervalTemplate = (rowData) => {
-        return (
-            <span className="time-interval-span">
-                {rowData.timeInterval.from}
-                &nbsp;-&nbsp;
-                {rowData.timeInterval.to}
+    const partOfTheDayTemplate = (rowData) => {
+        switch (rowData.partOfTheDay) {
+            case 'morning':
+                return <span className="partoftheday-span">
+                Délelőtt
             </span>
-        );
+            case 'afternoon':
+                return <span className="partoftheday-span">
+                Délután
+            </span>
+            default:
+                return <span className="partoftheday-span">
+                Este
+            </span>
+        }
     }
 
     const dayTemplate = (rowData, columnData) => {
         return (
             rowData[columnData.field] === "open"
-                ? <Button label="NYITOTT"
-                          className="p-button-raised p-button-success"
+                ? <Button className="p-button-raised p-button-success"
+                          icon="pi pi-check"
                           onClick={() => {
                               setNewAdvertisement((oldAdvertisement) => {
                                   return {
@@ -43,13 +38,13 @@ const Timetable = (props) => {
                                                   ? {...row, [columnData.field]: "closed"}
                                                   : row
                                           })
-
                                   }
                               })
                           }}
+                          disabled={readonly}
                 />
-                : <Button label="ZÁRT"
-                          className="p-button-raised p-button-danger"
+                : <Button className="p-button-raised p-button-danger"
+                          icon="pi pi-times"
                           onClick={() => {
                               setNewAdvertisement((oldAdvertisement) => {
                                   return {
@@ -60,10 +55,10 @@ const Timetable = (props) => {
                                                   ? {...row, [columnData.field]: "open"}
                                                   : row
                                           })
-
                                   }
                               })
                           }}
+                          disabled={readonly}
                 />
         );
     }
@@ -71,15 +66,14 @@ const Timetable = (props) => {
     console.log(timetable)
 
     return (
-        <div className="timetable-container">
+        <div className="timetable-content">
             <DataTable value={timetable}
                        responsiveLayout="scroll"
-                       header={header}
                        emptyMessage="Töltés..."
             >
-                <Column field="timeInterval"
-                        header="Idősáv"
-                        body={timeIntervalTemplate}
+                <Column field="partOfTheDay"
+                        header="Napszak"
+                        body={partOfTheDayTemplate}
                 />
                 <Column field="monday"
                         header="Hétfő"

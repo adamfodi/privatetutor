@@ -1,13 +1,11 @@
 import {connect} from "react-redux";
 import "../../assets/css/tutor/advertisement.css"
 import React, {useEffect, useState} from "react";
-import {editorHeader, educationLevelList, subjectsList} from "../../util/FormFields";
-import {Dropdown} from "primereact/dropdown";
+import {editorHeader, subjectsList} from "../../util/FormFields";
 import {MultiSelect} from "primereact/multiselect";
 import {Editor} from "primereact/editor";
 import {InputNumber} from "primereact/inputnumber";
 import {Button} from "primereact/button";
-import {Dialog} from "primereact/dialog";
 import Timetable from "./Timetable";
 import {Checkbox} from "primereact/checkbox";
 import {UserService} from "../../services/UserService";
@@ -73,20 +71,6 @@ const Advertisement = (props) => {
                     <div className="tutor-advertisement-container">
                         <p>Töltsd ki a következő mezőekt bla bla ba asddddddddddddddddddddddddddddddl</p>
                         <div className="tutor-advertisement-field">
-                            <p>Legmagasabb iskolai végzettség</p>
-                            <div>
-                                <Dropdown value={newAdvertisement.educationLevel}
-                                          options={educationLevelList}
-                                          onChange={(e) => setNewAdvertisement({
-                                                  ...newAdvertisement, educationLevel: e.target.value
-                                              }
-                                          )}
-                                          optionLabel="name"
-                                          placeholder="Válassz végzettséget"
-                                />
-                            </div>
-                        </div>
-                        <div className="tutor-advertisement-field">
                             <p>Oktatni kívánt tárgyak</p>
                             <div>
                                 <MultiSelect value={newAdvertisement.subjects}
@@ -137,30 +121,15 @@ const Advertisement = (props) => {
                             </div>
 
                         </div>
-                        <div className="tutor-advertisement-field">
-                            <Button type="button"
-                                    label="Órarend beállítása"
-                                    className="tutor-advertisement-timetable-button p-button-raised p-button-secondary"
-                                    onClick={() => setDisplayTimetable(true)}
+                        <div className="tutor-advertisement-timetable">
+                            <p>Órarend</p>
+                            <Timetable timetable={newAdvertisement.timetable}
+                                       setNewAdvertisement={setNewAdvertisement}
+                                       readonly={false}
                             />
-                            <Dialog showHeader={false}
-                                    visible={displayTimetable}
-                                    position={"bottom"}
-                                    modal
-                                    onHide={() => setDisplayTimetable(false)}
-                                    draggable={false}
-                                    resizable={false}
-                                    className="timetable-dialog"
-                            >
-                                <Timetable timetable={newAdvertisement.timetable}
-                                           setNewAdvertisement={setNewAdvertisement}
-                                           setDisplayTimetable={setDisplayTimetable}
-                                />
-                            </Dialog>
-
                         </div>
                         <span>
-                                <p>Szeretném, hogy a hirdetések között megjelenjek</p>
+                                <p>Szeretnék az oldal hirdetései között megjelenni!</p>
                                 <Checkbox checked={newAdvertisement.active}
                                           onChange={(e) => setNewAdvertisement({
                                                   ...newAdvertisement, active: e.checked

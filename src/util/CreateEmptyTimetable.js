@@ -1,7 +1,7 @@
 export const createEmptyTimetable = () => {
     let timetable = []
     const rowTemplate = {
-        timeInterval: {from: null, to: null},
+        partOfTheDay: null,
         monday: "closed",
         tuesday: "closed",
         wednesday: "closed",
@@ -11,21 +11,9 @@ export const createEmptyTimetable = () => {
         sunday: "closed",
     }
 
-    for (let i = 8; i < 20; i++) {
-        timetable.push({
-            ...rowTemplate,
-            timeInterval: {
-                from: convertDigitToHour(i),
-                to: convertDigitToHour(i + 1),
-            }
-        })
-    }
+    timetable.push({...rowTemplate,partOfTheDay: 'morning'})
+    timetable.push({...rowTemplate,partOfTheDay: 'afternoon'})
+    timetable.push({...rowTemplate,partOfTheDay: 'evening'})
+
     return timetable;
 };
-
-const convertDigitToHour = (digit) => {
-    if (digit.toString().length === 1) {
-        return '0' + digit + ':00'
-    }
-    return digit + ':00'
-}

@@ -17,6 +17,8 @@ import {InputText} from "primereact/inputtext";
 import {Dropdown} from "primereact/dropdown";
 import {Badge} from "primereact/badge";
 import {MultiSelect} from "primereact/multiselect";
+import TutorProfileDialog from "./dialogs/TutorProfileDialog";
+import {Dialog} from "primereact/dialog";
 
 const Main = props => {
     const {auth, users} = props;
@@ -24,28 +26,29 @@ const Main = props => {
     const [nameFilter, setNameFilter] = useState('');
     const [subjectFilter, setSubjectFilter] = useState(null);
     const [timetableFilter, setTimetableFilter] = useState(null);
-    const [showTimetable, setShowTimetable] = useState(false);
-    const [currentTimetable, setCurrentTimetable] = useState(null);
-
-    console.log(filteredTutors)
+    const [lessonsFilter, setLessonsFilter] = useState(null);
+    const [ratingFilter, setRatingFilter] = useState(null);
+    const [priceFilter, setPriceFilter] = useState(null);
+    const [showTutorProfileDialog, setShowTutorProfileDialog] = useState(false);
+    const [currentTutorProfileDialog, setCurrentTutorProfileDialog] = useState(null);
 
     useEffect(() => {
         users && setFilteredTutors(
             users.filter((user) => {
                 const filterTutors = () => {
-                    console.log("filterTutors")
+                    // console.log("filterTutors")
                     return user.tutor.advertisement.active
                 }
 
                 const filterNames = () => {
-                    console.log("filterNames")
+                    // console.log("filterNames")
                     return nameFilter.length === 0
                         ? true
                         : user.profile.personalData.fullName.toLowerCase().startsWith(nameFilter.toLowerCase())
                 }
 
                 const filterSubjects = () => {
-                    console.log("filterSubjects")
+                    // console.log("filterSubjects")
                     return !subjectFilter
                         ? true
                         : user.tutor.advertisement.subjects.some((subject) => subject.name === subjectFilter.name)
@@ -63,7 +66,12 @@ const Main = props => {
                 alt={rowData.profile.personalData.fullName + ' profile picture'}
                 preview
             />
-            <Button label="Profil megtekintése"/>
+            <Button label="Profil megtekintése"
+                    onClick={() => {
+                        setCurrentTutorProfileDialog(rowData);
+                        setShowTutorProfileDialog(true);
+                    }}
+            />
         </div>
     }
 
@@ -82,7 +90,7 @@ const Main = props => {
     const lessonsBodyTemplate = (rowData) => {
         return <div>
             <div>
-                <img src={lessonsPicture}/>
+                <Image src={lessonsPicture}/>
             </div>
             <Badge value={15}/>
         </div>
@@ -91,7 +99,7 @@ const Main = props => {
     const ratingBodyTemplate = (rowData) => {
         return <div>
             <div>
-                <img src={ratingPicture}/>
+                <Image src={ratingPicture}/>
             </div>
             <Badge value={4.2}/>
         </div>
@@ -100,19 +108,11 @@ const Main = props => {
     const hourlyRateBodyTemplate = (rowData) => {
         return <div>
             <div>
-                <img src={pricePicture}/>
+                <Image src={pricePicture}/>
             </div>
             <Badge value={"5000 Ft / óra"}/>
         </div>
     }
-
-    const header =
-        (
-            <div className="datatable-title">
-                <span>Találd meg a tanárod</span>
-            </div>
-        )
-
 
     return (
         <div className="main-container">
@@ -212,6 +212,16 @@ const Main = props => {
                     />
                 </div>
             </div>
+            <Dialog header="Oktatói profil"
+                    visible={showTutorProfileDialog}
+                    position={"bottom"}
+                    modal
+                    onHide={() => setShowTutorProfileDialog(false)}
+                    resizable={false}
+                    className="tutor-profile-dialog"
+            >
+                <TutorProfileDialog data={currentTutorProfileDialog}/>
+            </Dialog>
         </div>
 
     )

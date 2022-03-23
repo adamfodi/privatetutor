@@ -13,7 +13,7 @@ const Navbar = props => {
     const navigate = useNavigate();
     const menu = useRef(null);
     const {auth, personalData} = props;
-    const displayName = personalData ? personalData.lastName + ' ' + personalData.firstName : null;
+    const displayName = personalData ? personalData.fullName : null;
 
     const mainItems = [
         {

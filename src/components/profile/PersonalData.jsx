@@ -30,9 +30,8 @@ const PersonalData = (props) => {
     };
 
     const onSubmit = (data) => {
-        console.log(data)
-        updateDisplayName(data.lastName + ' ' + data.firstName);
-        UserService.updatePersonalData(firebaseAuth.uid, data)
+        const dataWithFullName = {...data, fullName: data.lastName + ' ' + data.firstName};
+        UserService.updatePersonalData(firebaseAuth.uid, dataWithFullName)
             .then(() => {
                 Swal.fire({
                     timer: 1500,

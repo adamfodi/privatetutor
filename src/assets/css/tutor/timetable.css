@@ -1,39 +1,33 @@
-.timetable-container .p-datatable-table{
+.timetable-content .p-datatable-table{
     table-layout: fixed !important;
     width: 3vw;
 }
 
-.timetable-container th div{
+.timetable-content th div{
     display:flex;
     justify-content: center;
 }
 
-.timetable-container th:first-of-type div{
+.timetable-content th:first-of-type div{
     display:flex;
     justify-content: left;
 }
 
-.timetable-container th div span{
-    font-size: 1.2vw;
+.timetable-content th div span{
+    font-size: 20px;
 }
 
-.time-interval-span {
-    font-size: 1.1vw;
+.timetable-content .partoftheday-span {
+    font-size: 18px;
     font-family: "Calibri, sans-serif", serif;
 }
 
-.timetable-container td {
-    width: 100% !important;
+.timetable-content td button {
+    margin: auto;
+    display: flex;
+    justify-content: center;
 }
 
-.timetable-container td button {
-    width: 100% !important;
-}
-
-.timetable-container td button .p-button-label {
-    display:flex !important;
-    justify-content:center !important;
-    align-items: center !important;
-    width: 100% !important;
-    font-size: 1.2vw;
+.timetable-content .p-disabled {
+    opacity: 1;
 }
