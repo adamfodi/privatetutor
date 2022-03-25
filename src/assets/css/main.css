@@ -8,7 +8,7 @@
 }
 
 .main-container .filter-container {
-    width: 15vw;
+    width: 18vw;
     height: 600px;
     margin: 2em;
     border: 3px solid #19616b;
@@ -16,7 +16,7 @@
 }
 
 .main-container .filter-container > div {
-    margin: 1em;
+
 }
 
 .main-container .filter-container-header {
@@ -30,19 +30,21 @@
 }
 
 .main-container .filter-container .filter-container-name input{
-    width: 100%
+    width: 15vw;
+    margin: auto;
 }
 
 .main-container .filter-container .filter-container-subjects .p-dropdown{
-    width: 100%
+    width: 15vw;
 }
 
 .main-container .filter-container .filter-container-timetable .p-multiselect{
-    width: 100%
+    width: 15vw;
+    overflow: hidden;
 }
 
 .main-container .datatable-container {
-    width: 70vw;
+    width: 68vw;
     margin: 2em;
 }
 

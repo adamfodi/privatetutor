@@ -25,7 +25,7 @@ const Main = props => {
     const [filteredTutors, setFilteredTutors] = useState([]);
     const [nameFilter, setNameFilter] = useState('');
     const [subjectFilter, setSubjectFilter] = useState(null);
-    const [timetableFilter, setTimetableFilter] = useState(null);
+    const [timetableFilter, setTimetableFilter] = useState([]);
     const [lessonsFilter, setLessonsFilter] = useState(null);
     const [ratingFilter, setRatingFilter] = useState(null);
     const [priceFilter, setPriceFilter] = useState(null);
@@ -54,7 +54,18 @@ const Main = props => {
                         : user.tutor.advertisement.subjects.some((subject) => subject.name === subjectFilter.name)
                 }
 
-                return filterTutors() && filterNames() && filterSubjects()
+                const filterTimetable = () => {
+                    const timetable = []
+                    user.tutor.advertisement.timetable.forEach((row) => {
+                        for (const [key, value] of Object.entries(row)) {
+                            if (key !== 'partOfTheDay' && value === 'open') {
+                                timetable.push(row.partOfTheDay + '-' + key)
+                            }
+                        }
+                    })
+                    return timetableFilter.every((time) => timetable.includes(time))
+                }
+                return filterTutors() && filterNames() && filterSubjects() && filterTimetable()
             })
         )
     }, [users, nameFilter, subjectFilter, timetableFilter])
@@ -113,6 +124,45 @@ const Main = props => {
             <Badge value={"5000 Ft / óra"}/>
         </div>
     }
+
+    const timetableOptions = [
+        {
+            label: 'Délelőtt', code: 'DE',
+            items: [
+                {label: 'Hétfő délelőtt', value: 'morning-monday'},
+                {label: 'Kedd délelőtt', value: 'morning-tuesday'},
+                {label: 'Szerda délelőtt', value: 'morning-wednesday'},
+                {label: 'Csütörtök délelőtt', value: 'morning-thursday'},
+                {label: 'Péntek délelőtt', value: 'morning-friday'},
+                {label: 'Szombat délelőtt', value: 'morning-saturday'},
+                {label: 'Vasárnap délelőtt', value: 'morning-sunday'}
+            ]
+        },
+        {
+            label: 'Délután', code: 'DU',
+            items: [
+                {label: 'Hétfő délután', value: 'afternoon-monday'},
+                {label: 'Kedd délután', value: 'afternoon-tuesday'},
+                {label: 'Szerda délután', value: 'afternoon-wednesday'},
+                {label: 'Csütörtök délután', value: 'afternoon-thursday'},
+                {label: 'Péntek délután', value: 'afternoon-friday'},
+                {label: 'Szombat délután', value: 'afternoon-saturday'},
+                {label: 'Vasárnap délután', value: 'afternoon-sunday'}
+            ]
+        },
+        {
+            label: 'Este', code: 'ES',
+            items: [
+                {label: 'Hétfő este', value: 'evening-monday'},
+                {label: 'Kedd este', value: 'evening-tuesday'},
+                {label: 'Szerda este', value: 'evening-wednesday'},
+                {label: 'Csütörtök este', value: 'evening-thursday'},
+                {label: 'Péntek este', value: 'evening-friday'},
+                {label: 'Szombat este', value: 'evening-saturday'},
+                {label: 'Vasárnap este', value: 'evening-sunday'}
+            ]
+        }
+    ];
 
     return (
         <div className="main-container">
@@ -201,14 +251,15 @@ const Main = props => {
                 <div className="filter-container-timetable">
                     <p>Időpont</p>
                     <MultiSelect
-                        // value={selectedGroupedCities}
-                        // options={groupedCities}
-                        // onChange={(e) => setSelectedGroupedCities(e.value)}
-                        // optionLabel="label"
-                        // optionGroupLabel="label"
-                        // optionGroupChildren="items"
-                        // optionGroupTemplate={groupedItemTemplate}
-                        // placeholder="Select Cities"
+                        value={timetableFilter}
+                        options={timetableOptions}
+                        onChange={(e) => setTimetableFilter(e.value)}
+                        optionLabel="label"
+                        optionValue="value"
+                        optionGroupLabel="label"
+                        optionGroupChildren="items"
+                        placeholder="pl.: Kedd délután"
+                        display="chip"
                     />
                 </div>
             </div>
