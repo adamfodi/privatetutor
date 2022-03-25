@@ -67,7 +67,7 @@ const Navbar = props => {
                     label: 'Magánórák',
                     icon: 'pi pi-fw pi-pencil',
                     command: () => {
-                        navigate("")
+                        navigate("/tutor/private-lessons")
                     },
                 },
                 {

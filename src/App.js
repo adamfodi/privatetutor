@@ -15,6 +15,7 @@ import Profile from "./components/profile/Profile";
 import {Test} from "./components/Test";
 import {connect} from "react-redux";
 import Advertisement from "./components/tutor/Advertisement";
+import PrivateLessons from "./components/tutor/PrivateLessons";
 
 const App = (props) => {
     const {auth} = props;
@@ -32,6 +33,7 @@ const App = (props) => {
                 <Route exact path="/profile" element={!auth.isEmpty ? <Profile/> : <Navigate to="/main"/>}/>
 
                 <Route exact path="/tutor/advertisement" element={!auth.isEmpty ? <Advertisement/> : <Navigate to="/main"/>}/>
+                <Route exact path="/tutor/private-lessons" element={!auth.isEmpty ? <PrivateLessons/> : <Navigate to="/main"/>}/>
 
                 <Route exact path="/test" element={<Test txt={"txt"}/>}/>
                 <Route exact path="/test2" element={<Test txt={"txt2"}/>}/>

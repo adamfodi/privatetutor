@@ -37,6 +37,7 @@ const Main = props => {
             users.filter((user) => {
                 const filterTutors = () => {
                     // console.log("filterTutors")
+                    // HITELESITVE PROP IS LEHET
                     return user.tutor.advertisement.active
                 }
 

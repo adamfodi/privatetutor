@@ -1,10 +1,10 @@
 .main-container {
     display: flex;
     justify-content: center;
-    width: 90%;
+    width: 100%;
     background-color: white;
     margin: 30px auto;
-    border-radius: 15px;
+    /*border-radius: 15px;*/
 }
 
 .main-container .filter-container {
@@ -46,6 +46,7 @@
 .main-container .datatable-container {
     width: 68vw;
     margin: 2em;
+    border: 3px solid #19616b;
 }
 
 .main-container table {
