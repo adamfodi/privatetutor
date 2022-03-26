@@ -14,7 +14,7 @@ export const createOffer = async (connection, localStream, remoteRole, localRole
 
 export const createAnswer = async (connection, localStream, remoteRole, localRole, myWebRTC) => {
     try {
-        // connection.signalingState !== 'stable' &&
+        // connection.signalingState !== 'stable'
         console.log(connection)
         await connection.setRemoteDescription(JSON.parse(myWebRTC.offer))
             .then(() => {
