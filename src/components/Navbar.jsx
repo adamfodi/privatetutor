@@ -77,6 +77,13 @@ const Navbar = props => {
                         navigate("")
                     },
                 },
+                {
+                    label: 'Kulonszobateszt',
+                    icon: 'pi pi-fw pi-align-right',
+                    command: () => {
+                        navigate("/teaching-room")
+                    },
+                },
             ]
         },
 
