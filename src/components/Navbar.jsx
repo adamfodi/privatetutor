@@ -80,9 +80,11 @@ const Navbar = props => {
                 {
                     label: 'Kulonszobateszt',
                     icon: 'pi pi-fw pi-align-right',
+                    disabled: true,
                     command: () => {
                         navigate("/teaching-room")
                     },
+
                 },
             ]
         },
