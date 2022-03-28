@@ -3,13 +3,24 @@ import {getFirebase} from "react-redux-firebase";
 import {InputText} from "primereact/inputtext";
 
 export const Test = (props) => {
+    // const configuration = {
+    //     iceServers: [
+    //         {
+    //             urls: [
+    //                 'stun:stun1.l.google.com:19302',
+    //                 'stun:stun2.l.google.com:19302'
+    //             ],
+    //         },
+    //     ],
+    //     iceCandidatePoolSize: 10,
+    // };
+
     const configuration = {
         iceServers: [
             {
-                urls: [
-                    'stun:stun1.l.google.com:19302',
-                    'stun:stun2.l.google.com:19302'
-                ],
+                urls: "turn:turn.anyfirewall.com:443?transport=tcp",
+                username: "webrtc",
+                credential: "webrtc"
             },
         ],
         iceCandidatePoolSize: 10,
