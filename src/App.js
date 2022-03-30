@@ -12,7 +12,6 @@ import SignUp from "./components/auth/SignUp";
 import Main from "./components/Main";
 import MyCourses from "./components/courses/MyCourses";
 import Profile from "./components/profile/Profile";
-import {Test} from "./components/Test";
 import {connect} from "react-redux";
 import Advertisement from "./components/tutor/Advertisement";
 import PrivateLessons from "./components/tutor/PrivateLessons";
@@ -20,6 +19,7 @@ import {compose} from "redux";
 import {firestoreConnect} from "react-redux-firebase";
 import TeachingRoomRouter from "./components/TechingRoomRouter";
 import TeachingRoom from "./components/TeachingRoom";
+import Test from "./components/Test";
 
 const App = (props) => {
     const {auth, privateLessons} = props;
