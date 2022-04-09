@@ -11,9 +11,9 @@ import 'moment/locale/hu';
 import "../../assets/css/courseDialog.css"
 import {InputText} from "primereact/inputtext";
 import {CourseService} from "../../services/CourseService";
-import {addLocaleHu} from "../../util/CalendarHu";
 import {subjectList} from "../../util/SubjectList";
 import Swal from "sweetalert2";
+import {addLocaleHu} from "../../util/FormFields";
 
 const CourseDialog = props => {
     const {auth, profile} = props;

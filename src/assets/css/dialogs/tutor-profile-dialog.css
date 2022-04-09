@@ -1,30 +1,30 @@
-.tutor-profile-dialog {
+.new-private-lesson-dialog {
     width: 50vw;
 }
 
-.tutor-profile-dialog .p-dialog-title {
+.new-private-lesson-dialog .p-dialog-title {
     border: none !important;
 }
 
-.tutor-profile-dialog .p-dialog-header-icon {
+.new-private-lesson-dialog .p-dialog-header-icon {
     border: none !important;
     box-shadow: none !important;
 }
 
-.tutor-profile-dialog .tutor-profile-dialog-content {
+.new-private-lesson-dialog .tutor-profile-dialog-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.tutor-profile-dialog .tutor-profile-dialog-content img {
+.new-private-lesson-dialog .tutor-profile-dialog-content img {
     width: 300px;
     height: 300px;
     border-radius: 50%;
 }
 
-.tutor-profile-dialog .tutor-profile-dialog-content .tutor-profile-dialog-name {
+.new-private-lesson-dialog .tutor-profile-dialog-content .tutor-profile-dialog-name {
     font-size: 35px;
     font-weight: bold;
     width: 100%;
@@ -33,41 +33,41 @@
     margin-bottom: 5px;
 }
 
-.tutor-profile-dialog .tutor-profile-dialog-content .tutor-profile-dialog-introduction {
+.new-private-lesson-dialog .tutor-profile-dialog-content .tutor-profile-dialog-introduction {
     width: 100%;
 }
 
-.tutor-profile-dialog .tutor-profile-dialog-content .tutor-profile-dialog-introduction > p {
+.new-private-lesson-dialog .tutor-profile-dialog-content .tutor-profile-dialog-introduction > p {
     font-size: 25px;
 }
 
-.tutor-profile-dialog .tutor-profile-dialog-content .tutor-profile-dialog-introduction .p-editor-toolbar {
+.new-private-lesson-dialog .tutor-profile-dialog-content .tutor-profile-dialog-introduction .p-editor-toolbar {
     display: none;
 }
 
-.tutor-profile-dialog .tutor-profile-dialog-content .tutor-profile-dialog-introduction .p-editor-content {
+.new-private-lesson-dialog .tutor-profile-dialog-content .tutor-profile-dialog-introduction .p-editor-content {
     border: none !important;
     font-size: 20px;
 }
 
-.tutor-profile-dialog .tutor-profile-dialog-content .tutor-profile-dialog-introduction .p-editor-container {
+.new-private-lesson-dialog .tutor-profile-dialog-content .tutor-profile-dialog-introduction .p-editor-container {
     box-shadow: 0 3px 5px grey, 0 0 2px grey, 0 1px 4px grey !important;
     border-radius: 0;
 }
 
-.tutor-profile-dialog .tutor-profile-dialog-content .tutor-profile-dialog-subjects {
+.new-private-lesson-dialog .tutor-profile-dialog-content .tutor-profile-dialog-subjects {
     width: 100%;
 }
 
-.tutor-profile-dialog .tutor-profile-dialog-content .tutor-profile-dialog-subjects > p {
+.new-private-lesson-dialog .tutor-profile-dialog-content .tutor-profile-dialog-subjects > p {
     font-size: 25px;
 }
 
-.tutor-profile-dialog .tutor-profile-dialog-content .tutor-profile-dialog-subjects .p-chips {
+.new-private-lesson-dialog .tutor-profile-dialog-content .tutor-profile-dialog-subjects .p-chips {
     width: 100%;
 }
 
-.tutor-profile-dialog .tutor-profile-dialog-content .tutor-profile-dialog-subjects .p-chips ul {
+.new-private-lesson-dialog .tutor-profile-dialog-content .tutor-profile-dialog-subjects .p-chips ul {
     width: 100%;
     border: none;
     border-radius: 0;
@@ -75,25 +75,25 @@
     padding: 10px;
 }
 
-.tutor-profile-dialog .tutor-profile-dialog-content .tutor-profile-dialog-subjects .p-chips-token {
+.new-private-lesson-dialog .tutor-profile-dialog-content .tutor-profile-dialog-subjects .p-chips-token {
     margin: 5px;
     padding: 10px 20px;
 }
 
-.tutor-profile-dialog .tutor-profile-dialog-content .tutor-profile-dialog-timetable {
+.new-private-lesson-dialog .tutor-profile-dialog-content .tutor-profile-dialog-timetable {
     width: 100%;
 }
 
-.tutor-profile-dialog .tutor-profile-dialog-content .tutor-profile-dialog-timetable > p {
+.new-private-lesson-dialog .tutor-profile-dialog-content .tutor-profile-dialog-timetable > p {
     font-size: 25px;
 }
 
-.tutor-profile-dialog .tutor-profile-dialog-content .tutor-profile-dialog-timetable .timetable-content {
+.new-private-lesson-dialog .tutor-profile-dialog-content .tutor-profile-dialog-timetable .timetable-content {
     box-shadow: 0 3px 5px grey, 0 0 2px grey, 0 1px 4px grey !important;
     border-radius: 0;
 }
 
-.tutor-profile-dialog .tutor-profile-dialog-content .tutor-profile-dialog-message {
+.new-private-lesson-dialog .tutor-profile-dialog-content .tutor-profile-dialog-message {
     font-size: 30px;
     margin-top: 30px;
 }

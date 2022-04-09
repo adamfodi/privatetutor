@@ -4,15 +4,29 @@ import React, {useEffect, useState} from "react";
 import {firestoreConnect} from "react-redux-firebase";
 import {Column} from "primereact/column";
 import {DataTable} from "primereact/datatable";
+import {Button} from "primereact/button";
+import {Dialog} from "primereact/dialog";
+import TutorProfileDialog from "../dialogs/TutorProfileDialog";
+import NewPrivateLessonDialog from "../dialogs/NewPrivateLessonDialog";
 
 const PrivateLessons = props => {
     const {auth, privateLessons} = props;
     const [myPrivateLessons, setMyPrivateLessons] = useState([]);
+    const [showNewPrivateLessonDialog, setShowNewPrivateLessonDialog] = useState(false);
 
     useEffect(() => {
-        auth.uid && privateLessons &&
-        setMyPrivateLessons(privateLessons.map((privateLesson) => privateLesson.tutor === auth.uid && privateLesson))
+        if (auth.uid && privateLessons) {
+            setMyPrivateLessons(privateLessons.map((privateLesson) => privateLesson.tutor === auth.uid && privateLesson))
+        }
     }, [auth.uid, privateLessons])
+
+    const headerTemplate = (
+        <div>
+            <Button label="Új magánóra meghirdetése"
+                    onClick={() => setShowNewPrivateLessonDialog(true)}
+            />
+        </div>
+    )
 
 
     return (
@@ -27,7 +41,7 @@ const PrivateLessons = props => {
                     responsiveLayout="scroll"
                     rows={5}
                     rowsPerPageOptions={[5, 10, 15, 20]}
-                    // header={header}
+                    header={headerTemplate}
                     emptyMessage="Nem található magánóra."
                 >
                     <Column field="student"
@@ -44,9 +58,17 @@ const PrivateLessons = props => {
                     <Column field="status"
                             header="Állapot"
                     />
-
                 </DataTable>
             </div>
+            <Dialog header="Új magánóra létrehozása"
+                    visible={showNewPrivateLessonDialog}
+                    modal
+                    onHide={() => setShowNewPrivateLessonDialog(false)}
+                    resizable={false}
+                    className="new-private-lesson-dialog"
+            >
+                <NewPrivateLessonDialog setShowNewPrivateLessonDialog={setShowNewPrivateLessonDialog}/>
+            </Dialog>
         </div>
 
     )

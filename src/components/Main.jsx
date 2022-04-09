@@ -270,7 +270,7 @@ const Main = props => {
                     modal
                     onHide={() => setShowTutorProfileDialog(false)}
                     resizable={false}
-                    className="tutor-profile-dialog"
+                    className="new-private-lesson-dialog"
             >
                 <TutorProfileDialog data={currentTutorProfileDialog}/>
             </Dialog>
@@ -288,6 +288,6 @@ const mapStateToProps = state => {
 };
 
 export default compose(
-    firestoreConnect([{collection: "users"}]),
-    connect(mapStateToProps)
+    connect(mapStateToProps),
+    firestoreConnect([{collection: "users"}])
 )(Main);

@@ -11,8 +11,7 @@ import {Dropdown} from "primereact/dropdown";
 import {addLocale} from 'primereact/api';
 import "../../assets/css/auth/sign-up.css"
 import "../../assets/css/util/calendar.css"
-import {genderList} from "../../util/FormFields";
-import {addLocaleHu} from "../../util/CalendarHu";
+import {addLocaleHu, genderList} from "../../util/FormFields";
 import Swal from "sweetalert2";
 
 const SignUp = props => {

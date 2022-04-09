@@ -1,13 +1,12 @@
 import {connect} from "react-redux";
 import {addLocale} from "primereact/api";
-import {addLocaleHu} from "../../util/CalendarHu";
 import {Controller, useForm} from "react-hook-form";
 import {InputText} from "primereact/inputtext";
 import {Calendar} from "primereact/calendar";
 import {Dropdown} from "primereact/dropdown";
 import "../../assets/css/profile/personal-data.css"
 import "../../assets/css/util/calendar.css"
-import {genderList} from "../../util/FormFields";
+import {addLocaleHu, genderList} from "../../util/FormFields";
 import Swal from "sweetalert2";
 import {updateDisplayName} from "../../redux/actions/authActions";
 import {classNames} from "primereact/utils";

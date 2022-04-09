@@ -44,7 +44,7 @@ const Test = (props) => {
     const [hangupButtonDisabled, setHangupButtonDisabled] = useState(false);
     const [callInputText, setCallInputText] = useState('');
 
-    const teachingRoomRef = useRef(getFirebase().firestore().collection('teachingRooms').doc('teaching-room-01'));
+    const teachingRoomRef = useRef(getFirebase().firestore().collection('teachingRooms').doc('asd123asd'));
     const tutorCandidatesCollectionRef = useRef(teachingRoomRef.current.collection('tutorCandidates'));
     const studentCandidatesCollectionRef = useRef(teachingRoomRef.current.collection('studentCandidates'));
 
@@ -60,7 +60,7 @@ const Test = (props) => {
                 sdp: offer.sdp,
             },
         };
-        await teachingRoomRef.current.set(roomWithOffer);
+        await teachingRoomRef.current.update(roomWithOffer);
         roomId = teachingRoomRef.current.id;
         console.log(`New room created with SDP offer. Room ID: ${teachingRoomRef.current.id}`);
         // Code for creating a room above
@@ -223,6 +223,8 @@ const Test = (props) => {
         });
 
         peerConnection.current && peerConnection.current.close();
+
+        //make room empty in db
     }
 
     return (
@@ -231,7 +233,7 @@ const Test = (props) => {
             <div style={{display: "flex"}}>
                 <div>
                     <h3>Local Stream</h3>
-                    <video ref={localVideoRef} autoPlay playsInline muted={false}/>
+                    <video ref={localVideoRef} autoPlay playsInline muted={false} width={"50%"} height={"50%"}/>
                 </div>
                 <div>
                     <h3>Remote Stream</h3>

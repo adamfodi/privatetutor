@@ -45,7 +45,6 @@ const TutorProfileDialog = (props) => {
             />
 
         </div>
-
     )
 }
 

@@ -129,7 +129,7 @@ const Advertisement = (props) => {
                             />
                         </div>
                         <span>
-                                <p>Szeretnék az oldal hirdetései között megjelenni!</p>
+                                <p>Szeretném, ha a hirdetésem megjelenne az oldal hirdetései között!</p>
                                 <Checkbox checked={newAdvertisement.active}
                                           onChange={(e) => setNewAdvertisement({
                                                   ...newAdvertisement, active: e.checked

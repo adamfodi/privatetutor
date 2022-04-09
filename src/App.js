@@ -4,7 +4,6 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import "./App.css"
-import "../src/assets/css/util/dialog.css"
 import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import SignIn from "./components/auth/SignIn";
@@ -17,26 +16,33 @@ import Advertisement from "./components/tutor/Advertisement";
 import PrivateLessons from "./components/tutor/PrivateLessons";
 import {compose} from "redux";
 import {firestoreConnect} from "react-redux-firebase";
-import TeachingRoomRouter from "./components/TechingRoomRouter";
 import TeachingRoom from "./components/TeachingRoom";
 import Test from "./components/Test";
 
 const App = (props) => {
     const {auth, privateLessons} = props;
-    const [privateLessonsRoutes, setPrivateLessonsRouter] = useState([])
+    const [teachingRoomRoutes, setTeachingRoomRoutes] = useState([])
 
-    // useEffect(() => {
-    //     privateLessons &&
-    //     setPrivateLessonsRouter(privateLessons.map((privateLesson) => {
-    //         const pathName = "/teaching-room/" + privateLesson.id
-    //         return <Route key={privateLesson.id}
-    //                       exact path={pathName}
-    //                       element={auth.uid === privateLesson.tutor || auth.uid === privateLesson.student
-    //                           ? <TeachingRoom/>
-    //                           : <Navigate to="/profile"/>}
-    //         />
-    //     }))
-    // }, [auth.uid, privateLessons])
+    useEffect(() => {
+        if (privateLessons) {
+            const currentTime = Math.round(Date.now() / 1000);
+            setTeachingRoomRoutes(privateLessons.filter((privateLesson) =>
+                currentTime > privateLesson.dateFrom.seconds && currentTime < privateLesson.dateTo.seconds)
+                .map((privateLesson) => {
+                    // console.log(privateLesson)
+                    const pathName = "/teaching-room/" + privateLesson.roomID;
+                    const role = auth.uid === privateLesson.tutorUID ? "tutor" : "student";
+                    return <Route key={privateLesson.roomID}
+                                  exact
+                                  path={pathName}
+                                  element={auth.uid === privateLesson.tutorUID || auth.uid === privateLesson.studentUID
+                                      ? <TeachingRoom role={role}/>
+                                      : <Navigate to="/profile"/>}
+                    />
+                })
+            )
+        }
+    }, [auth.uid, privateLessons])
 
     return (
         <BrowserRouter>
@@ -57,23 +63,11 @@ const App = (props) => {
 
                 <Route exact path="/test" element={<Test txt={"txt"}/>}/>
                 <Route exact path="/test2" element={<Test txt={"txt2"}/>}/>
-                {/*<Route exact path="/teaching-room/asd123"*/}
-                {/*       element={<TeachingRoom/>}*/}
-                {/*/>*/}
 
-                {/*{privateLessonsRoutes.map((item, index) => {*/}
-                {/*    return item*/}
-                {/*})}*/}
-
-                {privateLessons &&
-
-                    <Route path="/teaching-room"
-                           element={auth.uid === privateLessons[0].tutor || auth.uid === privateLessons[0].student
-                               ? <TeachingRoom/>
-                               : <Navigate to="/profile"/>}
-                    />
-                }
-
+                {teachingRoomRoutes.map((item) => {
+                    // console.log(item)
+                    return item
+                })}
 
                 <Route path="*" element={<Navigate to="/main"/>}/>
             </Routes>

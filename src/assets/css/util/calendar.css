@@ -1,3 +1,7 @@
+.p-datepicker {
+    overflow: auto !important;
+}
+
 .p-datepicker-title {
     margin: auto !important;
     display:flex;
@@ -25,7 +29,12 @@
     box-shadow: none !important;
 }
 
-.p-datepicker-month {
+.p-datepicker-header button {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.p-datepicker-month, .p-datepicker-year {
     font-size: 1.4em !important;
     font-weight: bold !important;
     color:#19616b !important;

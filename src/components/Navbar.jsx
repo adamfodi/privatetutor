@@ -57,7 +57,7 @@ const Navbar = props => {
             icon: 'pi pi-fw pi-table',
             items: [
                 {
-                    label: 'Hirdetés',
+                    label: 'Hirdetés beállítása',
                     icon: 'pi pi-fw pi-pencil',
                     command: () => {
                         navigate("/tutor/advertisement")
@@ -80,9 +80,8 @@ const Navbar = props => {
                 {
                     label: 'Kulonszobateszt',
                     icon: 'pi pi-fw pi-align-right',
-                    disabled: true,
                     command: () => {
-                        navigate("/teaching-room")
+                        navigate("/teaching-room/asd123asd")
                     },
 
                 },

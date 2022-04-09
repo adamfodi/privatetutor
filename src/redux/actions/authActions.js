@@ -1,6 +1,7 @@
 import {createUserWithEmailAndPassword, getAuth} from "firebase/auth";
 import {getFirebase} from "react-redux-firebase";
 import {createEmptyTimetable} from "../../util/CreateEmptyTimetable";
+import { v4 as uuidv4 } from 'uuid';
 
 export const signUp = (newUser) => {
     return (dispatch) => {
@@ -31,8 +32,8 @@ export const signUp = (newUser) => {
                             hourlyRate: null,
                             active: false
                         },
-                        privateLessons: null,
-                        tests: null
+                        roomID: uuidv4(),
+                        urlID: uuidv4().substring(0,8),
                     }
                 })
                     .then(() => {
