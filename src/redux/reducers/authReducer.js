@@ -3,36 +3,33 @@ const initState = {
         signUp: null,
         signIn: null
     },
-    loggedIn: false,
-    displayName: null
+    role: null
 };
 
 const authReducer = (state = initState, action) => {
     switch (action.type) {
-        case "SIGNUP_SUCCESS":
-            return {
-                ...initState,
-                loggedIn: action.payload.loggedIn,
-                displayName: action.payload.displayName
-            };
-
         case "SIGNUP_ERROR":
             return {
                 ...initState,
                 errors: {...initState.errors, signUp: action.payload.error},
             };
 
-        case "SIGNIN_SUCCESS":
-            return {
-                ...initState,
-                loggedIn: action.payload.loggedIn,
-                displayName: action.payload.displayName
-            };
-
         case "SIGNIN_ERROR":
             return {
                 ...initState,
                 errors: {...initState.errors, signIn: action.payload.error},
+            };
+
+        case "SIGNUP_SUCCESS":
+            return {
+                ...initState,
+                role: action.payload.role
+            };
+
+        case "SIGNIN_SUCCESS":
+            return {
+                ...initState,
+                role: action.payload.role
             };
 
         case "SIGNOUT_SUCCESS":
@@ -42,12 +39,6 @@ const authReducer = (state = initState, action) => {
             return {
                 ...state,
                 errors: {...state.errors, signUp: null, signIn: null},
-            };
-
-        case "UPDATE_DISPLAYNAME":
-            return {
-                ...state,
-                displayName: action.payload
             };
 
         default:

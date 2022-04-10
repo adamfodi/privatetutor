@@ -2,6 +2,12 @@ import React from "react";
 
 export const genderList = ["Férfi", "Nő", "Egyéb"];
 
+export const roles = [
+    {name: "Hallgató", value: "student"},
+    {name: "Oktató", value: "tutor"},
+    {name: "Admin", value: "admin"}
+]
+
 export const educationLevelList = [
     {name: "Általános iskola"},
     {name: "Szakközép"},

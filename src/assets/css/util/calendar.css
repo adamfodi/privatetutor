@@ -4,14 +4,14 @@
 
 .p-datepicker-title {
     margin: auto !important;
-    display:flex;
+    display: flex;
     justify-content: center !important;
     align-items: center !important;
 }
 
 .p-datepicker-title .p-dropdown-label {
     font-size: 1.4em !important;
-    color:#19616b !important;
+    color: #19616b !important;
     font-weight: bold !important;
     padding: 0 !important;
     margin: 0 !important;
@@ -19,13 +19,13 @@
 
 .p-datepicker-title .p-dropdown-trigger {
     font-size: 1.4em !important;
-    color:#19616b !important;
+    color: #19616b !important;
     font-weight: bold !important;
     padding: 0 !important;
     margin: 0 !important;
 }
 
-.p-datepicker-title>div {
+.p-datepicker-title > div {
     box-shadow: none !important;
 }
 
@@ -37,9 +37,8 @@
 .p-datepicker-month, .p-datepicker-year {
     font-size: 1.4em !important;
     font-weight: bold !important;
-    color:#19616b !important;
+    color: #19616b !important;
     padding: 0 !important;
-    line-height: 1.4em;
 }
 
 .p-datepicker-title .p-dropdown {
@@ -53,12 +52,12 @@
 
 .p-datepicker table td > span:hover {
     background-color: #19616b !important;
-    color:white !important;
+    color: white !important;
     border-radius: 0 !important;
 }
 
 .p-datepicker-calendar tbody tr td .p-highlight {
     background-color: #19616b !important;
-    color:white !important;
+    color: white !important;
     border-radius: 0 !important;
 }

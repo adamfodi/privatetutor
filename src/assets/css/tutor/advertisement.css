@@ -30,7 +30,7 @@
     width: 70%;
 }
 
-.tutor-advertisement-container .p-inputtext, .p-dropdown, .p-inputnumber, .p-multiselect {
+.tutor-advertisement-container .p-inputtext,.tutor-advertisement-container .p-dropdown,.tutor-advertisement-container .p-inputnumber,.tutor-advertisement-container .p-multiselect {
     width: 100%;
 }
 

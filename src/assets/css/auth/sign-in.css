@@ -3,71 +3,62 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 35%;
+    width: 700px;
     background-color: white;
     margin: 5vh auto;
-    border-radius: 1em;
+    border-radius: 10px;
     overflow: auto;
 }
 
-.sign-in-header {
+.sign-in-container .title {
     width: 80%;
-    font-size: 7vh;
+    font-size: 60px;
     margin: 2vh auto 0 auto;
     padding: 0.8vh 0;
     color: white;
     text-align: center;
     font-family: "Calibri, sans-serif", serif;
     background-color: #19616b;
-    border-radius: 0.3em;
+    border-radius: 10px;
 }
 
-.sign-in-content-container {
+.sign-in-container .content-container {
     display: flex;
     justify-content: center;
     margin: 4vh auto;
     width: 90%;
-    border-radius: 0.5em;
+    border-radius: 10px;
     box-shadow: 1px 3px 7px 3px #19616b;
     background-color: white;
 }
 
-.sign-in-content {
+.sign-in-container .content {
     background-color: #19616b;
     display: flex;
     margin: 2vh;
     flex-direction: column;
-    border-radius: 0.5em;
+    border-radius: 10px;
     overflow: hidden;
     width: 97%;
 }
 
-.sign-in-field {
+.sign-in-container .field {
     margin: 3vh 2vh;
 }
 
-.sign-in-field:first-of-type {
-    margin-top: 4vh;
-}
-
-.sign-in-field-pw {
-    margin-top: 0;
-}
-
-.sign-in-field span {
+.sign-in-container .field > span {
     width: 100%;
 }
 
-.sign-in-container .p-inputtext {
+.sign-in-container .p-inputtext, .sign-in-container .p-dropdown {
     width: 100%;
-    font-size: 4vh !important;
+    font-size: 30px !important;
     border: none;
-    border-radius: 0.2em;
     box-shadow: none !important;
 }
 
-.sign-in-container .p-inputtext:focus {
-    box-shadow: 0 0 1px 3px orangered !important;
+.sign-in-container .p-inputtext:focus, .sign-in-container .p-dropdown:not(.p-disabled).p-focus {
+    box-shadow: 0 0 1px 2px orangered !important;
 }
 
 .sign-in-container .p-invalid {
@@ -78,35 +69,29 @@
     width: 100%;
 }
 
-.sign-in-content button {
+.sign-in-container .submit-button .p-button {
     display: flex;
     justify-content: center;
     margin: 4vh auto;
-    text-align: center !important;
     padding: 2vh 2vh;
-    width: 50%;
-    font-size: 4.5vh;
-    border-radius: 0.25em;
+    font-size: 45px;
+    box-shadow: none !important;
+    border: none !important;
     background-color: white !important;
     color: #19616b !important;
-    font-weight: bold !important;
-    border: none !important;
+    transition: none !important;
+    border-radius: 5px;
+    font-family: "Calibri", sans-serif;
+}
+
+.sign-in-container .submit-button .p-button:hover {
+    background-color: orangered !important;
+    color: white !important;
     transition: none !important;
 }
 
-.sign-in-content button:hover {
-    background-color: orangered !important;
-    color: white !important;
-    font-weight: bold !important;
-    border: none !important;
-}
-
-.sign-in-container .p-invalid {
-    border: none !important;
-}
-
-.sign-in-error {
-    margin: 1vh 0 0 1vh;
+.sign-in-container .error-message {
+    margin: 1vh 0 0 0.5vh;
     color: orange;
-    font-size: 3vh;
+    font-size: 20px;
 }

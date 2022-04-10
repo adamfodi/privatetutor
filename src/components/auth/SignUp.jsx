@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
@@ -13,9 +13,11 @@ import "../../assets/css/auth/sign-up.css"
 import "../../assets/css/util/calendar.css"
 import {addLocaleHu, genderList} from "../../util/FormFields";
 import Swal from "sweetalert2";
+import {RadioButton} from "primereact/radiobutton";
 
 const SignUp = props => {
-    const {auth, signUp, clearErrors} = props;
+    const {myAuth, signUp, clearErrors} = props;
+    const [loginRole, setLoginRole] = useState("student");
 
     const defaultValues = {
         email: '',
@@ -32,57 +34,51 @@ const SignUp = props => {
     addLocale('hu', addLocaleHu);
 
     const yearNavigatorTemplate = (e) => {
-        return <Dropdown value={e.value}
-                         options={e.options}
-                         onChange={(event) => e.onChange(event.originalEvent, event.value)}
-                         className="ml-2"
-                         style={{lineHeight: 1}}
+        return <Dropdown
+            value={e.value}
+            options={e.options}
+            onChange={(event) => e.onChange(event.originalEvent, event.value)}
+            className="ml-2"
+            style={{lineHeight: 1}}
         />
     };
 
     useEffect(() => {
-        if (auth.errors.signUp !== null) {
+        if (myAuth.errors.signUp !== null) {
             clearErrors();
             Swal.fire({
                 icon: "error",
                 title: "Ez az email cím már foglalt!",
                 allowOutsideClick: false,
+                allowEscapeKey: false
             });
         }
-    }, [auth.errors.signUp, clearErrors]);
+    }, [myAuth.errors.signUp, clearErrors]);
 
     const onSubmit = (data) => {
         if (data.password === data.password2) {
-            // Swal.fire({
-            //     didOpen: () => {
-            //         Swal.showLoading();
-            //     },
-            //     title: "Regisztráció...",
-            //     allowOutsideClick: false,
-            //     allowEscapeKey: false
-            //
-            // });
-            signUp(data);
+            signUp({...data, role: loginRole});
         } else {
             Swal.fire({
                 icon: "error",
                 title: "A két jelszó nem egyezik meg!",
                 allowOutsideClick: false,
+                allowEscapeKey: false
             });
         }
     };
 
     const getFormErrorMessage = (name) => {
-        return errors[name] && <p className="sign-up-error">{errors[name].message}</p>
+        return errors[name] && <p className="error-message">{errors[name].message}</p>
     };
 
     return (
         <div className="sign-up-container">
-            <p className="sign-up-header">Regisztráció</p>
-            <div className="sign-up-content-container">
-                <div className="sign-up-content">
+            <p className="title">Regisztráció</p>
+            <div className="content-container">
+                <div className="content">
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="sign-up-field">
+                        <div className="field">
                         <span className="p-float-label p-input-icon-right">
                             <i className="pi pi-envelope"/>
                                  <Controller name="email"
@@ -97,16 +93,18 @@ const SignUp = props => {
                                                  }
                                              }
                                              render={({field, fieldState}) => (
-                                                 <InputText id={field.name} {...field}
-                                                            className={classNames({'p-invalid': fieldState.invalid})}
-                                                            placeholder="Email"
+                                                 <InputText
+                                                     id={field.name} {...field}
+                                                     className={classNames({'p-invalid': fieldState.invalid})}
+                                                     placeholder="Email"
                                                  />
                                              )}
                                  />
+
                         </span>
                             {getFormErrorMessage('email')}
                         </div>
-                        <div className="sign-up-field">
+                        <div className="field">
                         <span className="p-float-label">
                                  <Controller name="password"
                                              control={control}
@@ -116,23 +114,24 @@ const SignUp = props => {
                                                  }
                                              }
                                              render={({field, fieldState}) => (
-                                                 <Password id={field.name} {...field}
-                                                           className={classNames({'p-invalid': fieldState.invalid})}
-                                                           feedback
-                                                           toggleMask
-                                                           placeholder="Jelszó"
-                                                           promptLabel="Írjon be egy jelszót"
-                                                           weakLabel="Gyenge"
-                                                           mediumLabel="Közepes"
-                                                           strongLabel="Erős"
-                                                           minLength={6}
+                                                 <Password
+                                                     id={field.name} {...field}
+                                                     className={classNames({'p-invalid': fieldState.invalid})}
+                                                     feedback
+                                                     toggleMask
+                                                     placeholder="Jelszó"
+                                                     promptLabel="Írjon be egy jelszót"
+                                                     weakLabel="Gyenge"
+                                                     mediumLabel="Közepes"
+                                                     strongLabel="Erős"
+                                                     minLength={6}
                                                  />
                                              )}
                                  />
                         </span>
                             {getFormErrorMessage('password')}
                         </div>
-                        <div className="sign-up-field">
+                        <div className="field">
                         <span className="p-float-label">
                                  <Controller name="password2"
                                              control={control}
@@ -142,19 +141,20 @@ const SignUp = props => {
                                                  }
                                              }
                                              render={({field, fieldState}) => (
-                                                 <Password id={field.name} {...field}
-                                                           className={classNames({'p-invalid': fieldState.invalid})}
-                                                           placeholder="Jelszó ismét"
-                                                           feedback={false}
-                                                           toggleMask
-                                                           minLength={6}
+                                                 <Password
+                                                     id={field.name} {...field}
+                                                     className={classNames({'p-invalid': fieldState.invalid})}
+                                                     placeholder="Jelszó újra"
+                                                     feedback={false}
+                                                     toggleMask
+                                                     minLength={6}
                                                  />
                                              )}
                                  />
                         </span>
                             {getFormErrorMessage('password2')}
                         </div>
-                        <div className="sign-up-field">
+                        <div className="field">
                         <span className="p-float-label">
                                  <Controller name="lastName"
                                              control={control}
@@ -164,16 +164,17 @@ const SignUp = props => {
                                                  }
                                              }
                                              render={({field, fieldState}) => (
-                                                 <InputText id={field.name} {...field}
-                                                            className={classNames({'p-invalid': fieldState.invalid})}
-                                                            placeholder="Vezetéknév"
+                                                 <InputText
+                                                     id={field.name} {...field}
+                                                     className={classNames({'p-invalid': fieldState.invalid})}
+                                                     placeholder="Vezetéknév"
                                                  />
                                              )}
                                  />
                         </span>
                             {getFormErrorMessage('lastName')}
                         </div>
-                        <div className="sign-up-field">
+                        <div className="field">
                         <span className="p-float-label">
                                  <Controller name="firstName"
                                              control={control}
@@ -183,16 +184,17 @@ const SignUp = props => {
                                                  }
                                              }
                                              render={({field, fieldState}) => (
-                                                 <InputText id={field.name} {...field}
-                                                            className={classNames({'p-invalid': fieldState.invalid})}
-                                                            placeholder="Keresztnév"
+                                                 <InputText
+                                                     id={field.name} {...field}
+                                                     className={classNames({'p-invalid': fieldState.invalid})}
+                                                     placeholder="Keresztnév"
                                                  />
                                              )}
                                  />
                         </span>
                             {getFormErrorMessage('firstName')}
                         </div>
-                        <div className="sign-up-field">
+                        <div className="field">
                         <span className="p-float-label">
                                  <Controller name="birthday"
                                              control={control}
@@ -220,7 +222,7 @@ const SignUp = props => {
                         </span>
                             {getFormErrorMessage('birthday')}
                         </div>
-                        <div className="sign-up-field">
+                        <div className="field">
                         <span className="p-float-label">
                                  <Controller name="gender"
                                              control={control}
@@ -235,10 +237,33 @@ const SignUp = props => {
                                  />
                         </span>
                         </div>
-
-                        <Button type="submit"
-                                label="Regisztráció"
-                        />
+                        <div className="login-role">
+                            <div>
+                                <RadioButton
+                                    inputId="student"
+                                    name="role"
+                                    value="student"
+                                    onChange={(e) => setLoginRole(e.value)}
+                                    checked={loginRole === "student"}
+                                />
+                                <p>Tanulni szeretnék!</p>
+                            </div>
+                            <div>
+                                <RadioButton
+                                    inputId="tutor"
+                                    name="role"
+                                    value="tutor"
+                                    onChange={(e) => setLoginRole(e.value)}
+                                    checked={loginRole === "tutor"}
+                                />
+                                <p>Tanítani szeretnék!</p>
+                            </div>
+                        </div>
+                        <div className="submit-button">
+                            <Button type="submit"
+                                    label="Regisztráció"
+                            />
+                        </div>
                     </form>
                 </div>
             </div>
@@ -248,7 +273,7 @@ const SignUp = props => {
 
 const mapStateToProps = state => {
     return {
-        auth: state.auth
+        myAuth: state.auth
     };
 };
 

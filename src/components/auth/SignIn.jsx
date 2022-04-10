@@ -7,54 +7,49 @@ import {connect} from "react-redux";
 import "../../assets/css/auth/sign-in.css"
 import {Password} from "primereact/password";
 import {Button} from "primereact/button";
+import {Dropdown} from "primereact/dropdown";
 import Swal from "sweetalert2";
+import {roles} from "../../util/FormFields";
 
 const SignIn = props => {
-    const {auth, signIn, clearErrors} = props;
+    const {myAuth, signIn, clearErrors} = props;
 
     const defaultValues = {
         email: '',
-        password: ''
+        password: '',
+        role: roles[0].value
     };
 
     const {control, formState: {errors}, handleSubmit, reset} = useForm({defaultValues});
 
     useEffect(() => {
-        if (auth.errors.signIn !== null) {
+        if (myAuth.errors.signIn !== null) {
             clearErrors();
             Swal.fire({
                 icon: "error",
                 title: "Hibás felhasználónév vagy jelszó!",
                 allowOutsideClick: false,
+                allowEscapeKey: false
             });
         }
-    }, [auth.errors.signIn, clearErrors]);
+    }, [myAuth.errors.signIn, clearErrors]);
 
     const onSubmit = (data) => {
-        // Swal.fire({
-        //     didOpen: () => {
-        //         Swal.showLoading();
-        //     },
-        //     title: "Bejelentkezés...",
-        //     allowOutsideClick: false,
-        //     allowEscapeKey: false
-        //
-        // });
         signIn(data);
         reset();
     };
 
     const getFormErrorMessage = (name) => {
-        return errors[name] && <p className="sign-in-error">{errors[name].message}</p>
+        return errors[name] && <p className="error-message">{errors[name].message}</p>
     };
 
     return (
         <div className="sign-in-container">
-            <p className="sign-in-header">Bejelentkezés</p>
-            <div className="sign-in-content-container">
-                <div className="sign-in-content">
+            <p className="title">Bejelentkezés</p>
+            <div className="content-container">
+                <div className="content">
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="sign-in-field">
+                        <div className="field">
                         <span className="p-float-label p-input-icon-right">
                             <i className="pi pi-envelope"/>
                                  <Controller name="email"
@@ -69,16 +64,17 @@ const SignIn = props => {
                                                  }
                                              }
                                              render={({field, fieldState}) => (
-                                                 <InputText id={field.name} {...field}
-                                                            className={classNames({'p-invalid': fieldState.invalid})}
-                                                            placeholder="Email"
+                                                 <InputText
+                                                     id={field.name} {...field}
+                                                     className={classNames({'p-invalid': fieldState.invalid})}
+                                                     placeholder="Email"
                                                  />
                                              )}
                                  />
                         </span>
                             {getFormErrorMessage('email')}
                         </div>
-                        <div className="sign-in-field">
+                        <div className="field">
                         <span className="p-float-label">
                                  <Controller name="password"
                                              control={control}
@@ -88,20 +84,41 @@ const SignIn = props => {
                                                  }
                                              }
                                              render={({field, fieldState}) => (
-                                                 <Password id={field.name} {...field}
-                                                           className={classNames({'p-invalid': fieldState.invalid})}
-                                                           toggleMask
-                                                           feedback={false}
-                                                           placeholder="Jelszó"
+                                                 <Password
+                                                     id={field.name} {...field}
+                                                     className={classNames({'p-invalid': fieldState.invalid})}
+                                                     toggleMask
+                                                     feedback={false}
+                                                     placeholder="Jelszó"
                                                  />
                                              )}
                                  />
                         </span>
                             {getFormErrorMessage('password')}
                         </div>
-                        <Button type="submit"
+                        <div className="field">
+                        <span className="p-float-label">
+                                 <Controller name="role"
+                                             control={control}
+                                             render={({field}) => (
+                                                 <Dropdown
+                                                     id={field.name} {...field}
+                                                     value={field.value}
+                                                     onChange={(e) => field.onChange(e.value)}
+                                                     options={roles}
+                                                     optionLabel="name"
+                                                 />
+                                             )}
+                                 />
+                        </span>
+                        </div>
+                        <div className="submit-button">
+                            <Button
+                                type="submit"
                                 label="Bejelentkezés"
-                        />
+                            />
+                        </div>
+
                     </form>
                 </div>
             </div>
@@ -111,7 +128,7 @@ const SignIn = props => {
 
 const mapStateToProps = state => {
     return {
-        auth: state.auth
+        myAuth: state.auth
     };
 };
 

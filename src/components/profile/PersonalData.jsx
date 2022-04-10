@@ -8,13 +8,12 @@ import "../../assets/css/profile/personal-data.css"
 import "../../assets/css/util/calendar.css"
 import {addLocaleHu, genderList} from "../../util/FormFields";
 import Swal from "sweetalert2";
-import {updateDisplayName} from "../../redux/actions/authActions";
 import {classNames} from "primereact/utils";
 import {Button} from "primereact/button";
 import {UserService} from "../../services/UserService";
 
 const PersonalData = (props) => {
-    const {firebaseAuth, personalData, updateDisplayName} = props;
+    const {firebaseAuth, personalData} = props;
     const {control, formState: {errors}, handleSubmit} = useForm({defaultValues: personalData});
 
     addLocale('hu', addLocaleHu);
@@ -160,17 +159,4 @@ const PersonalData = (props) => {
     )
 }
 
-const mapStateToProps = state => {
-    return {
-        auth: state.auth,
-        firebaseAuth: state.firebase.auth,
-    };
-};
-
-const mapDispatchToProps = dispatch => {
-    return {
-        updateDisplayName: displayName => dispatch(updateDisplayName(displayName))
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PersonalData);
+export default (PersonalData);

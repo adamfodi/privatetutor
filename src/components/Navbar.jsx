@@ -12,8 +12,10 @@ import "../App.css"
 const Navbar = props => {
     const navigate = useNavigate();
     const menu = useRef(null);
-    const {auth, personalData} = props;
+    const {myAuth,firebaseAuth, personalData} = props;
     const displayName = personalData ? personalData.fullName : null;
+
+    console.log(myAuth)
 
     const mainItems = [
         {
@@ -123,7 +125,7 @@ const Navbar = props => {
         <div>
             <Menubar
                 model={mainItems}
-                end={auth.isEmpty
+                end={firebaseAuth.isEmpty
                     ? <React.Fragment>
                         <Button
                             onClick={() => navigate("/signup")}
@@ -167,7 +169,8 @@ const Navbar = props => {
 
 const mapStateToProps = state => {
     return {
-        auth: state.firebase.auth,
+        myAuth: state.auth,
+        firebaseAuth: state.firebase.auth,
         personalData: !state.firebase.auth.isEmpty && !state.firebase.profile.isEmpty
             ? state.firebase.profile.profile.personalData
             : null
