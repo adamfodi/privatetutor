@@ -12,37 +12,26 @@ export const PrivateLessonService = {
             .set(privateLesson)
     },
 
-    async updateCourse(courseID, course) {
+    async modifyPrivateLessonDate(privateLessonID, newDateFrom, newDateTo) {
         const firestore = state.firebase.firestore;
 
         await firestore()
-            .collection("courses")
-            .doc(courseID)
-            .update(course)
-    },
-
-    async modifyCourseApplicants(courseID, newApplicants) {
-        const firestore = state.firebase.firestore;
-
-        await firestore()
-            .collection("courses")
-            .doc(courseID)
+            .collection("privateLessons")
+            .doc(privateLessonID)
             .update({
-                applicants: newApplicants
+                dateFrom: newDateFrom,
+                dateTo: newDateTo
             })
     },
 
-    async deleteCourses(courses) {
+    async deletePrivateLesson(id) {
         const firestore = state.firebase.firestore;
-        let batch = firestore().batch();
 
-        await courses.forEach(course => {
-            let ref = firestore().collection("courses").doc(course.id);
-            batch.delete(ref)
-        });
-
-        return batch.commit();
-    },
+        await firestore()
+            .collection("privateLessons")
+            .doc(id)
+            .delete()
+    }
 
 }
 

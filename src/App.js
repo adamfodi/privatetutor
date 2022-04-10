@@ -13,7 +13,7 @@ import MyCourses from "./components/courses/MyCourses";
 import Profile from "./components/profile/Profile";
 import {connect} from "react-redux";
 import Advertisement from "./components/tutor/Advertisement";
-import PrivateLessons from "./components/tutor/PrivateLessons";
+import PrivateLessons from "./components/tutor/TutorPrivateLessons";
 import {compose} from "redux";
 import {firestoreConnect} from "react-redux-firebase";
 import TeachingRoom from "./components/TeachingRoom";

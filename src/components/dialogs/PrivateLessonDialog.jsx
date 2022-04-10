@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import "../../assets/css/dialogs/new-private-lesson-dialog.css"
+import "../../assets/css/dialogs/private-lesson-dialog.css"
 import {compose} from "redux";
 import {firestoreConnect} from "react-redux-firebase";
 import {connect} from "react-redux";
@@ -12,8 +12,8 @@ import {Toast} from "primereact/toast";
 import {PrivateLessonService} from "../../services/PrivateLessonService";
 import Swal from "sweetalert2";
 
-const NewPrivateLessonDialog = (props) => {
-    const {auth, users, privateLessons, tutor, setShowNewPrivateLessonDialog} = props;
+const PrivateLessonDialog = (props) => {
+    const {auth, users, tutor, setShowNewPrivateLessonDialog} = props;
     const [usersList, setUsersList] = useState([]);
     const [student, setStudent] = useState(null);
     const [day, setDay] = useState(() => {
@@ -95,13 +95,13 @@ const NewPrivateLessonDialog = (props) => {
 
             const privateLesson = {
                 studentUID: student.UID,
+                tutorUID: auth.uid,
                 dateFrom: dateFrom,
                 dateTo: dateTo,
                 status: "pending",
                 roomID: tutor.roomID,
-                urlID: tutor.urlID,
+                urlID: tutor.urlID
             }
-
 
             PrivateLessonService.createPrivateLesson(privateLesson)
                 .then(() => {
@@ -131,10 +131,9 @@ const NewPrivateLessonDialog = (props) => {
         }
     }
 
-
     return (
-        <div className="new-private-lesson-dialog-content">
-            <p className="new-private-lesson-dialog-content-label-p">Válassz egy hallgatót!</p>
+        <div className="private-lesson-dialog-content">
+            <p className="private-lesson-dialog-content-label-p">Válassz egy hallgatót!</p>
             <Dropdown valueTemplate={student ? student.nameWithEmail : null}
                       options={usersList.filter((user) => user.UID !== auth.uid)}
                       onChange={(e) => setStudent(e.value)}
@@ -144,8 +143,8 @@ const NewPrivateLessonDialog = (props) => {
                       emptyFilterMessage="Nem található ilyen hallgató."
                       placeholder="Név - Email"
             />
-            <div className="new-private-lesson-dialog-content-date">
-                <p className="new-private-lesson-dialog-content-label-p">Válaszd ki a napot!</p>
+            <div className="private-lesson-dialog-content-date">
+                <p className="private-lesson-dialog-content-label-p">Válaszd ki a napot!</p>
                 <Calendar
                     value={day}
                     onChange={(e) => setDay(() => {
@@ -157,10 +156,10 @@ const NewPrivateLessonDialog = (props) => {
                     inline
                     locale="hu"
                 />
-                <p className="new-private-lesson-dialog-content-label-p">Válaszd ki az időpontot!</p>
-                <div className="new-private-lesson-dialog-content-date-hour">
+                <p className="private-lesson-dialog-content-label-p">Válaszd ki az időpontot!</p>
+                <div className="private-lesson-dialog-content-date-hour">
                     <div>
-                        <span className="new-private-lesson-dialog-content-label-span">Mettől</span>
+                        <span className="private-lesson-dialog-content-label-span">Mettől</span>
                         <Calendar value={hourMinuteFrom}
                                   onChange={(e) => setHourMinuteFrom(e.value)}
                                   timeOnly
@@ -169,7 +168,7 @@ const NewPrivateLessonDialog = (props) => {
                         />
                     </div>
                     <div>
-                        <span className="new-private-lesson-dialog-content-label-span">Meddig</span>
+                        <span className="private-lesson-dialog-content-label-span">Meddig</span>
                         <Calendar value={hourMinuteTo}
                                   onChange={(e) => setHourMinuteTo(e.value)}
                                   timeOnly
@@ -192,13 +191,11 @@ const mapStateToProps = state => {
     return {
         auth: state.firebase.auth,
         users: state.firestore.ordered.users,
-        privateLessons: state.firestore.ordered.privateLessons,
         tutor: state.firebase.profile.tutor
     };
 };
 
 export default compose(
     connect(mapStateToProps),
-    firestoreConnect([{collection: "users"}]),
-    firestoreConnect([{collection: "privateLessons"}])
-)(NewPrivateLessonDialog);
+    firestoreConnect([{collection: "users"}])
+)(PrivateLessonDialog);
