@@ -1,0 +1,16 @@
+.navbar-container button {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.navbar-container .p-menubar {
+    height: 60px;
+}
+
+.navbar-container .p-menubar-start p {
+    color: orangered;
+    font-size: 30px;
+    margin: 0 20px 0 0;
+    padding: 0;
+    font-family: "Bahnschrift", sans-serif
+}

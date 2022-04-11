@@ -9,15 +9,13 @@ import Navbar from "./components/Navbar";
 import SignIn from "./components/auth/SignIn";
 import SignUp from "./components/auth/SignUp";
 import Main from "./components/Main";
-import MyCourses from "./components/courses/MyCourses";
 import Profile from "./components/profile/Profile";
 import {connect} from "react-redux";
 import Advertisement from "./components/tutor/Advertisement";
-import PrivateLessons from "./components/tutor/TutorPrivateLessons";
+import TutorPrivateLessons from "./components/tutor/TutorPrivateLessons";
 import {compose} from "redux";
 import {firestoreConnect} from "react-redux-firebase";
 import TeachingRoom from "./components/TeachingRoom";
-import Test from "./components/Test";
 
 const App = (props) => {
     const {auth, privateLessons} = props;
@@ -48,28 +46,42 @@ const App = (props) => {
         <BrowserRouter>
             <Navbar/>
             <Routes>
-                <Route exact path="/main" element={<Main/>}/>
+                <Route
+                    exact path="/main"
+                    element={<Main/>}
+                />
 
-                <Route exact path="/signin" element={auth.isEmpty ? <SignIn/> : <Navigate to="/main"/>}/>
-                <Route exact path="/signup" element={auth.isEmpty ? <SignUp/> : <Navigate to="/main"/>}/>
+                <Route
+                    exact path="/signin"
+                    element={auth.isEmpty ? <SignIn/> : <Navigate to="/main"/>}/>
+                <Route
+                    exact path="/signup"
+                    element={auth.isEmpty ? <SignUp/> : <Navigate to="/main"/>}/>
+                <Route
+                    exact path="/profile"
+                    element={!auth.isEmpty ? <Profile/> : <Navigate to="/main"/>}/>
 
-                <Route exact path="/mycourses" element={<MyCourses/>}/>
-                <Route exact path="/profile" element={!auth.isEmpty ? <Profile/> : <Navigate to="/main"/>}/>
+                <Route
+                    exact path="/tutor/advertisement"
+                    element={!auth.isEmpty ? <Advertisement/> : <Navigate to="/main"/>}
+                />
+                <Route
+                    exact path="/tutor/private-lessons"
+                    element={!auth.isEmpty ? <TutorPrivateLessons/> : <Navigate to="/main"/>}
+                />
 
-                <Route exact path="/tutor/advertisement"
-                       element={!auth.isEmpty ? <Advertisement/> : <Navigate to="/main"/>}/>
-                <Route exact path="/tutor/private-lessons"
-                       element={!auth.isEmpty ? <PrivateLessons/> : <Navigate to="/main"/>}/>
-
-                <Route exact path="/test" element={<Test txt={"txt"}/>}/>
-                <Route exact path="/test2" element={<Test txt={"txt2"}/>}/>
+                {/*<Route exact path="/test" element={<Test txt={"txt"}/>}/>*/}
+                {/*<Route exact path="/test2" element={<Test txt={"txt2"}/>}/>*/}
 
                 {teachingRoomRoutes.map((item) => {
                     // console.log(item)
                     return item
                 })}
 
-                <Route path="*" element={<Navigate to="/main"/>}/>
+                <Route
+                    path="*"
+                    element={<Navigate to="/main"/>}
+                />
             </Routes>
         </BrowserRouter>
     );

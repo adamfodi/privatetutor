@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useMemo, useRef} from 'react';
 import {useNavigate} from "react-router-dom";
 import {Menubar} from 'primereact/menubar';
 import {Button} from "primereact/button";
@@ -11,6 +11,7 @@ import {clearRole} from "../redux/actions/roleActions";
 
 
 const Navbar = props => {
+    const {clearRole} = props;
     const navigate = useNavigate();
     const menu = useRef(null);
     const {role, firebaseAuth, personalData} = props;
@@ -34,54 +35,34 @@ const Navbar = props => {
         }
     }
 
-    const mainItems = [
-        {
-            label: 'Főoldal',
-            icon: 'pi pi-fw pi-home',
-            command: () => {
-                navigate("/main")
-            }
-        },
+    const mainItems = useMemo(() => {
+        const items = []
 
-        {
-            label: 'Test',
-            command: () => {
-                navigate("/test")
-            }
-        },
-
-        {
-            label: 'Hallgató',
-            icon: 'pi pi-fw pi-table',
-            items: [
+        items.push(
+            {
+                label: 'Főoldal',
+                icon: 'pi pi-fw pi-home',
+                command: () => {
+                    navigate("/main")
+                }
+            },
+        );
+        
+        if (role === 'student') {
+            items.push(
                 {
                     label: 'Magánórák',
                     icon: 'pi pi-fw pi-pencil',
                     command: () => {
-                        navigate("")
+                        navigate("/main")
                     },
+                    disabled: true
                 },
-                {
-                    label: 'Tesztek',
-                    icon: 'pi pi-fw pi-align-right',
-                    command: () => {
-                        navigate("")
-                    },
-                },
-            ]
-        },
+            );
+        }
 
-        {
-            label: 'Oktató',
-            icon: 'pi pi-fw pi-table',
-            items: [
-                {
-                    label: 'Hirdetés beállítása',
-                    icon: 'pi pi-fw pi-pencil',
-                    command: () => {
-                        navigate("/tutor/advertisement")
-                    }
-                },
+        if (role === 'tutor') {
+            items.push(
                 {
                     label: 'Magánórák',
                     icon: 'pi pi-fw pi-pencil',
@@ -89,60 +70,67 @@ const Navbar = props => {
                         navigate("/tutor/private-lessons")
                     },
                 },
+            );
+            items.push(
                 {
-                    label: 'Tesztek',
-                    icon: 'pi pi-fw pi-align-right',
+                    label: 'Hirdetés',
+                    icon: 'pi pi-fw pi-pencil',
                     command: () => {
-                        navigate("")
+                        navigate("/tutor/advertisement")
                     },
                 },
-                {
-                    label: 'Kulonszobateszt',
-                    icon: 'pi pi-fw pi-align-right',
-                    command: () => {
-                        navigate("/teaching-room/asd123asd")
-                    },
+            );
+        }
 
+        items.push(
+            {
+                label: 'Fórum',
+                icon: 'pi pi-fw pi-pencil',
+                command: () => {
+                    navigate("/main")
                 },
-            ]
-        },
-
-    ];
-
-    const userItems = [
-        {
-            label: 'Profil',
-            icon: 'pi pi-user',
-            command: () => {
-                navigate("/profile")
+                disabled: true
             },
-        },
+        );
 
-        {
-            label: 'Üzenetek',
-            icon: 'pi pi-envelope',
-            badge: '8',
-            command: () => {
-                navigate("")
+        return items;
+
+    }, [navigate, role])
+    
+    const userItems = useMemo(() => {
+        return [
+            {
+                label: 'Profil',
+                icon: 'pi pi-user',
+                command: () => {
+                    navigate("/profile")
+                },
             },
-            disabled: true
-        },
 
-        {
-            label: 'Kijelentkezés',
-            icon: 'pi pi-sign-out',
-            command: () => {
-                AuthService.signOut()
-                    .then(() => {
-                        props.clearRole()
-                    });
-            }
-        },
+            {
+                label: 'Üzenetek',
+                icon: 'pi pi-envelope',
+                command: () => {
+                    navigate("")
+                },
+                disabled: true
+            },
 
-    ];
+            {
+                label: 'Kijelentkezés',
+                icon: 'pi pi-sign-out',
+                command: () => {
+                    AuthService.signOut()
+                        .then(() => {
+                            clearRole()
+                        });
+                }
+            },
+        ]
+    },[clearRole, navigate])
 
     return (
-        <div>
+        <div className="navbar-container">
             <Menubar
                 start={menubarStartTemplate}
                 model={mainItems}
@@ -179,7 +167,6 @@ const Navbar = props => {
                             onClick={(event) => menu.current.toggle(event)}
                             aria-controls="popup_menu"
                             aria-haspopup
-                            style={{marginRight: 10, fontSize: 18}}
                         />
                     </React.Fragment>
                 }
