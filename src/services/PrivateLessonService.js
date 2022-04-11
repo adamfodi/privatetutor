@@ -12,15 +12,14 @@ export const PrivateLessonService = {
             .set(privateLesson)
     },
 
-    async modifyPrivateLessonDate(privateLessonID, newDateFrom, newDateTo) {
+    async modifyPrivateLessonStatus(privateLessonID, status) {
         const firestore = state.firebase.firestore;
 
         await firestore()
             .collection("privateLessons")
             .doc(privateLessonID)
             .update({
-                dateFrom: newDateFrom,
-                dateTo: newDateTo
+                status: status
             })
     },
 

@@ -16,6 +16,7 @@ import TutorPrivateLessons from "./components/tutor/TutorPrivateLessons";
 import {compose} from "redux";
 import {firestoreConnect} from "react-redux-firebase";
 import TeachingRoom from "./components/TeachingRoom";
+import StudentPrivateLessons from "./components/student/StudentPrivateLessons";
 
 const App = (props) => {
     const {auth, privateLessons} = props;
@@ -68,6 +69,11 @@ const App = (props) => {
                 <Route
                     exact path="/tutor/private-lessons"
                     element={!auth.isEmpty ? <TutorPrivateLessons/> : <Navigate to="/main"/>}
+                />
+
+                <Route
+                    exact path="/student/private-lessons"
+                    element={!auth.isEmpty ? <StudentPrivateLessons/> : <Navigate to="/main"/>}
                 />
 
                 {/*<Route exact path="/test" element={<Test txt={"txt"}/>}/>*/}

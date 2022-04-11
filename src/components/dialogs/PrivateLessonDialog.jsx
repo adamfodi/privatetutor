@@ -11,9 +11,10 @@ import {Button} from "primereact/button";
 import {Toast} from "primereact/toast";
 import {PrivateLessonService} from "../../services/PrivateLessonService";
 import Swal from "sweetalert2";
+import { v4 as uuidv4 } from 'uuid';
 
 const PrivateLessonDialog = (props) => {
-    const {auth, users, tutor, setShowNewPrivateLessonDialog} = props;
+    const {firebaseAuth, users, setShowNewPrivateLessonDialog} = props;
     const [usersList, setUsersList] = useState([]);
     const [student, setStudent] = useState(null);
     const [day, setDay] = useState(() => {
@@ -85,6 +86,15 @@ const PrivateLessonDialog = (props) => {
         const toast = validateNewLesson();
 
         if (toast.length === 0) {
+            Swal.fire({
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+                title: "Létrehozás...",
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            });
+
             const dateFrom = new Date(day.getTime());
             const dateTo = new Date(day.getTime());
 
@@ -95,35 +105,42 @@ const PrivateLessonDialog = (props) => {
 
             const privateLesson = {
                 studentUID: student.UID,
-                tutorUID: auth.uid,
+                tutorUID: firebaseAuth.uid,
                 dateFrom: dateFrom,
                 dateTo: dateTo,
                 status: "pending",
-                roomID: tutor.roomID,
-                urlID: tutor.urlID
+                roomID: uuidv4(),
+                urlID: uuidv4()
             }
+
+            console.log(privateLesson)
 
             PrivateLessonService.createPrivateLesson(privateLesson)
                 .then(() => {
+                    setShowNewPrivateLessonDialog(false)
                     Swal.fire({
-                        timer: 1200,
-                        position: 'center',
+                        didOpen: () => {
+                            Swal.hideLoading();
+                        },
+                        timer: 2000,
+                        icon: "success",
+                        title: "Sikeres létrehozás!",
                         showConfirmButton: false,
                         allowOutsideClick: false,
-                        allowEscapeKey: false,
-                        icon: 'success',
+                        allowEscapeKey: false
                     })
-                        .then(setShowNewPrivateLessonDialog(false))
                 })
-                .catch(() => {
+                .catch((err) => {
+                    setShowNewPrivateLessonDialog(false)
+                    console.log(err)
                     Swal.fire({
-                        position: 'center',
-                        confirmButtonColor: '#3085d6',
+                        didOpen: () => {
+                            Swal.hideLoading();
+                        },
+                        icon: "error",
+                        title: "Probléma történt!\n Kérem próbálja újra később!",
                         allowOutsideClick: false,
                         allowEscapeKey: false,
-                        icon: 'error',
-                        iconColor: '#c91e1e',
-                        title: 'Probléma történt!\n Kérem próbálja újra később!'
                     });
                 })
         } else {
@@ -135,7 +152,7 @@ const PrivateLessonDialog = (props) => {
         <div className="private-lesson-dialog-content">
             <p className="private-lesson-dialog-content-label-p">Válassz egy hallgatót!</p>
             <Dropdown valueTemplate={student ? student.nameWithEmail : null}
-                      options={usersList.filter((user) => user.UID !== auth.uid)}
+                      options={usersList.filter((user) => user.UID !== firebaseAuth.uid)}
                       onChange={(e) => setStudent(e.value)}
                       optionLabel="nameWithEmail"
                       filter
@@ -186,12 +203,10 @@ const PrivateLessonDialog = (props) => {
     )
 }
 
-
 const mapStateToProps = state => {
     return {
-        auth: state.firebase.auth,
+        firebaseAuth: state.firebase.auth,
         users: state.firestore.ordered.users,
-        tutor: state.firebase.profile.tutor
     };
 };
 

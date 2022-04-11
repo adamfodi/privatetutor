@@ -9,7 +9,6 @@ import "../assets/css/navbar.css"
 import {AuthService} from "../services/AuthService";
 import {clearRole} from "../redux/actions/roleActions";
 
-
 const Navbar = props => {
     const {clearRole} = props;
     const navigate = useNavigate();
@@ -88,9 +87,8 @@ const Navbar = props => {
                     label: 'Magánórák',
                     icon: 'pi pi-fw pi-pencil',
                     command: () => {
-                        navigate("/main")
-                    },
-                    disabled: true
+                        navigate("/student/private-lessons")
+                    }
                 },
             );
         }

@@ -1,0 +1,80 @@
+.student-private-lessons-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 90%;
+    background-color: white;
+    margin: 30px auto;
+}
+
+.student-private-lessons-container button {
+    border: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+}
+
+.student-private-lessons-container .title {
+    font-size: 30px;
+    text-align: center;
+}
+
+.student-private-lessons-container .p-tag {
+    font-size: 14px;
+    width: 120px;
+}
+
+.student-private-lessons-container .p-tag-icon {
+    font-size: 14px;
+}
+
+.student-private-lessons-container .datatable-container {
+    width: 98%;
+}
+
+.student-private-lessons-container .datatable-container .p-datatable-header .p-button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.student-private-lessons-container .datatable-container td:first-of-type {
+    width: 50%;
+}
+
+.student-private-lessons-container .datatable-container td:first-of-type div {
+    display:flex;
+    justify-content: space-between;
+}
+
+.student-private-lessons-container .datatable-container td:first-of-type p {
+    font-size: 20px;
+}
+
+.student-private-lessons-container .datatable-container td:last-of-type {
+    width: 15%;
+}
+
+.student-private-lessons-container .datatable-container td:last-of-type > div {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.student-private-lessons-container .datatable-container td {
+    text-align: center !important;
+}
+
+.student-private-lessons-container .datatable-container td:first-of-type {
+    text-align: left !important;
+}
+
+.student-private-lessons-container .datatable-container th div {
+    display: flex;
+    justify-content: center;
+}
+
+.student-private-lessons-container .p-dropdown {
+    width: 75px;
+    border-radius: 0;
+}
+
+
+

@@ -40,6 +40,15 @@
     width: 50%;
 }
 
+.tutor-private-lessons-container .datatable-container td:first-of-type div {
+    display:flex;
+    justify-content: space-between;
+}
+
+.tutor-private-lessons-container .datatable-container td:first-of-type p {
+    font-size: 20px;
+}
+
 .tutor-private-lessons-container .datatable-container td:last-of-type {
     width: 10%;
 }

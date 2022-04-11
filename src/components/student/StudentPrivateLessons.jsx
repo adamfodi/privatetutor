@@ -5,77 +5,36 @@ import {firestoreConnect} from "react-redux-firebase";
 import {Column} from "primereact/column";
 import {DataTable} from "primereact/datatable";
 import {Button} from "primereact/button";
-import {Dialog} from "primereact/dialog";
-import NewPrivateLessonDialog from "../dialogs/PrivateLessonDialog";
 import moment from "moment";
 import 'moment/locale/hu'
-import "../../assets/css/tutor/tutor-private-lessons.css"
+import "../../assets/css/student/student-private-lessons.css"
 import {Tag} from "primereact/tag";
 import {PrivateLessonService} from "../../services/PrivateLessonService";
-import Swal from "sweetalert2";
 
-const TutorPrivateLessons = props => {
+const StudentPrivateLessons = props => {
     const {auth, users, privateLessons} = props;
     const [myPrivateLessons, setMyPrivateLessons] = useState([]);
-    const [showNewPrivateLessonDialog, setShowNewPrivateLessonDialog] = useState(false);
 
     moment.locale('hu')
 
     useEffect(() => {
         if (auth.uid && privateLessons && users) {
-            setMyPrivateLessons(privateLessons.filter((privateLesson) => privateLesson.tutorUID === auth.uid)
+            setMyPrivateLessons(privateLessons.filter((privateLesson) => privateLesson.studentUID === auth.uid)
                 .map((privateLesson => {
-                    const profile = users.filter((user) => user.id === privateLesson.studentUID);
+                    const profile = users.filter((user) => user.id === privateLesson.tutorUID);
                     return {
-                        ...privateLesson, studentProfile: profile[0]
+                        ...privateLesson, tutorProfile: profile[0]
                     }
                 }))
             )
         }
     }, [auth.uid, privateLessons, users])
 
-    const deletePrivateLesson = (id) => {
-        Swal.fire({
-            title: 'Biztosan törölni szeretné?',
-            showConfirmButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'Igen',
-            cancelButtonText: 'Mégse',
-            confirmButtonColor: '#3085d6',
-            allowEscapeKey: false,
-            allowOutsideClick: false
-        }).then((result) => {
-            if (result.isConfirmed) {
-                PrivateLessonService.deletePrivateLesson(id)
-                    .catch(() => {
-                        Swal.fire({
-                            position: 'center',
-                            confirmButtonColor: '#3085d6',
-                            allowOutsideClick: false,
-                            allowEscapeKey: false,
-                            icon: 'error',
-                            iconColor: '#c91e1e',
-                            title: 'Probléma történt!\n Kérem próbálja újra később!'
-                        });
-                    })
-            }
-        })
-    }
-
-    const headerTemplate = (
-        <div>
-            <Button
-                label="Új magánóra létrehozása"
-                onClick={() => setShowNewPrivateLessonDialog(true)}
-            />
-        </div>
-    )
-
-    const studentBodyTemplate = (rowData) => {
+    const tutorBodyTemplate = (rowData) => {
         const currentTime = new Date();
         return (
             <div>
-                <p>{rowData.studentProfile && rowData.studentProfile.profile.personalData.fullName}</p>
+                <p>{rowData.tutorProfile && rowData.tutorProfile.profile.personalData.fullName}</p>
                 {rowData.status === 'accepted' &&
                     <Button label="Csatlakozás"
                             onClick={() => {
@@ -144,19 +103,38 @@ const TutorPrivateLessons = props => {
         }
     }
 
-    const deleteBodyTemplate = (rowData) => {
-        return (
-            <div>
-                <Button label="Törlés"
-                        className="p-button-danger"
-                        onClick={(() => deletePrivateLesson(rowData.id))}
-                />
-            </div>
-        )
+    const responseBodyTemplate = (rowData) => {
+        switch (rowData.status) {
+            case "pending":
+                return (
+                    <div>
+                        <Button label="Elfogadás"
+                                className="p-button-success"
+                                onClick={() => PrivateLessonService.modifyPrivateLessonStatus(rowData.id, "accepted")}
+                        />
+                        <Button label="Elutasítás"
+                                className="p-button-danger"
+                                onClick={() => PrivateLessonService.modifyPrivateLessonStatus(rowData.id, "rejected")}
+                        />
+                    </div>
+                )
+
+            case "accepted":
+                return (
+                    <div>
+                        <Button label="Lemondás"
+                                className="p-button-danger"
+                                onClick={() => PrivateLessonService.modifyPrivateLessonStatus(rowData.id, "rejected")}
+                        />
+                    </div>
+                )
+            default:
+                return null
+        }
     }
 
     return (
-        <div className="tutor-private-lessons-container">
+        <div className="student-private-lessons-container">
             <p className="title">Meghirdetett magánóráim</p>
             <div className="datatable-container">
                 <DataTable
@@ -168,13 +146,12 @@ const TutorPrivateLessons = props => {
                     responsiveLayout="scroll"
                     rows={5}
                     rowsPerPageOptions={[5, 10, 15, 20]}
-                    header={headerTemplate}
                     emptyMessage="Nem található magánóra."
                 >
-                    <Column field="studentUID"
-                            header="Hallgató"
+                    <Column field="tutorUID"
+                            header="Oktató"
                             sortable
-                            body={studentBodyTemplate}
+                            body={tutorBodyTemplate}
                     />
 
                     <Column field="dateFrom"
@@ -193,19 +170,9 @@ const TutorPrivateLessons = props => {
                             body={statusBodyTemplate}
                     />
 
-                    <Column body={deleteBodyTemplate}/>
+                    <Column body={responseBodyTemplate}/>
                 </DataTable>
             </div>
-            <Dialog header="Új magánóra létrehozása"
-                    visible={showNewPrivateLessonDialog}
-                    modal
-                    onHide={() => setShowNewPrivateLessonDialog(false)}
-                    resizable={false}
-                    draggable={false}
-                    className="private-lesson-dialog"
-            >
-                <NewPrivateLessonDialog setShowNewPrivateLessonDialog={setShowNewPrivateLessonDialog}/>
-            </Dialog>
         </div>
     )
 }
@@ -222,4 +189,4 @@ export default compose(
     connect(mapStateToProps),
     firestoreConnect([{collection: "users"}]),
     firestoreConnect([{collection: "privateLessons"}])
-)(TutorPrivateLessons);
+)(StudentPrivateLessons);
