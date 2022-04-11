@@ -1,8 +1,7 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {InputText} from 'primereact/inputtext';
 import {classNames} from 'primereact/utils';
-import {clearErrors, signIn} from "../../redux/actions/authActions";
 import {connect} from "react-redux";
 import "../../assets/css/auth/sign-in.css"
 import {Password} from "primereact/password";
@@ -10,10 +9,10 @@ import {Button} from "primereact/button";
 import {Dropdown} from "primereact/dropdown";
 import Swal from "sweetalert2";
 import {roles} from "../../util/FormFields";
+import {AuthService} from "../../services/AuthService";
+import {setRole} from "../../redux/actions/roleActions";
 
 const SignIn = props => {
-    const {myAuth, signIn, clearErrors} = props;
-
     const defaultValues = {
         email: '',
         password: '',
@@ -22,21 +21,40 @@ const SignIn = props => {
 
     const {control, formState: {errors}, handleSubmit, reset} = useForm({defaultValues});
 
-    useEffect(() => {
-        if (myAuth.errors.signIn !== null) {
-            clearErrors();
-            Swal.fire({
-                icon: "error",
-                title: "Hibás felhasználónév vagy jelszó!",
-                allowOutsideClick: false,
-                allowEscapeKey: false
-            });
-        }
-    }, [myAuth.errors.signIn, clearErrors]);
-
     const onSubmit = (data) => {
-        signIn(data);
-        reset();
+        Swal.fire({
+            didOpen: () => {
+                Swal.showLoading();
+            },
+            title: "Bejelentkezés...",
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        });
+
+        AuthService.signIn(data)
+            .then(() => {
+                props.setRole(data.role)
+                Swal.fire({
+                    didOpen: () => {
+                        Swal.hideLoading();
+                    },
+                    timer: 1200,
+                    icon: "success",
+                    title: "Sikeres bejelentkezés!",
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                })
+            })
+            .catch(() => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Hibás felhasználónév vagy jelszó!",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                });
+                reset();
+            })
     };
 
     const getFormErrorMessage = (name) => {
@@ -126,18 +144,11 @@ const SignIn = props => {
     );
 };
 
-const mapStateToProps = state => {
-    return {
-        myAuth: state.auth
-    };
-};
-
 const mapDispatchToProps = dispatch => {
     return {
-        signIn: credentials => dispatch(signIn(credentials)),
-        clearErrors: () => dispatch(clearErrors())
+        setRole: role => dispatch(setRole(role))
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
+export default connect(null, mapDispatchToProps)(SignIn);
                  

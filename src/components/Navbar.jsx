@@ -1,21 +1,38 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import {useNavigate} from "react-router-dom";
 import {Menubar} from 'primereact/menubar';
 import {Button} from "primereact/button";
 import {connect} from "react-redux";
-import {signOut} from "../redux/actions/authActions";
 import {compose} from "redux";
 import {Menu} from "primereact/menu";
-import "../App.css"
+import "../assets/css/navbar.css"
+import {AuthService} from "../services/AuthService";
+import {clearRole} from "../redux/actions/roleActions";
 
 
 const Navbar = props => {
     const navigate = useNavigate();
     const menu = useRef(null);
-    const {myAuth,firebaseAuth, personalData} = props;
+    const {role, firebaseAuth, personalData} = props;
     const displayName = personalData ? personalData.fullName : null;
 
-    console.log(myAuth)
+    console.log(role)
+
+    const menubarStartTemplate = () => {
+        switch (role) {
+            case "student":
+                return <p>Hallgató</p>
+
+            case "tutor":
+                return <p>Oktató</p>
+
+            case "admin":
+                return <p>Admin</p>
+
+            default:
+                return null;
+        }
+    }
 
     const mainItems = [
         {
@@ -115,7 +132,10 @@ const Navbar = props => {
             label: 'Kijelentkezés',
             icon: 'pi pi-sign-out',
             command: () => {
-                props.signOut();
+                AuthService.signOut()
+                    .then(() => {
+                        props.clearRole()
+                    });
             }
         },
 
@@ -124,6 +144,7 @@ const Navbar = props => {
     return (
         <div>
             <Menubar
+                start={menubarStartTemplate}
                 model={mainItems}
                 end={firebaseAuth.isEmpty
                     ? <React.Fragment>
@@ -169,7 +190,7 @@ const Navbar = props => {
 
 const mapStateToProps = state => {
     return {
-        myAuth: state.auth,
+        role: state.role,
         firebaseAuth: state.firebase.auth,
         personalData: !state.firebase.auth.isEmpty && !state.firebase.profile.isEmpty
             ? state.firebase.profile.profile.personalData
@@ -179,7 +200,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        signOut: () => dispatch(signOut()),
+        clearRole: () => dispatch(clearRole())
     };
 };
 

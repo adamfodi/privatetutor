@@ -1,10 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
 import {Password} from 'primereact/password';
 import {classNames} from 'primereact/utils';
-import {clearErrors, signUp} from "../../redux/actions/authActions";
 import {connect} from "react-redux";
 import {Calendar} from "primereact/calendar";
 import {Dropdown} from "primereact/dropdown";
@@ -14,9 +13,10 @@ import "../../assets/css/util/calendar.css"
 import {addLocaleHu, genderList} from "../../util/FormFields";
 import Swal from "sweetalert2";
 import {RadioButton} from "primereact/radiobutton";
+import {AuthService} from "../../services/AuthService";
+import {setRole} from "../../redux/actions/roleActions";
 
 const SignUp = props => {
-    const {myAuth, signUp, clearErrors} = props;
     const [loginRole, setLoginRole] = useState("student");
 
     const defaultValues = {
@@ -43,21 +43,40 @@ const SignUp = props => {
         />
     };
 
-    useEffect(() => {
-        if (myAuth.errors.signUp !== null) {
-            clearErrors();
+    const onSubmit = (data) => {
+        if (data.password === data.password2) {
             Swal.fire({
-                icon: "error",
-                title: "Ez az email cím már foglalt!",
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+                title: "Regisztráció...",
                 allowOutsideClick: false,
                 allowEscapeKey: false
             });
-        }
-    }, [myAuth.errors.signUp, clearErrors]);
 
-    const onSubmit = (data) => {
-        if (data.password === data.password2) {
-            signUp({...data, role: loginRole});
+            AuthService.signUp({...data, role: loginRole})
+                .then(() => {
+                    props.setRole(data.role)
+                    Swal.fire({
+                        didOpen: () => {
+                            Swal.hideLoading();
+                        },
+                        timer: 1200,
+                        icon: "success",
+                        title: "Sikeres regisztráció!",
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    })
+                })
+                .catch(() => {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Ez az email cím már foglalt!",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    });
+                });
         } else {
             Swal.fire({
                 icon: "error",
@@ -271,17 +290,10 @@ const SignUp = props => {
     );
 };
 
-const mapStateToProps = state => {
-    return {
-        myAuth: state.auth
-    };
-};
-
 const mapDispatchToProps = dispatch => {
     return {
-        signUp: credentials => dispatch(signUp(credentials)),
-        clearErrors: () => dispatch(clearErrors())
+        setRole: role => dispatch(setRole(role))
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+export default connect(null, mapDispatchToProps)(SignUp);
