@@ -1,4 +1,5 @@
 export const setRole = role => {
+    console.log(role)
     return (dispatch) => {
         dispatch({
             type: "SET_ROLE",

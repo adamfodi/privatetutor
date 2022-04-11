@@ -17,8 +17,6 @@ const Navbar = props => {
     const {role, firebaseAuth, personalData} = props;
     const displayName = personalData ? personalData.fullName : null;
 
-    console.log(role)
-
     const menubarStartTemplate = () => {
         switch (role) {
             case "student":
@@ -35,6 +33,42 @@ const Navbar = props => {
         }
     }
 
+    const menubarEndTemplate = () => {
+        return firebaseAuth.isEmpty
+            ? <div className="auth-buttons">
+                <Button
+                    onClick={() => navigate("/signup")}
+                    className="p-button-primary"
+                    label="Regisztráció"
+                    icon="pi pi-user-plus"
+                />
+
+                <Button
+                    onClick={() => navigate("/signin")}
+                    className="p-button-success"
+                    label="Bejelentkezés"
+                    icon="pi pi-sign-in"
+                />
+            </div>
+            : <div className="user-menu">
+                <Menu
+                    model={userItems}
+                    popup
+                    ref={menu}
+                    id="popup_menu"
+                />
+                <Button
+                    label={displayName ? displayName : "Loading..."}
+                    className="p-button-outlined p-button-danger"
+                    icon="pi pi-chevron-down"
+                    iconPos="right"
+                    onClick={(event) => menu.current.toggle(event)}
+                    aria-controls="popup_menu"
+                    aria-haspopup
+                />
+            </div>
+    }
+
     const mainItems = useMemo(() => {
         const items = []
 
@@ -47,7 +81,7 @@ const Navbar = props => {
                 }
             },
         );
-        
+
         if (role === 'student') {
             items.push(
                 {
@@ -96,7 +130,7 @@ const Navbar = props => {
         return items;
 
     }, [navigate, role])
-    
+
     const userItems = useMemo(() => {
         return [
             {
@@ -127,49 +161,14 @@ const Navbar = props => {
                 }
             },
         ]
-    },[clearRole, navigate])
+    }, [clearRole, navigate])
 
     return (
         <div className="navbar-container">
             <Menubar
                 start={menubarStartTemplate}
                 model={mainItems}
-                end={firebaseAuth.isEmpty
-                    ? <React.Fragment>
-                        <Button
-                            onClick={() => navigate("/signup")}
-                            className="p-button-primary"
-                            label="Regisztráció"
-                            icon="pi pi-user-plus"
-                            style={{marginRight: 20, fontSize: 18}}
-                        />
-
-                        <Button
-                            onClick={() => navigate("/signin")}
-                            className="p-button-success"
-                            label="Bejelentkezés"
-                            icon="pi pi-sign-in"
-                            style={{marginRight: 10, fontSize: 18}}
-                        />
-                    </React.Fragment>
-                    : <React.Fragment>
-                        <Menu
-                            model={userItems}
-                            popup
-                            ref={menu}
-                            id="popup_menu"
-                        />
-                        <Button
-                            label={displayName ? displayName : "Loading..."}
-                            className="p-button-outlined p-button-danger"
-                            icon="pi pi-chevron-down"
-                            iconPos="right"
-                            onClick={(event) => menu.current.toggle(event)}
-                            aria-controls="popup_menu"
-                            aria-haspopup
-                        />
-                    </React.Fragment>
-                }
+                end={menubarEndTemplate}
             />
         </div>
     );

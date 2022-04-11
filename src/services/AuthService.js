@@ -7,7 +7,6 @@ export const AuthService = {
     async signUp(newUser) {
         await createUserWithEmailAndPassword(getAuth(), newUser.email, newUser.password)
             .then((userCredential) => {
-                console.log(userCredential)
                 getFirebase()
                     .firestore()
                     .collection("users")

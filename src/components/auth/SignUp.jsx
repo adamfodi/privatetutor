@@ -54,9 +54,9 @@ const SignUp = props => {
                 allowEscapeKey: false
             });
 
-            AuthService.signUp({...data, role: loginRole})
+            AuthService.signUp(data)
                 .then(() => {
-                    props.setRole(data.role)
+                    props.setRole(loginRole)
                     Swal.fire({
                         didOpen: () => {
                             Swal.hideLoading();
@@ -69,7 +69,8 @@ const SignUp = props => {
                         allowEscapeKey: false
                     })
                 })
-                .catch(() => {
+                .catch((err) => {
+                    console.log(err)
                     Swal.fire({
                         icon: "error",
                         title: "Ez az email cím már foglalt!",
