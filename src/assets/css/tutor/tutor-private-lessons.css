@@ -42,7 +42,7 @@
 
 .tutor-private-lessons-container .datatable-container td:first-of-type div {
     display:flex;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 .tutor-private-lessons-container .datatable-container td:first-of-type p {

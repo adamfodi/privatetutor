@@ -85,7 +85,7 @@ const Navbar = props => {
             items.push(
                 {
                     label: 'Magánórák',
-                    icon: 'pi pi-fw pi-pencil',
+                    icon: 'pi pi-fw pi-book',
                     command: () => {
                         navigate("/student/private-lessons")
                     }
@@ -97,7 +97,7 @@ const Navbar = props => {
             items.push(
                 {
                     label: 'Magánórák',
-                    icon: 'pi pi-fw pi-pencil',
+                    icon: 'pi pi-fw pi-book',
                     command: () => {
                         navigate("/tutor/private-lessons")
                     },

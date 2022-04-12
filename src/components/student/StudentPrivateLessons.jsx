@@ -10,9 +10,12 @@ import 'moment/locale/hu'
 import "../../assets/css/student/student-private-lessons.css"
 import {Tag} from "primereact/tag";
 import {PrivateLessonService} from "../../services/PrivateLessonService";
+import {TeachingRoomService} from "../../services/TeachingRoomService";
+import {useNavigate} from "react-router-dom";
 
 const StudentPrivateLessons = props => {
     const {auth, users, privateLessons} = props;
+    const navigate = useNavigate();
     const [myPrivateLessons, setMyPrivateLessons] = useState([]);
 
     moment.locale('hu')
@@ -37,9 +40,8 @@ const StudentPrivateLessons = props => {
                 <p>{rowData.tutorProfile && rowData.tutorProfile.profile.personalData.fullName}</p>
                 {rowData.status === 'accepted' &&
                     <Button label="Csatlakozás"
-                            onClick={() => {
-                            }}
-                            disabled={rowData.dateFrom > currentTime || rowData.dateTo < currentTime}
+                            onClick={() => navigate("/teaching-room/" + rowData.roomURL)}
+                            disabled={rowData.dateFrom.toDate > currentTime || rowData.dateTo.toDate() < currentTime}
                     />
                 }
             </div>
@@ -110,7 +112,12 @@ const StudentPrivateLessons = props => {
                     <div>
                         <Button label="Elfogadás"
                                 className="p-button-success"
-                                onClick={() => PrivateLessonService.modifyPrivateLessonStatus(rowData.id, "accepted")}
+                                onClick={() => {
+                                    PrivateLessonService.modifyPrivateLessonStatus(rowData.id, "accepted")
+                                        .then(() => {
+                                            TeachingRoomService.createRoom(rowData.roomID)
+                                        })
+                                }}
                         />
                         <Button label="Elutasítás"
                                 className="p-button-danger"

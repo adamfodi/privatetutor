@@ -1,8 +1,25 @@
 import {getFirebase} from "react-redux-firebase";
-import { getDatabase } from "firebase/database";
 
 
 export const TeachingRoomService = {
+
+    async createRoom(roomID) {
+        await getFirebase()
+            .firestore()
+            .collection("teachingRooms")
+            .doc(roomID)
+            .set({
+                chat: []
+            })
+    },
+
+    async deleteRoom(roomID) {
+        await getFirebase()
+            .firestore()
+            .collection("teachingRooms")
+            .doc(roomID)
+            .delete()
+    },
 
     async updateOnlineStatus(id, role, value) {
         await getFirebase()
@@ -14,7 +31,7 @@ export const TeachingRoomService = {
             })
     },
 
-    async doLogin(id,localRole) {
+    async doLogin(id, localRole) {
         console.log("doLogin")
         await getFirebase()
             .firestore()
@@ -40,7 +57,7 @@ export const TeachingRoomService = {
             })
     },
 
-    async sendAnswer(id, remoteRole, localRole,answer) {
+    async sendAnswer(id, remoteRole, localRole, answer) {
         console.log("sendAnswer")
         await getFirebase()
             .firestore()

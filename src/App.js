@@ -17,6 +17,7 @@ import {compose} from "redux";
 import {firestoreConnect} from "react-redux-firebase";
 import TeachingRoom from "./components/TeachingRoom";
 import StudentPrivateLessons from "./components/student/StudentPrivateLessons";
+import TutorTeachingRoom from "./components/tutor/TutorTeachingRoom";
 
 const App = (props) => {
     const {auth, privateLessons} = props;
@@ -24,19 +25,19 @@ const App = (props) => {
 
     useEffect(() => {
         if (privateLessons) {
-            const currentTime = Math.round(Date.now() / 1000);
+            const currentTime = new Date();
             setTeachingRoomRoutes(privateLessons.filter((privateLesson) =>
-                currentTime > privateLesson.dateFrom.seconds && currentTime < privateLesson.dateTo.seconds)
+                currentTime > privateLesson.dateFrom.toDate() && currentTime < privateLesson.dateTo.toDate())
                 .map((privateLesson) => {
-                    // console.log(privateLesson)
-                    const pathName = "/teaching-room/" + privateLesson.roomID;
+                    console.log(privateLesson)
+                    const pathName = "/teaching-room/" + privateLesson.roomURL;
                     const role = auth.uid === privateLesson.tutorUID ? "tutor" : "student";
-                    return <Route key={privateLesson.roomID}
+                    return <Route key={privateLesson.roomURL}
                                   exact
                                   path={pathName}
                                   element={auth.uid === privateLesson.tutorUID || auth.uid === privateLesson.studentUID
-                                      ? <TeachingRoom role={role}/>
-                                      : <Navigate to="/profile"/>}
+                                      ? <TutorTeachingRoom role={role}/>
+                                      : <Navigate to="/main"/>}
                     />
                 })
             )
@@ -79,9 +80,9 @@ const App = (props) => {
                 {/*<Route exact path="/test" element={<Test txt={"txt"}/>}/>*/}
                 {/*<Route exact path="/test2" element={<Test txt={"txt2"}/>}/>*/}
 
-                {teachingRoomRoutes.map((item) => {
+                {teachingRoomRoutes.map(route => {
                     // console.log(item)
-                    return item
+                    return route
                 })}
 
                 <Route

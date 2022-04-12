@@ -13,9 +13,12 @@ import "../../assets/css/tutor/tutor-private-lessons.css"
 import {Tag} from "primereact/tag";
 import {PrivateLessonService} from "../../services/PrivateLessonService";
 import Swal from "sweetalert2";
+import {TeachingRoomService} from "../../services/TeachingRoomService";
+import {useNavigate} from "react-router-dom";
 
 const TutorPrivateLessons = props => {
     const {auth, users, privateLessons} = props;
+    const navigate = useNavigate();
     const [myPrivateLessons, setMyPrivateLessons] = useState([]);
     const [showNewPrivateLessonDialog, setShowNewPrivateLessonDialog] = useState(false);
 
@@ -34,7 +37,7 @@ const TutorPrivateLessons = props => {
         }
     }, [auth.uid, privateLessons, users])
 
-    const deletePrivateLesson = (id) => {
+    const deletePrivateLesson = (privateLessonID, roomID) => {
         Swal.fire({
             title: 'Biztosan törölni szeretné?',
             showConfirmButton: true,
@@ -46,7 +49,10 @@ const TutorPrivateLessons = props => {
             allowOutsideClick: false
         }).then((result) => {
             if (result.isConfirmed) {
-                PrivateLessonService.deletePrivateLesson(id)
+                PrivateLessonService.deletePrivateLesson(privateLessonID)
+                    .then(() => {
+                        TeachingRoomService.deleteRoom(roomID)
+                    })
                     .catch(() => {
                         Swal.fire({
                             position: 'center',
@@ -78,9 +84,8 @@ const TutorPrivateLessons = props => {
                 <p>{rowData.studentProfile && rowData.studentProfile.profile.personalData.fullName}</p>
                 {rowData.status === 'accepted' &&
                     <Button label="Csatlakozás"
-                            onClick={() => {
-                            }}
-                            disabled={rowData.dateFrom > currentTime || rowData.dateTo < currentTime}
+                            onClick={() => navigate("/teaching-room/" + rowData.roomURL)}
+                            disabled={rowData.dateFrom.toDate() > currentTime || rowData.dateTo.toDate() < currentTime}
                     />
                 }
             </div>
@@ -149,7 +154,7 @@ const TutorPrivateLessons = props => {
             <div>
                 <Button label="Törlés"
                         className="p-button-danger"
-                        onClick={(() => deletePrivateLesson(rowData.id))}
+                        onClick={(() => deletePrivateLesson(rowData.id, rowData.roomID))}
                 />
             </div>
         )
