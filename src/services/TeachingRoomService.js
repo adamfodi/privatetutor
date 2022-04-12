@@ -1,4 +1,6 @@
 import {getFirebase} from "react-redux-firebase";
+import {rrfProps as state} from "../config/firebaseConfig";
+import { arrayUnion} from "firebase/firestore";
 
 
 export const TeachingRoomService = {
@@ -19,6 +21,22 @@ export const TeachingRoomService = {
             .collection("teachingRooms")
             .doc(roomID)
             .delete()
+    },
+
+    async sendMessage(roomID,content,uid) {
+        const firestore = state.firebase.firestore;
+        const message = {
+            content: content,
+            time: new Date(),
+            uid: uid
+        }
+
+        await firestore()
+            .collection("teachingRooms")
+            .doc(roomID)
+            .update({
+                chat: arrayUnion(message)
+            })
     },
 
     async updateOnlineStatus(id, role, value) {

@@ -29,14 +29,12 @@ const App = (props) => {
             setTeachingRoomRoutes(privateLessons.filter((privateLesson) =>
                 currentTime > privateLesson.dateFrom.toDate() && currentTime < privateLesson.dateTo.toDate())
                 .map((privateLesson) => {
-                    console.log(privateLesson)
                     const pathName = "/teaching-room/" + privateLesson.roomURL;
-                    const role = auth.uid === privateLesson.tutorUID ? "tutor" : "student";
                     return <Route key={privateLesson.roomURL}
                                   exact
                                   path={pathName}
                                   element={auth.uid === privateLesson.tutorUID || auth.uid === privateLesson.studentUID
-                                      ? <TutorTeachingRoom role={role}/>
+                                      ? <TutorTeachingRoom privateLesson={privateLesson}/>
                                       : <Navigate to="/main"/>}
                     />
                 })
