@@ -72,7 +72,9 @@
 }
 
 .private-lesson-dialog .private-lesson-dialog-content .p-button {
+    border: none !important;
+    box-shadow: none !important;
     margin-top: 30px;
     width: 15vw;
-    font-size: 25px;
+    font-size: 30px;
 }

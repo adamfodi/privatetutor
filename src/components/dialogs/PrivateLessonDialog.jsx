@@ -11,10 +11,10 @@ import {Button} from "primereact/button";
 import {Toast} from "primereact/toast";
 import {PrivateLessonService} from "../../services/PrivateLessonService";
 import Swal from "sweetalert2";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 
 const PrivateLessonDialog = (props) => {
-    const {firebaseAuth, users, setShowNewPrivateLessonDialog} = props;
+    const {firebaseAuth, users, setShowNewPrivateLessonDialog, myPrivateLessons} = props;
     const [usersList, setUsersList] = useState([]);
     const [student, setStudent] = useState(null);
     const [day, setDay] = useState(() => {
@@ -82,19 +82,50 @@ const PrivateLessonDialog = (props) => {
         return errorToast;
     }
 
+    const createLesson = (newPrivateLesson) => {
+        Swal.fire({
+            didOpen: () => {
+                Swal.showLoading();
+            },
+            title: "Létrehozás...",
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        });
+
+        PrivateLessonService.createPrivateLesson(newPrivateLesson)
+            .then(() => {
+                setShowNewPrivateLessonDialog(false)
+                Swal.fire({
+                    didOpen: () => {
+                        Swal.hideLoading();
+                    },
+                    timer: 2000,
+                    icon: "success",
+                    title: "Sikeres létrehozás!",
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                })
+            })
+            .catch((err) => {
+                setShowNewPrivateLessonDialog(false)
+                console.log(err)
+                Swal.fire({
+                    didOpen: () => {
+                        Swal.hideLoading();
+                    },
+                    icon: "error",
+                    title: "Probléma történt!\n Kérem próbálja újra később!",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                });
+            })
+    }
+
     const onSubmit = () => {
         const toast = validateNewLesson();
 
         if (toast.length === 0) {
-            Swal.fire({
-                didOpen: () => {
-                    Swal.showLoading();
-                },
-                title: "Létrehozás...",
-                allowOutsideClick: false,
-                allowEscapeKey: false
-            });
-
             const dateFrom = new Date(day.getTime());
             const dateTo = new Date(day.getTime());
 
@@ -103,7 +134,7 @@ const PrivateLessonDialog = (props) => {
             dateTo.setHours(hourMinuteTo.getHours())
             dateTo.setMinutes(hourMinuteTo.getMinutes())
 
-            const privateLesson = {
+            const newPrivateLesson = {
                 studentUID: student.UID,
                 tutorUID: firebaseAuth.uid,
                 dateFrom: dateFrom,
@@ -112,36 +143,30 @@ const PrivateLessonDialog = (props) => {
                 roomID: uuidv4(),
             }
 
-            console.log(privateLesson)
+            const overlappedDates = myPrivateLessons.filter(privateLesson =>
+                newPrivateLesson.dateFrom < privateLesson.dateTo.toDate() && newPrivateLesson.dateTo > privateLesson.dateFrom.toDate()
+            )
 
-            PrivateLessonService.createPrivateLesson(privateLesson)
-                .then(() => {
-                    setShowNewPrivateLessonDialog(false)
-                    Swal.fire({
-                        didOpen: () => {
-                            Swal.hideLoading();
-                        },
-                        timer: 2000,
-                        icon: "success",
-                        title: "Sikeres létrehozás!",
-                        showConfirmButton: false,
-                        allowOutsideClick: false,
-                        allowEscapeKey: false
-                    })
+            if (overlappedDates.length === 0) {
+                createLesson(newPrivateLesson);
+            } else {
+                Swal.fire({
+                    didOpen: () => {
+                    },
+                    title: 'Biztosan folytatja?',
+                    text: "Már létezik ebben az időpontban meghirdetett magánórája!",
+                    showConfirmButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: 'Igen',
+                    cancelButtonText: 'Mégse',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        createLesson(newPrivateLesson)
+                    }
                 })
-                .catch((err) => {
-                    setShowNewPrivateLessonDialog(false)
-                    console.log(err)
-                    Swal.fire({
-                        didOpen: () => {
-                            Swal.hideLoading();
-                        },
-                        icon: "error",
-                        title: "Probléma történt!\n Kérem próbálja újra később!",
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                    });
-                })
+            }
         } else {
             errorToast.current.show(toast);
         }

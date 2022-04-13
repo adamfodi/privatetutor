@@ -267,7 +267,10 @@ const PrivateLessons = props => {
                     draggable={false}
                     className="private-lesson-dialog"
             >
-                <PrivateLessonDialog setShowNewPrivateLessonDialog={setShowPrivateLessonDialog}/>
+                <PrivateLessonDialog
+                    setShowNewPrivateLessonDialog={setShowPrivateLessonDialog}
+                    myPrivateLessons={myPrivateLessons}
+                />
             </Dialog>
         </div>
     )

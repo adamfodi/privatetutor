@@ -23,12 +23,14 @@
 }
 
 .component-content {
-    /*display:flex;*/
-    /*flex-direction: column;*/
     width: 85%;
     background-color: transparent;
     color: white;
     margin: 2em auto;
     border-radius: 0.5em;
     overflow: auto;
+}
+
+.p-dialog-mask {
+    z-index: 1001 !important;
 }
