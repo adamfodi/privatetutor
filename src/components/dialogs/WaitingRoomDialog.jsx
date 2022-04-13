@@ -11,11 +11,26 @@ import "../../assets/css/dialogs/waiting-room-dialog.css"
 import {InputTextarea} from "primereact/inputtextarea";
 import moment from "moment";
 import {TeachingRoomService} from "../../services/TeachingRoomService";
-import {Skeleton} from "primereact/skeleton";
 
 const WaitingRoomDialog = props => {
-    const {chat, role, roomID, otherUserProfile, setShowWaitingRoomDialog, firebaseAuth} = props;
+    const {chat, roomID, otherUID, setShowWaitingRoomDialog, firebaseAuth, users, role} = props;
     const [message, setMessage] = useState('');
+
+    const getProfilePicture = () => {
+        const otherUser = users.filter(user => user.id === otherUID)[0];
+        if (otherUser) {
+            return otherUser.profile.profilePictureUrl;
+        } else {
+            return placeholder;
+        }
+    }
+
+    const getName = () => {
+        const otherUser = users.filter(user => user.id === otherUID)[0];
+        return otherUser ? otherUser.profile.personalData.fullName : '';
+    }
+
+    console.log(otherUID)
 
     const contentBodyTemplate = rowData => {
         return <div>
@@ -36,11 +51,11 @@ const WaitingRoomDialog = props => {
             <div>
                 <div>
                     <Image
-                        src={otherUserProfile && otherUserProfile.profile.profilePictureUrl ? otherUserProfile.profile.profilePictureUrl : placeholder}
+                        src={getProfilePicture()}
                         alt="Profile Picture"
                     />
                 </div>
-                <p>{otherUserProfile && otherUserProfile.profile.profilePictureUrl && otherUserProfile.profile.personalData.fullName}</p>
+                <p>{getName()}</p>
                 <div>
                     {
                         role === 'tutor'
@@ -65,6 +80,7 @@ const WaitingRoomDialog = props => {
                 <DataTable
                     value={chat}
                     responsiveLayout="scroll"
+                    emptyMessage="Nincs még üzenet"
                 >
                     <Column
                         field="content"
@@ -101,13 +117,12 @@ const WaitingRoomDialog = props => {
 const mapStateToProps = state => {
     return {
         firebaseAuth: state.firebase.auth,
-        privateLessons: state.firestore.ordered.privateLessons,
-        teachingRooms: state.firestore.ordered.teachingRooms
+        users: state.firestore.ordered.users,
+        role: state.role
     };
 };
 
 export default compose(
     connect(mapStateToProps),
-    firestoreConnect([{collection: "privateLessons"}]),
-    firestoreConnect([{collection: "teachingRooms"}])
+    firestoreConnect([{collection: "users"}]),
 )(WaitingRoomDialog);

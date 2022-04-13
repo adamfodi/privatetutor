@@ -110,7 +110,6 @@ const PrivateLessonDialog = (props) => {
                 dateTo: dateTo,
                 status: "pending",
                 roomID: uuidv4(),
-                roomURL: uuidv4()
             }
 
             console.log(privateLesson)

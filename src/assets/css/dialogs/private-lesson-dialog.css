@@ -1,6 +1,11 @@
 .private-lesson-dialog {
-    width: 50vw;
-    height: 90vh;
+    width: 1000px;
+    height: 850px;
+    overflow: auto;
+}
+
+.private-lesson-dialog .p-dialog-header {
+    text-align: center;
 }
 
 .private-lesson-dialog .p-dialog-title {
@@ -23,7 +28,7 @@
     width: 36vw;
 }
 
-.private-lesson-dialog .private-lesson-dialog-content-date{
+.private-lesson-dialog .private-lesson-dialog-content-date {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -50,8 +55,8 @@
     justify-content: space-between;
 }
 
-.private-lesson-dialog .private-lesson-dialog-content-date-hour > div{
-    display:flex;
+.private-lesson-dialog .private-lesson-dialog-content-date-hour > div {
+    display: flex;
     flex-direction: column;
     justify-content: center;
 }
@@ -62,13 +67,12 @@
     margin-bottom: 5px;
 }
 
-
 .private-lesson-dialog .private-lesson-dialog-content-date-hour .p-calendar {
     width: 17vw;
 }
 
 .private-lesson-dialog .private-lesson-dialog-content .p-button {
-    margin-top:30px;
+    margin-top: 30px;
     width: 15vw;
     font-size: 25px;
 }

@@ -81,28 +81,17 @@ const Navbar = props => {
             },
         );
 
-        if (role === 'student') {
-            items.push(
-                {
-                    label: 'Magánórák',
-                    icon: 'pi pi-fw pi-book',
-                    command: () => {
-                        navigate("/student/private-lessons")
-                    }
-                },
-            );
-        }
+        items.push(
+            {
+                label: 'Magánóráim',
+                icon: 'pi pi-fw pi-home',
+                command: () => {
+                    navigate("/private-lessons")
+                }
+            },
+        );
 
         if (role === 'tutor') {
-            items.push(
-                {
-                    label: 'Magánórák',
-                    icon: 'pi pi-fw pi-book',
-                    command: () => {
-                        navigate("/tutor/private-lessons")
-                    },
-                },
-            );
             items.push(
                 {
                     label: 'Hirdetés',

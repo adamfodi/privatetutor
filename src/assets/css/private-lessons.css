@@ -1,0 +1,76 @@
+.private-lessons-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 90%;
+    background-color: white;
+    margin: 30px auto;
+}
+
+.private-lessons-container button {
+    border: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+}
+
+.private-lessons-container .title {
+    font-size: 30px;
+    text-align: center;
+}
+
+.private-lessons-container .p-image img {
+    width: 100px;
+    height: 100px;
+}
+
+.private-lessons-container .p-tag {
+    font-size: 14px;
+    width: 120px;
+}
+
+.private-lessons-container .p-tag-icon {
+    font-size: 14px;
+}
+
+.private-lessons-container .datatable-container {
+    width: 98%;
+}
+
+.private-lessons-container .datatable-container .p-datatable-header .p-button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.private-lessons-container .datatable-container td:nth-of-type(2) {
+    width: 30%;
+}
+
+.private-lessons-container .datatable-container td:nth-of-type(2) p {
+    font-size: 25px;
+}
+
+.private-lessons-container .datatable-container td:nth-of-type(4) p, .private-lessons-container .datatable-container td:nth-of-type(5) p {
+    font-size: 20px;
+}
+
+.private-lessons-container .datatable-container td {
+    text-align: center !important;
+}
+
+.private-lessons-container .datatable-container td:last-of-type > div {
+    display:flex;
+    justify-content: space-evenly;
+}
+
+.private-lessons-container .datatable-container th div {
+    display: flex;
+    justify-content: center;
+}
+
+.private-lessons-container .p-dropdown {
+    width: 75px;
+    border-radius: 0;
+}
+
+
+

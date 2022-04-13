@@ -5,8 +5,7 @@
 }
 
 .waiting-room-dialog .p-dialog-header {
-    display: flex;
-    align-items: center;
+    text-align: center;
 }
 
 .waiting-room-dialog .p-dialog-header-icon {
@@ -14,10 +13,6 @@
     box-shadow: none !important;
     width: 30px !important;
     height: 30px !important
-}
-
-.waiting-room-dialog .p-dialog-header {
-    text-align: center;
 }
 
 .waiting-room-content {
@@ -49,6 +44,8 @@
     font-size: 30px;
     color: orangered;
     font-weight: bold;
+    overflow-wrap: anywhere;
+    text-align: center;
 }
 
 .waiting-room-content > div:first-of-type .p-button {
@@ -66,7 +63,7 @@
     margin: 10px;
     width: 630px;
     height: 570px;
-    /*overflow: auto;*/
+    overflow: auto;
 }
 
 .waiting-room-content .p-datatable-thead {
@@ -107,6 +104,7 @@
     padding: 12px;
     color: white;
     border-radius: 17px;
+    overflow-wrap: anywhere;
 }
 
 .waiting-room-content .my-message-td-content p, .waiting-room-content .other-message-td-content p {
