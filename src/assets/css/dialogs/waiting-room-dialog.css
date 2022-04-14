@@ -1,23 +1,50 @@
 .waiting-room-dialog {
-    width: 1600px;
-    height: 820px;
+    width: 85vw;
+    height: 90vh;
     overflow: auto;
 }
 
 .waiting-room-dialog .p-dialog-header {
-    text-align: center;
+    width: 85vw !important;
+    height: 10vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.waiting-room-dialog .p-dialog-header > div {
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.waiting-room-dialog .p-dialog-header > div:first-of-type {
+    margin-left: 1vw;
+}
+
+.waiting-room-dialog .p-dialog-title {
+    font-size: 2vw !important;
+}
+
+.waiting-room-dialog .p-dialog-header-icon .pi {
+    font-size: 2vw;
 }
 
 .waiting-room-dialog .p-dialog-header-icon {
     border: none !important;
     box-shadow: none !important;
-    width: 30px !important;
-    height: 30px !important
+    margin-right: 1vw !important;
+    width: inherit !important;
+    height: inherit !important;
 }
 
 .waiting-room-content {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+}
+
+.waiting-room-content > div {
+    border: 0.1vw solid #19616b;
 }
 
 .waiting-room-content button {
@@ -26,7 +53,7 @@
 }
 
 .waiting-room-content > div:first-of-type {
-    width: 50%;
+    width: 40vw;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -38,64 +65,67 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 2vh;
 }
 
 .waiting-room-content > div:first-of-type .camera-div {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 640px;
-    height: 360px;
+    width: 38vw;
+    height: 20vw;
 }
 
 .waiting-room-content > div:first-of-type .camera-div img {
-    width: 360px;
-    height: 360px;
+    width: 20vw;
+    height: 20vw;
     border-radius: 50%;
 }
 
 .waiting-room-content > div:first-of-type .camera-div video {
-    width: 640px;
-    height: 360px;
+    width: 35.5vw;
+    height: 20vw;
 }
 
 .waiting-room-content > div:first-of-type .camera-div .p-progress-spinner {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 300px;
-    height: 300px;
-    margin-bottom: -360px;
+    width: 20vw;
+    height: 20vw;
+    margin-bottom: -20vw;
 }
 
 .waiting-room-content > div:first-of-type .camera-button-div {
-    margin-top: 20px;
+    margin-top: 2vh;
 }
 
 .waiting-room-content > div:first-of-type .camera-button-div .p-button {
-    font-size: 20px;
-    width: 260px;
+    font-size: 1.5vw;
+    width: 20vw;
 }
 
 .waiting-room-content > div:first-of-type .camera-button-div .pi-camera {
-    font-size: 20px;
+    margin-top: 0.5vh;
+    font-size: 1.5vw;
 }
 
 .waiting-room-content > div:first-of-type .action-button-div .p-button {
-    font-size: 25px;
-    margin-bottom: 20px;
-    padding: 20px 40px;
+    font-size: 1.7vw;
+    margin-bottom: 2vh;
+    padding: 2vh 4vh;
 }
 
-.waiting-room-content > div {
-    border: 1px solid #19616b;
+.waiting-room-content .chat-content > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .waiting-room-content .p-datatable {
-    margin: 10px 10px 30px 10px;
-    width: 800px;
-    height: 530px;
+    width: 41vw;
+    height: 30vw;
 }
 
 .waiting-room-content .p-datatable-thead {
@@ -107,13 +137,14 @@
 }
 
 .waiting-room-content .profile-picture-td img {
-    width: 50px;
-    height: 50px;
+    width: 3vw;
+    height: 3vw;
     border-radius: 50%;
+    margin-left: 0.5vw;
 }
 
 .waiting-room-content .p-datatable-tbody {
-    height: 530px;
+    height: 30vw;
     display: flex !important;
     flex-direction: column-reverse !important;
     overflow: auto;
@@ -133,52 +164,65 @@
 }
 
 .waiting-room-content .content-td > div {
-    margin-right: 30px;
-    margin-left: 30px;
+    margin-right: 1vw;
+    margin-left: 1vw;
 }
 
 .waiting-room-content .content-td > div > p {
     display: inline-block;
-    font-size: 20px;
-    padding: 12px;
+    font-size: 2vh;
+    padding: 1.5vh;
     color: white;
-    border-radius: 17px;
+    border-radius: 1.7vh;
     overflow-wrap: anywhere;
 }
 
 .waiting-room-content .my-message-td-content p, .waiting-room-content .other-message-td-content p {
-    margin: 0 5px;
+    margin: 0 1vw;
 }
 
 .waiting-room-content .time-td-content {
-    font-size: 20px;
+    font-size: 2vh;
     color: black;
     font-weight: bold;
-    margin-right: 10px;
+    margin-right: 0.5vw;
 }
 
 .waiting-room-content .send-message-div {
+    width: 41vw;
     display: flex;
     justify-content: space-around;
-    margin-bottom: 5px;
-    padding-top: 15px;
-    border-top: 1px solid #19616b;
+    align-items: center;
+    margin-bottom: 1vh;
+    margin-top: 3vh;
 }
 
 .waiting-room-content textarea {
     resize: none;
-    font-size: 20px;
-    width: 580px !important;
-    height: 100px !important;
+    font-size: 1vw;
+    width: 30vw !important;
+    height: 5vw !important;
+    border: 0.2vw solid orangered;
+}
+
+.waiting-room-content textarea:hover {
+    border: 0.2vw solid orangered !important;
+    box-shadow: none !important;
+}
+
+.waiting-room-content textarea:focus {
+    border: 0.2vw solid midnightblue !important;
+    box-shadow: none !important;
 }
 
 .waiting-room-content .send-message-div button {
-    width: 17%;
-    font-size: 23px;
+    border: none !important;
+    box-shadow: none !important;
+    width: 7vw !important;
+    height: 4vw !important;
+    font-size: 1.5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-
-/*TODO*/
-@media only screen and (max-width: 1368px) {
-}
-
 

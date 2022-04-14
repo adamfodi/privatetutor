@@ -98,12 +98,14 @@ const WaitingRoomDialog = props => {
                 </div>
             </div>
             <div>
-                <Chat
-                    chat={chat}
-                    roomID={roomID}
-                    getMyProfilePicture={getMyProfilePicture}
-                    getOtherProfilePicture={getOtherProfilePicture}
-                />
+                <div>
+                    <Chat
+                        chat={chat}
+                        roomID={roomID}
+                        getMyProfilePicture={getMyProfilePicture}
+                        getOtherProfilePicture={getOtherProfilePicture}
+                    />
+                </div>
             </div>
         </div>
     )

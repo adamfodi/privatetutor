@@ -99,7 +99,7 @@
 }
 
 .teaching-room-content .left-div .my-message-td-content p, .teaching-room-content .left-div .other-message-td-content p {
-    margin: 0 1vh;
+    margin: 0 1vw;
 }
 
 .teaching-room-content .left-div .time-td-content {
@@ -116,15 +116,24 @@
     align-items: center;
     margin-bottom: 1vh;
     margin-top: 3vh;
-    /*padding-top: 3vh;*/
 }
 
 .teaching-room-content .left-div textarea {
-    border: none !important;
+    border: 0.2vw solid orangered !important;
     resize: none;
     font-size: 1vw;
     width: 26vw !important;
     height: 5vw !important;
+}
+
+.teaching-room-content textarea:hover {
+    border: 0.2vw solid orangered !important;
+    box-shadow: none !important;
+}
+
+.teaching-room-content textarea:focus {
+    border: 0.2vw solid midnightblue !important;
+    box-shadow: none !important;
 }
 
 .teaching-room-content .left-div .send-message-div button {
