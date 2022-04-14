@@ -5,17 +5,31 @@ import {connect} from "react-redux";
 import {Dialog} from "primereact/dialog";
 import {useLocation, useNavigate} from "react-router-dom";
 import WaitingRoomDialog from "./dialogs/WaitingRoomDialog";
-import TutorTeachingRoom from "./tutor/TutorWebRTC";
-import TutorWebRTC from "./tutor/TutorWebRTC";
+import {WebRTCFunctions} from "../functions/WebRTCFunctions";
+import placeholder from "../assets/img/profile-picture-placeholder.png";
+import {Image} from "primereact/image";
+import "../assets/css/teaching-room.css"
+import Chat from "./Chat";
 
 const TeachingRoom = (props) => {
-    const {firebaseAuth, users, role} = props;
+    const {firebaseAuth, users, profile, role} = props;
     const navigate = useNavigate();
     const location = useLocation();
     const [showWaitingRoomDialog, setShowWaitingRoomDialog] = useState(true);
     const [chat, setChat] = useState([]);
     const [privateLesson] = useState(location.state.privateLesson);
     const [otherRole] = useState(location.state.otherRole);
+
+    const configuration = {
+        iceServers: [
+            {
+                urls: "turn:turn.anyfirewall.com:443?transport=tcp",
+                username: "webrtc",
+                credential: "webrtc"
+            },
+        ],
+        iceCandidatePoolSize: 10,
+    };
 
     const peerConnection = useRef(null);
     const localStream = useRef(new MediaStream());
@@ -24,6 +38,28 @@ const TeachingRoom = (props) => {
     const remoteVideoRef = useRef();
 
     const teachingRoomRef = useRef(getFirebase().firestore().collection('teachingRooms').doc(location.state.privateLesson.roomID));
+    const tutorCandidatesCollectionRef = useRef(teachingRoomRef.current.collection('tutorCandidates'));
+    const studentCandidatesCollectionRef = useRef(teachingRoomRef.current.collection('studentCandidates'));
+
+    const {
+        startWebcam,
+        startScreenShare,
+        stopMediaStream,
+        createRoom,
+        joinRoom
+    } = WebRTCFunctions(localStream, remoteStream, localVideoRef, remoteVideoRef,
+        peerConnection, configuration, teachingRoomRef, tutorCandidatesCollectionRef, studentCandidatesCollectionRef);
+
+    const getMyProfilePicture = () => {
+        const url = profile.profile.profilePictureUrl;
+        return url ? url : placeholder;
+    }
+
+    const getOtherProfilePicture = () => {
+        const otherUser = users.filter(user => user.id === privateLesson[otherRole + "UID"])[0];
+        return otherUser ? otherUser.profile.profilePictureUrl : placeholder;
+    }
+
 
     const sortMessagesByDate = (a, b) => {
         if (a.time < b.time) {
@@ -50,25 +86,37 @@ const TeachingRoom = (props) => {
 
     return (
         <div className="teaching-room-container">
-            {!showWaitingRoomDialog &&
-                <div className="teaching-room-content">
-                    <div>
-                        {
-                            role === "tutor"
-                                ? <TutorWebRTC/>
-                                : <p/>
-                        }
+            <div className="teaching-room-content">
+                <div className="left-div">
+                    <div className="my-cam-div">
+                        <video ref={localVideoRef} autoPlay playsInline/>
+                        {/*<Image*/}
+                        {/*    src={getMyProfilePicture()}*/}
+                        {/*    alt="Profile Picture"*/}
+                        {/*/>*/}
                     </div>
-                    {/*<p>*/}
-                    {/*    <video ref={localVideoRef} autoPlay playsInline/>*/}
-                    {/*    <video ref={remoteVideoRef} autoPlay playsInline/>*/}
-                    {/*</p>*/}
+                    <div>
+                        <Chat
+                            chat={chat}
+                            roomID={privateLesson.roomID}
+                            getMyProfilePicture={getMyProfilePicture}
+                            getOtherProfilePicture={getOtherProfilePicture}
+                        />
+                    </div>
                 </div>
-            }
-            <p>
-                <video ref={localVideoRef} autoPlay playsInline/>
-                <video ref={remoteVideoRef} autoPlay playsInline/>
-            </p>
+                <div className="right-div">
+                    <div className="other-cam-div">
+                        <video ref={remoteVideoRef} autoPlay playsInline/>
+                        {/*<Image*/}
+                        {/*    src={getOtherProfilePicture()}*/}
+                        {/*    alt="Profile Picture"*/}
+                        {/*/>*/}
+                    </div>
+                    <div className="clock-div">
+                        <p>Ticktack</p>
+                    </div>
+                </div>
+            </div>
             <Dialog header="Várószoba"
                     visible={showWaitingRoomDialog}
                     position={"center"}
@@ -81,13 +129,15 @@ const TeachingRoom = (props) => {
                 <WaitingRoomDialog
                     chat={chat}
                     roomID={privateLesson.roomID}
-                    otherUID={privateLesson[otherRole + "UID"]}
                     setShowWaitingRoomDialog={setShowWaitingRoomDialog}
-                    peerConnection={peerConnection}
                     localStream={localStream}
-                    remoteStream={remoteStream}
                     localVideoRef={localVideoRef}
-                    remoteVideoRef={remoteVideoRef}
+                    startWebcam={startWebcam}
+                    stopMediaStream={stopMediaStream}
+                    createRoom={createRoom}
+                    joinRoom={joinRoom}
+                    getMyProfilePicture={getMyProfilePicture}
+                    getOtherProfilePicture={getOtherProfilePicture}
                 />
             </Dialog>
         </div>
@@ -97,8 +147,9 @@ const TeachingRoom = (props) => {
 const mapStateToProps = state => {
     return {
         firebaseAuth: state.firebase.auth,
-        users: state.firestore.data.users,
-        role: state.role
+        users: state.firestore.ordered.users,
+        profile: state.firebase.profile,
+        role: state.role,
     };
 };
 

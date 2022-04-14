@@ -1,0 +1,163 @@
+.teaching-room-content {
+    display:flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 1vh;
+    background-color: #dcdcdc;
+}
+
+.teaching-room-content .left-div {
+    width: 36vw;
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    /*background-color: #fcebe4;*/
+}
+
+.teaching-room-content .left-div >div:first-of-type {
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+}
+
+.teaching-room-content .left-div > div {
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items: center;
+}
+
+.teaching-room-content .left-div .my-cam-div img {
+    width: 12vw;
+    height: 6.75vw;
+}
+
+.teaching-room-content .left-div .my-cam-div video {
+    width: 12vw;
+    height: 6.75vw;
+}
+
+.teaching-room-content .left-div .chat-content > div {
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items: center;
+}
+
+.teaching-room-content .left-div .p-datatable {
+    width: 34vw;
+    height: 30vw;
+}
+
+.teaching-room-content .left-div .p-datatable-thead {
+    display: none !important
+}
+
+.teaching-room-content .left-div .content-td {
+    width: 100%;
+}
+
+.teaching-room-content .left-div .profile-picture-td img {
+    width: 3vw;
+    height: 3vw;
+    border-radius: 50%;
+    margin-left: 0.5vw;
+}
+
+.teaching-room-content .left-div .p-datatable-tbody {
+    height: 30vw;
+    display: flex !important;
+    flex-direction: column-reverse !important;
+    overflow: auto;
+}
+
+.teaching-room-content .left-div .p-datatable-tbody td {
+    border: none !important;
+    padding: 0 !important
+}
+
+.teaching-room-content .left-div .my-message-td-content {
+    background-color: midnightblue;
+}
+
+.teaching-room-content .left-div .other-message-td-content {
+    background-color: orangered;
+}
+
+.teaching-room-content .left-div .content-td > div {
+    margin-right: 1vw;
+    margin-left:1vw;
+}
+
+.teaching-room-content .left-div .content-td > div > p {
+    display: inline-block;
+    font-size: 2vh;
+    padding: 1.5vh;
+    color: white;
+    border-radius: 1.7vh;
+    overflow-wrap: anywhere;
+}
+
+.teaching-room-content .left-div .my-message-td-content p, .teaching-room-content .left-div .other-message-td-content p {
+    margin: 0 1vh;
+}
+
+.teaching-room-content .left-div .time-td-content {
+    font-size: 2vh;
+    color: black;
+    font-weight: bold;
+    margin-right: 0.5vw;
+}
+
+.teaching-room-content .left-div .send-message-div {
+    width: 34vw;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 1vh;
+    margin-top: 3vh;
+    /*padding-top: 3vh;*/
+}
+
+.teaching-room-content .left-div textarea {
+    border: none !important;
+    resize: none;
+    font-size: 1vw;
+    width: 26vw !important;
+    height: 5vw !important;
+}
+
+.teaching-room-content .left-div .send-message-div button {
+    border: none !important;
+    box-shadow: none !important;
+    width: 6vw !important;
+    height: 4vw !important;
+    font-size: 1.5vw;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.teaching-room-content .right-div{
+    width: 62vw;
+    display:flex;
+    flex-direction: column;
+    justify-content:space-between;
+    align-items: center;
+}
+
+.teaching-room-content .right-div .other-cam-div {
+    display:flex;
+    justify-content:center;
+    align-items: center;
+}
+
+.teaching-room-content .right-div .other-cam-div img {
+    width: 60vw;
+    height: 33.75vw;
+}
+
+.teaching-room-content .right-div .other-cam-div video {
+    width: 60vw;
+    height: 33.75vw;
+}

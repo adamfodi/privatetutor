@@ -88,7 +88,9 @@ const Test = (props) => {
         // Code for creating SDP answer above
     }
 
-    const tutorIceCandidateEventListener = useCallback((event) => {
+    const tutorIceCandidateEventListener = useCallback((event,x) => {
+        console.log(event)
+        console.log(x)
         event.candidate && tutorCandidatesCollectionRef.current.add(event.candidate.toJSON())
     }, [])
 
@@ -150,23 +152,23 @@ const Test = (props) => {
 
     console.log(peerConnection.current)
 
-    // useEffect(() => {
-    //     const _teachingRoomRef = teachingRoomRef.current;
-    //     const _studentCandidatesCollectionRef = studentCandidatesCollectionRef.current;
-    //     const _tutorCandidatesCollectionRef = tutorCandidatesCollectionRef.current;
-    //
-    //     return () => {
-    //         console.log("Bye component")
-    //         console.log("UNSUBSCRIBE")
-    //
-    //         peerConnection.current.removeEventListener('icecandidate', studentIceCandidateEventListener);
-    //         peerConnection.current.removeEventListener('icecandidate', tutorIceCandidateEventListener);
-    //         peerConnection.current.removeEventListener('track', trackEventListener);
-    //         _teachingRoomRef.onSnapshot(() => {})
-    //         _studentCandidatesCollectionRef.onSnapshot(() => {});
-    //         _tutorCandidatesCollectionRef.onSnapshot(() => {});
-    //     }
-    // },[studentIceCandidateEventListener, trackEventListener, tutorIceCandidateEventListener])
+    useEffect(() => {
+        const _teachingRoomRef = teachingRoomRef.current;
+        const _studentCandidatesCollectionRef = studentCandidatesCollectionRef.current;
+        const _tutorCandidatesCollectionRef = tutorCandidatesCollectionRef.current;
+
+        return () => {
+            console.log("Bye component")
+            console.log("UNSUBSCRIBE")
+
+            peerConnection.current.removeEventListener('icecandidate', studentIceCandidateEventListener);
+            peerConnection.current.removeEventListener('icecandidate', tutorIceCandidateEventListener);
+            peerConnection.current.removeEventListener('track', trackEventListener);
+            _teachingRoomRef.onSnapshot(() => {})
+            _studentCandidatesCollectionRef.onSnapshot(() => {});
+            _tutorCandidatesCollectionRef.onSnapshot(() => {});
+        }
+    },[studentIceCandidateEventListener, trackEventListener, tutorIceCandidateEventListener])
 
     const startWebcam = async () => {
         console.log("Webcam starting...")
@@ -187,7 +189,7 @@ const Test = (props) => {
             peerConnection.current.addTrack(track, localStream.current);
         });
 
-        peerConnection.current.addEventListener('icecandidate', tutorIceCandidateEventListener);
+        peerConnection.current.addEventListener('icecandidate', (event) => tutorIceCandidateEventListener(event,"asd"));
         await createOffer();
         peerConnection.current.addEventListener('track', trackEventListener);
         teachingRoomSnapshot();
