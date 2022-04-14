@@ -74,8 +74,8 @@ const TeachingRoom = (props) => {
                     position={"center"}
                     modal
                     onHide={() => navigate("/private-lessons")}
-                    draggable={true}
-                    resizable={true}
+                    draggable={false}
+                    resizable={false}
                     className="waiting-room-dialog"
             >
                 <WaitingRoomDialog

@@ -11,7 +11,7 @@ import "../../assets/css/dialogs/waiting-room-dialog.css"
 import {InputTextarea} from "primereact/inputtextarea";
 import moment from "moment";
 import {TeachingRoomService} from "../../services/TeachingRoomService";
-import {startWebcam} from "../../functions/WebRTCFunctions";
+import {startWebcam, stopWebcam} from "../../functions/WebRTCFunctions";
 import {ProgressSpinner} from "primereact/progressspinner";
 
 const WaitingRoomDialog = props => {
@@ -99,11 +99,12 @@ const WaitingRoomDialog = props => {
                             label={showWebCam ? "Kamera kikapcsolása" : "Kamera bekapcsolása"}
                             className={showWebCam ? "p-button-danger" : "p-button-primary"}
                             onClick={() => {
-                                if (showWebCam){
-                                    waitingRoomLocalStream.current = new MediaStream();
-                                    waitingRoomLocalVideoRef.current = null;
-                                    setShowWebCam(false)
-                                }else{
+                                if (showWebCam) {
+                                    setShowWebCamLoading(true)
+                                    console.log(waitingRoomLocalStream)
+                                    stopWebcam(waitingRoomLocalStream, waitingRoomLocalVideoRef);
+                                    setShowWebCam(false);
+                                } else {
                                     setShowWebCam(true)
                                     startWebcam(waitingRoomLocalStream, remoteStream, waitingRoomLocalVideoRef, remoteVideoRef)
                                         .catch(() => setShowWebCam(false))
@@ -127,6 +128,7 @@ const WaitingRoomDialog = props => {
                                     setShowWaitingRoomDialog(false)
                                 }}
                                 className="p-button-success"
+                                tooltip="blabla"
                             />
                     }
                 </div>
