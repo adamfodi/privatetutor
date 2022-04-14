@@ -17,6 +17,7 @@ import {firestoreConnect} from "react-redux-firebase";
 import TeachingRoom from "./components/TeachingRoom";
 import YOLO from "./components/YOLO";
 import PrivateLessons from "./components/PrivateLessons";
+import Test from "./components/Test";
 
 const App = (props) => {
     const {firebaseAuth} = props;
@@ -62,7 +63,7 @@ const App = (props) => {
                     element={!firebaseAuth.isEmpty ? <YOLO/> : <Navigate to="/main"/>}
                 />
 
-                {/*<Route exact path="/test" element={<Test txt={"txt"}/>}/>*/}
+                <Route exact path="/test" element={<Test txt={"txt"}/>}/>
 
                 <Route
                     path="*"

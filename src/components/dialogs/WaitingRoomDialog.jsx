@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import {compose} from "redux";
 import {connect} from "react-redux";
 import {firestoreConnect} from "react-redux-firebase";
@@ -11,26 +11,49 @@ import "../../assets/css/dialogs/waiting-room-dialog.css"
 import {InputTextarea} from "primereact/inputtextarea";
 import moment from "moment";
 import {TeachingRoomService} from "../../services/TeachingRoomService";
+import {startWebcam} from "../../functions/WebRTCFunctions";
+import {ProgressSpinner} from "primereact/progressspinner";
 
 const WaitingRoomDialog = props => {
-    const {chat, roomID, otherUID, setShowWaitingRoomDialog, firebaseAuth, users, role} = props;
+    const {
+        chat,
+        roomID,
+        otherUID,
+        setShowWaitingRoomDialog,
+        firebaseAuth,
+        users,
+        role,
+        profile,
+        peerConnection,
+        localStream,
+        remoteStream,
+        localVideoRef,
+        remoteVideoRef,
+    } = props;
     const [message, setMessage] = useState('');
+    const [showWebCam, setShowWebCam] = useState(false);
+    const [showWebCamLoading, setShowWebCamLoading] = useState(true);
+    const waitingRoomLocalStream = useRef(new MediaStream());
+    const waitingRoomLocalVideoRef = useRef();
 
-    const getProfilePicture = () => {
-        const otherUser = users.filter(user => user.id === otherUID)[0];
-        if (otherUser) {
-            return otherUser.profile.profilePictureUrl;
-        } else {
-            return placeholder;
-        }
+    const getMyProfilePicture = () => {
+        const url = profile.profile.profilePictureUrl;
+        return url ? url : placeholder;
     }
 
-    const getName = () => {
+    const getOtherProfilePicture = () => {
         const otherUser = users.filter(user => user.id === otherUID)[0];
-        return otherUser ? otherUser.profile.personalData.fullName : '';
+        return otherUser ? otherUser.profile.profilePictureUrl : placeholder;
     }
 
-    console.log(otherUID)
+    const profilePictureBodyTemplate = rowData => {
+        return <div>
+            <Image
+                src={rowData.uid === firebaseAuth.uid ? getMyProfilePicture() : getOtherProfilePicture()}
+                alt="Profile Picture"
+            />
+        </div>
+    }
 
     const contentBodyTemplate = rowData => {
         return <div>
@@ -46,17 +69,49 @@ const WaitingRoomDialog = props => {
         </p>
     }
 
+
     return (
         <div className="waiting-room-content">
             <div>
-                <div>
-                    <Image
-                        src={getProfilePicture()}
-                        alt="Profile Picture"
+                <div className="camera-div">
+                    {
+                        showWebCam
+                            ? <div>
+                                {
+                                    showWebCamLoading && <ProgressSpinner/>
+                                }
+                                <video ref={waitingRoomLocalVideoRef}
+                                       autoPlay
+                                       playsInline
+                                       onPlay={() => setShowWebCamLoading(false)}
+                                />
+                            </div>
+                            :
+                            <Image
+                                src={profile.profile.profilePictureUrl ? profile.profile.profilePictureUrl : placeholder}
+                                alt="Profile Picture"
+                            />
+                    }
+                </div>
+                <div className="camera-button-div">
+                    <Button icon="pi pi-camera"
+                            iconPos="right"
+                            label={showWebCam ? "Kamera kikapcsolása" : "Kamera bekapcsolása"}
+                            className={showWebCam ? "p-button-danger" : "p-button-primary"}
+                            onClick={() => {
+                                if (showWebCam){
+                                    waitingRoomLocalStream.current = new MediaStream();
+                                    waitingRoomLocalVideoRef.current = null;
+                                    setShowWebCam(false)
+                                }else{
+                                    setShowWebCam(true)
+                                    startWebcam(waitingRoomLocalStream, remoteStream, waitingRoomLocalVideoRef, remoteVideoRef)
+                                        .catch(() => setShowWebCam(false))
+                                }
+                            }}
                     />
                 </div>
-                <p>{getName()}</p>
-                <div>
+                <div className="action-button-div">
                     {
                         role === 'tutor'
                             ? <Button
@@ -80,8 +135,14 @@ const WaitingRoomDialog = props => {
                 <DataTable
                     value={chat}
                     responsiveLayout="scroll"
-                    emptyMessage="Nincs még üzenet"
+                    emptyMessage=" "
                 >
+                    <Column
+                        field="profilePicture"
+                        body={profilePictureBodyTemplate}
+                        className="profile-picture-td"
+                    />
+
                     <Column
                         field="content"
                         body={contentBodyTemplate}
@@ -91,6 +152,7 @@ const WaitingRoomDialog = props => {
                     <Column
                         field="time"
                         body={timeBodyTemplate}
+                        className="time-td"
                     />
                 </DataTable>
                 <div className="send-message-div">
@@ -118,7 +180,8 @@ const mapStateToProps = state => {
     return {
         firebaseAuth: state.firebase.auth,
         users: state.firestore.ordered.users,
-        role: state.role
+        profile: state.firebase.profile,
+        role: state.role,
     };
 };
 

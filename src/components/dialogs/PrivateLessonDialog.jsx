@@ -152,6 +152,7 @@ const PrivateLessonDialog = (props) => {
             } else {
                 Swal.fire({
                     didOpen: () => {
+                        Swal.hideLoading();
                     },
                     title: 'Biztosan folytatja?',
                     text: "Már létezik ebben az időpontban meghirdetett magánórája!",

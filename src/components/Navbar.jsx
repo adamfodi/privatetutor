@@ -73,6 +73,16 @@ const Navbar = props => {
 
         items.push(
             {
+                label: 'testcamera',
+                icon: 'pi pi-fw pi-home',
+                command: () => {
+                    navigate("test")
+                }
+            },
+        );
+
+        items.push(
+            {
                 label: 'Főoldal',
                 icon: 'pi pi-fw pi-home',
                 command: () => {

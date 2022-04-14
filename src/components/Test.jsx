@@ -34,7 +34,10 @@ const Test = (props) => {
     const localVideoRef = useRef();
     const remoteVideoRef = useRef();
 
-    console.log(remoteStream.current)
+    console.log(localStream)
+    console.log(remoteStream)
+    console.log(localVideoRef)
+    console.log(remoteVideoRef)
 
     let roomId = null;
 
@@ -147,23 +150,23 @@ const Test = (props) => {
 
     console.log(peerConnection.current)
 
-    useEffect(() => {
-        const _teachingRoomRef = teachingRoomRef.current;
-        const _studentCandidatesCollectionRef = studentCandidatesCollectionRef.current;
-        const _tutorCandidatesCollectionRef = tutorCandidatesCollectionRef.current;
-
-        return () => {
-            console.log("Bye component")
-            console.log("UNSUBSCRIBE")
-
-            peerConnection.current.removeEventListener('icecandidate', studentIceCandidateEventListener);
-            peerConnection.current.removeEventListener('icecandidate', tutorIceCandidateEventListener);
-            peerConnection.current.removeEventListener('track', trackEventListener);
-            _teachingRoomRef.onSnapshot(() => {})
-            _studentCandidatesCollectionRef.onSnapshot(() => {});
-            _tutorCandidatesCollectionRef.onSnapshot(() => {});
-        }
-    },[studentIceCandidateEventListener, trackEventListener, tutorIceCandidateEventListener])
+    // useEffect(() => {
+    //     const _teachingRoomRef = teachingRoomRef.current;
+    //     const _studentCandidatesCollectionRef = studentCandidatesCollectionRef.current;
+    //     const _tutorCandidatesCollectionRef = tutorCandidatesCollectionRef.current;
+    //
+    //     return () => {
+    //         console.log("Bye component")
+    //         console.log("UNSUBSCRIBE")
+    //
+    //         peerConnection.current.removeEventListener('icecandidate', studentIceCandidateEventListener);
+    //         peerConnection.current.removeEventListener('icecandidate', tutorIceCandidateEventListener);
+    //         peerConnection.current.removeEventListener('track', trackEventListener);
+    //         _teachingRoomRef.onSnapshot(() => {})
+    //         _studentCandidatesCollectionRef.onSnapshot(() => {});
+    //         _tutorCandidatesCollectionRef.onSnapshot(() => {});
+    //     }
+    // },[studentIceCandidateEventListener, trackEventListener, tutorIceCandidateEventListener])
 
     const startWebcam = async () => {
         console.log("Webcam starting...")
