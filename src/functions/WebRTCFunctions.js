@@ -1,8 +1,9 @@
 export const WebRTCFunctions = (localStream, remoteStream, localVideoRef, remoteVideoRef,
-                                peerConnection, configuration, teachingRoomRef, tutorCandidatesCollectionRef, studentCandidatesCollectionRef) => {
+                                peerConnection, configuration, teachingRoomRef,
+                                tutorCandidatesCollectionRef, studentCandidatesCollectionRef, setConnectionState) => {
 
     const startWebcam = async (localStream, localVideoRef) => {
-        console.log("Webcam starting...")
+        // console.log("Webcam starting...")
         await navigator
             .mediaDevices
             .getUserMedia(
@@ -12,17 +13,14 @@ export const WebRTCFunctions = (localStream, remoteStream, localVideoRef, remote
                 }
             )
             .then(mediaStream => {
-                // console.log(mediaStream.getVideoTracks()[0].getSettings())
-                // console.log(mediaStream.getVideoTracks()[1].getSettings())
+                // // console.log(mediaStream.getVideoTracks()[0].getSettings())
                 localStream.current = mediaStream;
                 localVideoRef.current.srcObject = mediaStream;
             });
-        console.log(localStream.current.getTracks())
-        remoteVideoRef.current.srcObject = remoteStream.current;
     };
 
     const startScreenShare = async (localStream, localVideoRef) => {
-        console.log("Webcam starting...")
+        // console.log("Webcam starting...")
         await navigator
             .mediaDevices
             .getDisplayMedia(
@@ -32,15 +30,14 @@ export const WebRTCFunctions = (localStream, remoteStream, localVideoRef, remote
                 }
             )
             .then(mediaStream => {
-                console.log(mediaStream.getTracks())
+                // console.log(mediaStream.getTracks())
                 localStream.current = mediaStream;
                 localVideoRef.current.srcObject = mediaStream;
             });
-        remoteVideoRef.current.srcObject = remoteStream.current;
     };
 
     const stopMediaStream = (localStream) => {
-        console.log("Webcam stopping...")
+        // console.log("Webcam stopping...")
         localStream.current.getTracks().forEach((track) => {
             track.enabled = false;
             track.stop();
@@ -48,11 +45,15 @@ export const WebRTCFunctions = (localStream, remoteStream, localVideoRef, remote
     };
 
     const createRoom = async () => {
-        console.log('Create PeerConnection with configuration: ', configuration);
+        remoteVideoRef.current.srcObject = remoteStream.current;
+
+        // console.log('Create PeerConnection with configuration: ', configuration);
         peerConnection.current = new RTCPeerConnection(configuration);
 
+        peerConnection.current.addEventListener('iceconnectionstatechange', iceConnectionStateEventListener);
+
         localStream.current.getTracks().forEach(track => {
-            console.log(track)
+            // console.log(track)
             peerConnection.current.addTrack(track, localStream.current);
         });
 
@@ -61,13 +62,13 @@ export const WebRTCFunctions = (localStream, remoteStream, localVideoRef, remote
         peerConnection.current.addEventListener('track', trackEventListener);
         teachingRoomSnapshot();
         studentCandidatesSnapshot();
+
     };
 
     const createOffer = async () => {
-        // Code for creating a room below
         const offer = await peerConnection.current.createOffer();
         await peerConnection.current.setLocalDescription(offer);
-        console.log('Created offer:', offer);
+        // console.log('Created offer:', offer);
 
         const roomWithOffer = {
             'offer': {
@@ -76,19 +77,21 @@ export const WebRTCFunctions = (localStream, remoteStream, localVideoRef, remote
             },
         };
         await teachingRoomRef.current.update(roomWithOffer);
-        // Code for creating a room above
     }
 
     const joinRoom = async () => {
+        remoteVideoRef.current.srcObject = remoteStream.current;
         const roomSnapshot = await teachingRoomRef.current.get();
-        console.log('Got room:', roomSnapshot.exists);
+        // console.log('Got room:', roomSnapshot.exists);
 
         if (roomSnapshot.exists) {
-            console.log('Create PeerConnection with configuration: ', configuration);
+            // console.log('Create PeerConnection with configuration: ', configuration);
             peerConnection.current = new RTCPeerConnection(configuration);
 
+            peerConnection.current.addEventListener('iceconnectionstatechange', iceConnectionStateEventListener);
+
             localStream.current.getTracks().forEach(track => {
-                console.log(track)
+                // console.log(track)
                 peerConnection.current.addTrack(track, localStream.current);
             });
 
@@ -103,10 +106,10 @@ export const WebRTCFunctions = (localStream, remoteStream, localVideoRef, remote
     const createAnswer = async (roomSnapshot) => {
         // Code for creating SDP answer below
         const offer = roomSnapshot.data().offer;
-        console.log('Got offer:', offer);
+        // console.log('Got offer:', offer);
         await peerConnection.current.setRemoteDescription(new RTCSessionDescription(offer));
         const answer = await peerConnection.current.createAnswer();
-        console.log('Created answer:', answer);
+        // console.log('Created answer:', answer);
         await peerConnection.current.setLocalDescription(answer);
 
         const roomWithAnswer = {
@@ -119,32 +122,35 @@ export const WebRTCFunctions = (localStream, remoteStream, localVideoRef, remote
         // Code for creating SDP answer above
     }
 
-    const tutorIceCandidateEventListener = (event => {
+    const tutorIceCandidateEventListener = event => {
         event.candidate && tutorCandidatesCollectionRef.current.add(event.candidate.toJSON())
-    });
+    };
 
-    const studentIceCandidateEventListener = (event => {
+    const studentIceCandidateEventListener = event => {
         event.candidate && studentCandidatesCollectionRef.current.add(event.candidate.toJSON())
-    });
+    };
 
-    const trackEventListener = (event => {
-        console.log('Got remote track:', event.streams[0]);
+    const iceConnectionStateEventListener = event => {
+        // console.log("cs")
+        event.currentTarget && event.currentTarget.iceConnectionState && setConnectionState(event.currentTarget.iceConnectionState);
+    };
+
+    const trackEventListener = event => {
+        // console.log('Got remote track:', event.streams[0]);
         event.streams[0].getTracks().forEach(track => {
-            console.log('Add a track to the remoteStream:', track);
+            // console.log('Add a track to the remoteStream:', track);
             remoteStream.current.addTrack(track);
         });
-    });
+    };
 
     const teachingRoomSnapshot = () => {
         teachingRoomRef.current.onSnapshot(async (snapshot) => {
+            // console.log("HAHOHAHOAHO")
             const data = snapshot.data();
             if (!peerConnection.current.currentRemoteDescription && data && data.answer) {
-                console.log('Got remote description: ', data.answer);
+                // console.log('Got remote description: ', data.answer);
                 const rtcSessionDescription = new RTCSessionDescription(data.answer);
                 await peerConnection.current.setRemoteDescription(rtcSessionDescription)
-                    .catch(() => {
-                        console.log("Connection closed!")
-                    })
             }
         });
     };
@@ -154,11 +160,8 @@ export const WebRTCFunctions = (localStream, remoteStream, localVideoRef, remote
             snapshot.docChanges().forEach(async change => {
                 if (change.type === 'added') {
                     let data = change.doc.data();
-                    console.log(`Got new remote ICE candidate: ${JSON.stringify(data)}`);
+                    // console.log(`Got new remote ICE candidate: ${JSON.stringify(data)}`);
                     await peerConnection.current.addIceCandidate(new RTCIceCandidate(data))
-                        .catch(() => {
-                            console.log("Connection closed!")
-                        })
                 }
             });
         });
@@ -169,17 +172,23 @@ export const WebRTCFunctions = (localStream, remoteStream, localVideoRef, remote
             snapshot.docChanges().forEach(async change => {
                 if (change.type === 'added') {
                     let data = change.doc.data();
-                    console.log(`Got new remote ICE candidate: ${JSON.stringify(data)}`);
+                    // console.log(`Got new remote ICE candidate: ${JSON.stringify(data)}`);
                     await peerConnection.current.addIceCandidate(new RTCIceCandidate(data))
-                        .catch(() => {
-                            console.log("Connection closed!")
-                        })
                 }
             });
         });
     };
 
-    return {startWebcam, startScreenShare, stopMediaStream, createRoom, joinRoom};
+    return {
+        startWebcam,
+        startScreenShare,
+        stopMediaStream,
+        createRoom,
+        joinRoom,
+        tutorIceCandidateEventListener,
+        studentIceCandidateEventListener,
+        trackEventListener
+    };
 }
 
 

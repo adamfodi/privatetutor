@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {firestoreConnect, getFirebase} from "react-redux-firebase";
+import { doc } from "firebase/firestore";
 import {compose} from "redux";
 import {connect} from "react-redux";
 import {Dialog} from "primereact/dialog";
@@ -7,9 +8,11 @@ import {useLocation, useNavigate} from "react-router-dom";
 import WaitingRoomDialog from "./dialogs/WaitingRoomDialog";
 import {WebRTCFunctions} from "../functions/WebRTCFunctions";
 import placeholder from "../assets/img/profile-picture-placeholder.png";
-import {Image} from "primereact/image";
 import "../assets/css/teaching-room.css"
 import Chat from "./Chat";
+import {Button} from "primereact/button";
+import {rrfProps as state} from "../config/firebaseConfig";
+import {Image} from "primereact/image";
 
 const TeachingRoom = (props) => {
     const {firebaseAuth, users, profile, role} = props;
@@ -17,8 +20,11 @@ const TeachingRoom = (props) => {
     const location = useLocation();
     const [showWaitingRoomDialog, setShowWaitingRoomDialog] = useState(true);
     const [chat, setChat] = useState([]);
+    const [roomCreated, setRoomCreated] = useState(false);
     const [privateLesson] = useState(location.state.privateLesson);
     const [otherRole] = useState(location.state.otherRole);
+    const [connectionState, setConnectionState] = useState(null);
+    const componentLeft = useRef(false);
 
     const configuration = {
         iceServers: [
@@ -46,9 +52,68 @@ const TeachingRoom = (props) => {
         startScreenShare,
         stopMediaStream,
         createRoom,
-        joinRoom
-    } = WebRTCFunctions(localStream, remoteStream, localVideoRef, remoteVideoRef,
-        peerConnection, configuration, teachingRoomRef, tutorCandidatesCollectionRef, studentCandidatesCollectionRef);
+        joinRoom,
+        tutorIceCandidateEventListener,
+        studentIceCandidateEventListener,
+        trackEventListener
+    } = WebRTCFunctions(localStream, remoteStream, localVideoRef, remoteVideoRef, peerConnection,
+        configuration, teachingRoomRef, tutorCandidatesCollectionRef, studentCandidatesCollectionRef, setConnectionState);
+
+    useEffect(() => {
+        console.log("Component mounted!")
+        teachingRoomRef.current.onSnapshot(async (snapshot) => {
+            snapshot.data().offer && setRoomCreated(true);
+            setChat(snapshot.data().chat.sort(sortMessagesByDate));
+        });
+        return () => {
+            console.log("Component unmounting...!")
+            componentLeft.current = true;
+        }
+    }, [])
+
+    useEffect(() => {
+        const _peerConnection = peerConnection.current;
+        const _localStream = localStream.current;
+        const _remoteStream = remoteStream.current;
+        const _teachingRoomRef = teachingRoomRef.current;
+        const _studentCandidatesCollectionRef = studentCandidatesCollectionRef.current;
+        const _tutorCandidatesCollectionRef = tutorCandidatesCollectionRef.current;
+
+        return () => {
+            if (_peerConnection && componentLeft.current) {
+                // console.log("UNSUBSCRIBE")
+
+                if (role === 'tutor') {
+                    _peerConnection.removeEventListener('icecandidate', tutorIceCandidateEventListener);
+                    _studentCandidatesCollectionRef.onSnapshot(() => {
+                    });
+                }
+
+                if (role === 'student') {
+                    _peerConnection.removeEventListener('icecandidate', studentIceCandidateEventListener);
+                    _tutorCandidatesCollectionRef.onSnapshot(() => {
+                    });
+                }
+
+                _peerConnection.removeEventListener('track', trackEventListener);
+                _teachingRoomRef.onSnapshot(() => {
+                })
+
+                _localStream && _localStream.getTracks().forEach(track => {
+                    track.stop();
+                });
+
+                _remoteStream && _remoteStream.getTracks().forEach(track => {
+                    track.stop();
+                });
+
+                _peerConnection.close();
+            }
+        }
+    }, [peerConnection, localStream, remoteStream, teachingRoomRef,
+        studentCandidatesCollectionRef, tutorCandidatesCollectionRef, studentIceCandidateEventListener,
+        tutorIceCandidateEventListener, trackEventListener, role, componentLeft])
+
 
     const getMyProfilePicture = () => {
         const url = profile.profile.profilePictureUrl;
@@ -60,7 +125,6 @@ const TeachingRoom = (props) => {
         return otherUser ? otherUser.profile.profilePictureUrl : placeholder;
     }
 
-
     const sortMessagesByDate = (a, b) => {
         if (a.time < b.time) {
             return 1;
@@ -70,19 +134,6 @@ const TeachingRoom = (props) => {
         }
         return 0;
     }
-
-    useEffect(() => {
-        const _teachingRoomRef = teachingRoomRef.current;
-
-        _teachingRoomRef.onSnapshot(async (snapshot) => {
-            setChat(snapshot.data().chat.sort(sortMessagesByDate));
-        });
-
-        return () => {
-            _teachingRoomRef.onSnapshot(() => {
-            })
-        }
-    }, [teachingRoomRef])
 
     return (
         <div className="teaching-room-container">
@@ -106,14 +157,25 @@ const TeachingRoom = (props) => {
                 </div>
                 <div className="right-div">
                     <div className="other-cam-div">
-                        <video ref={remoteVideoRef} autoPlay playsInline/>
-                        {/*<Image*/}
-                        {/*    src={getOtherProfilePicture()}*/}
-                        {/*    alt="Profile Picture"*/}
-                        {/*/>*/}
+                        <video ref={remoteVideoRef}
+                               autoPlay
+                               playsInline
+                               hidden={connectionState !== "connected"}
+                            />
+                        {
+                            connectionState !== "connected" &&
+                            <Image
+                                src={getOtherProfilePicture()}
+                                alt="Profile Picture"
+                            />
+                        }
                     </div>
                     <div className="clock-div">
-                        <p>Ticktack</p>
+                        <div>
+                            <Button label="Kilépés"
+                                    onClick={() => navigate("/private-lessons")}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -130,6 +192,7 @@ const TeachingRoom = (props) => {
                     chat={chat}
                     roomID={privateLesson.roomID}
                     setShowWaitingRoomDialog={setShowWaitingRoomDialog}
+                    roomCreated={roomCreated}
                     localStream={localStream}
                     localVideoRef={localVideoRef}
                     startWebcam={startWebcam}

@@ -1,7 +1,6 @@
 import React, {useRef, useState} from "react";
 import {compose} from "redux";
 import {connect} from "react-redux";
-import {firestoreConnect} from "react-redux-firebase";
 import {Image} from "primereact/image";
 import {Button} from "primereact/button";
 import "../../assets/css/dialogs/waiting-room-dialog.css"
@@ -10,11 +9,11 @@ import Chat from "../Chat";
 
 const WaitingRoomDialog = props => {
     const {
-        firebaseAuth,
         role,
         chat,
         roomID,
         setShowWaitingRoomDialog,
+        roomCreated,
         localStream,
         localVideoRef,
         startWebcam,
@@ -25,7 +24,7 @@ const WaitingRoomDialog = props => {
         getOtherProfilePicture
     } = props;
     const [showWebCam, setShowWebCam] = useState(false);
-    const [showWebCamLoading, setShowWebCamLoading] = useState(true);
+    const [WebCamLoading, setWebCamLoading] = useState(true);
     const waitingRoomLocalStream = useRef(new MediaStream());
     const waitingRoomLocalVideoRef = useRef();
 
@@ -38,12 +37,12 @@ const WaitingRoomDialog = props => {
                             showWebCam
                                 ? <div>
                                     {
-                                        showWebCamLoading && <ProgressSpinner/>
+                                        WebCamLoading && <ProgressSpinner/>
                                     }
                                     <video ref={waitingRoomLocalVideoRef}
                                            autoPlay
                                            playsInline
-                                           onPlay={() => setShowWebCamLoading(false)}
+                                           onPlay={() => setWebCamLoading(false)}
                                     />
                                 </div>
                                 :
@@ -60,7 +59,7 @@ const WaitingRoomDialog = props => {
                                 className={showWebCam ? "p-button-danger" : "p-button-success"}
                                 onClick={() => {
                                     if (showWebCam) {
-                                        setShowWebCamLoading(true)
+                                        setWebCamLoading(true)
                                         stopMediaStream(waitingRoomLocalStream);
                                         setShowWebCam(false);
                                     } else {
@@ -72,6 +71,15 @@ const WaitingRoomDialog = props => {
                         />
                     </div>
                 </div>
+                {
+                    role === 'tutor'
+                        ? <p className="info">Az óra csak akkor indítható el, ha a kamera már be van kapcsolva!
+                            (ideiglenes megoldás)</p>
+                        :
+                        <p className="info">Az órához csak akkor lehet csatlakozni, ha a kamera már be van kapcsolva és,
+                            ha az oktató már
+                            elindította az órát! (ideiglenes megoldás)</p>
+                }
                 <div className="action-button-div">
                     {
                         role === 'tutor'
@@ -83,6 +91,7 @@ const WaitingRoomDialog = props => {
                                     localVideoRef.current.srcObject = waitingRoomLocalVideoRef.current.srcObject;
                                     createRoom();
                                 }}
+                                disabled={WebCamLoading}
                             />
                             : <Button
                                 label="Csatlakozás"
@@ -92,7 +101,7 @@ const WaitingRoomDialog = props => {
                                     localVideoRef.current.srcObject = waitingRoomLocalVideoRef.current.srcObject;
                                     joinRoom();
                                 }}
-                                tooltip="blabla"
+                                disabled={WebCamLoading || !roomCreated}
                             />
                     }
                 </div>
@@ -111,15 +120,10 @@ const WaitingRoomDialog = props => {
     )
 }
 
-
 const mapStateToProps = state => {
     return {
-        firebaseAuth: state.firebase.auth,
         role: state.role,
     };
 };
 
-export default compose(
-    connect(mapStateToProps),
-    firestoreConnect([{collection: "users"}]),
-)(WaitingRoomDialog);
+export default compose(connect(mapStateToProps))(WaitingRoomDialog);

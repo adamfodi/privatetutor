@@ -110,6 +110,11 @@
     font-size: 1.5vw;
 }
 
+.waiting-room-content > div:first-of-type .info {
+    font-size: 2vh;
+    margin: 1vw;
+}
+
 .waiting-room-content > div:first-of-type .action-button-div .p-button {
     font-size: 1.7vw;
     margin-bottom: 2vh;

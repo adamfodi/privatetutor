@@ -69,6 +69,7 @@
     display: flex !important;
     flex-direction: column-reverse !important;
     overflow: auto;
+    background-color: white;
 }
 
 .teaching-room-content .left-div .p-datatable-tbody td {
@@ -112,7 +113,7 @@
 .teaching-room-content .left-div .send-message-div {
     width: 34vw;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 1vh;
     margin-top: 3vh;
@@ -122,7 +123,7 @@
     border: 0.2vw solid orangered !important;
     resize: none;
     font-size: 1vw;
-    width: 26vw !important;
+    width: 27vw !important;
     height: 5vw !important;
 }
 
