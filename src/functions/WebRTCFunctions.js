@@ -30,7 +30,6 @@ export const WebRTCFunctions = (localStream, remoteStream, localVideoRef, remote
                 }
             )
             .then(mediaStream => {
-                // console.log(mediaStream.getTracks())
                 localStream.current = mediaStream;
                 localVideoRef.current.srcObject = mediaStream;
             });
