@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import {Dialog} from "primereact/dialog";
 import {useLocation, useNavigate} from "react-router-dom";
 import WaitingRoomDialog from "./dialogs/WaitingRoomDialog";
-import {WebRTCFunctions} from "../functions/WebRTCFunctions";
+import {WebRTCFunctions} from "../functions/webRTCFunctions";
 import placeholder from "../assets/img/profile-picture-placeholder.png";
 import "../assets/css/teaching-room.css"
 import Chat from "./Chat";
@@ -23,33 +23,6 @@ const TeachingRoom = (props) => {
     const [otherRole] = useState(location.state.otherRole);
     const [connectionState, setConnectionState] = useState(null);
     const componentLeft = useRef(false);
-
-    const configuration = {
-        // iceServers: [
-        //     {
-        //         urls: "turn:turn.anyfirewall.com:443?transport=tcp",
-        //         username: "webrtc",
-        //         credential: "webrtc"
-        //     },
-        // ],
-        iceServers: [
-            {
-                urls: ["stun:eu-turn6.xirsys.com"]
-            },
-            {
-                username: "ojgPiT2ZDqKqfLFj_0cEhlasdndv4c0ifDO_M3XM7w6AKbaOhEcgfjNbbuceZ7FRAAAAAGJaPzlpZm9kYW0=",
-                credential: "abec16e4-bd39-11ec-8666-0242ac140004",
-                urls: [
-                    "turn:eu-turn6.xirsys.com:80?transport=udp",
-                    "turn:eu-turn6.xirsys.com:3478?transport=udp",
-                    "turn:eu-turn6.xirsys.com:80?transport=tcp",
-                    "turn:eu-turn6.xirsys.com:3478?transport=tcp",
-                    "turns:eu-turn6.xirsys.com:443?transport=tcp",
-                    "turns:eu-turn6.xirsys.com:5349?transport=tcp"
-                ]
-            }],
-        iceCandidatePoolSize: 10,
-    };
 
     const peerConnection = useRef(null);
     const localStream = useRef(new MediaStream());
@@ -72,7 +45,7 @@ const TeachingRoom = (props) => {
         studentIceCandidateEventListener,
         trackEventListener
     } = WebRTCFunctions(localStream, remoteStream, localVideoRef, remoteVideoRef, peerConnection,
-        configuration, teachingRoomRef, tutorCandidatesCollectionRef, studentCandidatesCollectionRef, setConnectionState);
+        teachingRoomRef, tutorCandidatesCollectionRef, studentCandidatesCollectionRef, setConnectionState);
 
     useEffect(() => {
         console.log("Component mounted!")
@@ -151,6 +124,8 @@ const TeachingRoom = (props) => {
         return 0;
     }
 
+    console.log(remoteStream.current)
+
     return (
         <div className="teaching-room-container">
             <div className="teaching-room-content">
@@ -160,20 +135,27 @@ const TeachingRoom = (props) => {
                             ref={localVideoRef}
                             autoPlay
                             playsInline
-                            controls
+                            muted
+                            hidden={showWaitingRoomDialog || !localStream.current.active}
                         />
-                        {/*<Image*/}
-                        {/*    src={getMyProfilePicture()}*/}
-                        {/*    alt="Profile Picture"*/}
-                        {/*/>*/}
+                        {
+                            !showWaitingRoomDialog && !localStream.current.active &&
+                            <Image
+                                src={getMyProfilePicture()}
+                                alt="Profile Picture"
+                            />
+                        }
                     </div>
                     <div>
-                        <Chat
-                            chat={chat}
-                            roomID={privateLesson.roomID}
-                            getMyProfilePicture={getMyProfilePicture}
-                            getOtherProfilePicture={getOtherProfilePicture}
-                        />
+                        {
+                            !showWaitingRoomDialog &&
+                            <Chat
+                                chat={chat}
+                                roomID={privateLesson.roomID}
+                                getMyProfilePicture={getMyProfilePicture}
+                                getOtherProfilePicture={getOtherProfilePicture}
+                            />
+                        }
                     </div>
                 </div>
                 <div className="right-div">
@@ -183,10 +165,10 @@ const TeachingRoom = (props) => {
                             autoPlay
                             playsInline
                             controls={connectionState === "connected"}
-                            hidden={connectionState !== "connected"}
+                            hidden={showWaitingRoomDialog || connectionState !== "connected" || !remoteStream.current.active}
                         />
                         {
-                            connectionState !== "connected" &&
+                            !showWaitingRoomDialog && (connectionState !== "connected" || !remoteStream.current.active) &&
                             <Image
                                 src={getOtherProfilePicture()}
                                 alt="Profile Picture"

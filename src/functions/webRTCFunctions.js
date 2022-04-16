@@ -1,6 +1,7 @@
-export const WebRTCFunctions = (localStream, remoteStream, localVideoRef, remoteVideoRef,
-                                peerConnection, configuration, teachingRoomRef,
-                                tutorCandidatesCollectionRef, studentCandidatesCollectionRef, setConnectionState) => {
+import {RTCPeerConnectionConfiguration, RTCPeerConnectionOfferOptions} from "../config/webRTCConfig";
+
+export const WebRTCFunctions = (localStream, remoteStream, localVideoRef, remoteVideoRef, peerConnection,
+                                teachingRoomRef, tutorCandidatesCollectionRef, studentCandidatesCollectionRef, setConnectionState) => {
 
     const startWebcam = async (localStream, localVideoRef) => {
         // console.log("Webcam starting...")
@@ -43,31 +44,33 @@ export const WebRTCFunctions = (localStream, remoteStream, localVideoRef, remote
         })
     };
 
-    const createRoom = async () => {
+    const createRoom = async (webcamOn) => {
+        console.log(webcamOn)
         remoteVideoRef.current.srcObject = remoteStream.current;
 
         // console.log('Create PeerConnection with configuration: ', configuration);
-        peerConnection.current = new RTCPeerConnection(configuration);
+        peerConnection.current = new RTCPeerConnection(RTCPeerConnectionConfiguration);
 
         peerConnection.current.addEventListener('iceconnectionstatechange', iceConnectionStateEventListener);
 
         localStream.current.getTracks().forEach(track => {
-            // console.log(track)
+            console.log(track)
             peerConnection.current.addTrack(track, localStream.current);
         });
 
         peerConnection.current.addEventListener('icecandidate', tutorIceCandidateEventListener);
-        await createOffer();
+        await createOffer(webcamOn);
         peerConnection.current.addEventListener('track', trackEventListener);
         teachingRoomSnapshot();
         studentCandidatesSnapshot();
 
     };
 
-    const createOffer = async () => {
-        const offer = await peerConnection.current.createOffer();
+    const createOffer = async (webcamOn) => {
+
+        const offer = await peerConnection.current.createOffer(RTCPeerConnectionOfferOptions);
         await peerConnection.current.setLocalDescription(offer);
-        // console.log('Created offer:', offer);
+        console.log('Created offer:', offer);
 
         const roomWithOffer = {
             'offer': {
@@ -75,6 +78,8 @@ export const WebRTCFunctions = (localStream, remoteStream, localVideoRef, remote
                 sdp: offer.sdp,
             },
         };
+        console.log(roomWithOffer)
+
         await teachingRoomRef.current.update(roomWithOffer);
     }
 
@@ -85,7 +90,7 @@ export const WebRTCFunctions = (localStream, remoteStream, localVideoRef, remote
 
         if (roomSnapshot.exists) {
             // console.log('Create PeerConnection with configuration: ', configuration);
-            peerConnection.current = new RTCPeerConnection(configuration);
+            peerConnection.current = new RTCPeerConnection(RTCPeerConnectionConfiguration);
 
             peerConnection.current.addEventListener('iceconnectionstatechange', iceConnectionStateEventListener);
 
@@ -107,7 +112,7 @@ export const WebRTCFunctions = (localStream, remoteStream, localVideoRef, remote
         const offer = roomSnapshot.data().offer;
         // console.log('Got offer:', offer);
         await peerConnection.current.setRemoteDescription(new RTCSessionDescription(offer));
-        const answer = await peerConnection.current.createAnswer();
+        const answer = await peerConnection.current.createAnswer(RTCPeerConnectionOfferOptions);
         // console.log('Created answer:', answer);
         await peerConnection.current.setLocalDescription(answer);
 
@@ -150,7 +155,7 @@ export const WebRTCFunctions = (localStream, remoteStream, localVideoRef, remote
         teachingRoomRef.current.onSnapshot(async (snapshot) => {
             // console.log("HAHOHAHOAHO")
             const data = snapshot.data();
-            if (!peerConnection.current.currentRemoteDescription && data && data.answer) {
+            if (!peerConnection.current.currentRemoteDescription && data && data.answer && peerConnection.current.signalingState !== "closed") {
                 // console.log('Got remote description: ', data.answer);
                 const rtcSessionDescription = new RTCSessionDescription(data.answer);
                 await peerConnection.current.setRemoteDescription(rtcSessionDescription)
@@ -161,7 +166,7 @@ export const WebRTCFunctions = (localStream, remoteStream, localVideoRef, remote
     const tutorCandidatesSnapshot = () => {
         teachingRoomRef.current.collection('tutorCandidates').onSnapshot(snapshot => {
             snapshot.docChanges().forEach(async change => {
-                if (change.type === 'added') {
+                if (change.type === 'added' && peerConnection.current.signalingState !== "closed") {
                     let data = change.doc.data();
                     // console.log(`Got new remote ICE candidate: ${JSON.stringify(data)}`);
                     await peerConnection.current.addIceCandidate(new RTCIceCandidate(data))
@@ -173,7 +178,7 @@ export const WebRTCFunctions = (localStream, remoteStream, localVideoRef, remote
     const studentCandidatesSnapshot = () => {
         studentCandidatesCollectionRef.current.onSnapshot(snapshot => {
             snapshot.docChanges().forEach(async change => {
-                if (change.type === 'added') {
+                if (change.type === 'added' && peerConnection.current.signalingState !== "closed") {
                     let data = change.doc.data();
                     // console.log(`Got new remote ICE candidate: ${JSON.stringify(data)}`);
                     await peerConnection.current.addIceCandidate(new RTCIceCandidate(data))

@@ -29,9 +29,15 @@
     align-items: center;
 }
 
+.teaching-room-content .left-div .my-cam-div {
+    width: 12vw;
+    height: 6.75vw;
+}
+
 .teaching-room-content .left-div .my-cam-div img {
-    width: 10vw;
-    height: 10vw;
+    width: 6.5vw;
+    height: 6.5vw;
+    border-radius: 50%;
 }
 
 .teaching-room-content .left-div .my-cam-div video {
@@ -151,7 +157,6 @@
 }
 
 .teaching-room-content .right-div {
-    background-color: yellow;
     margin-top: 1vh;
     margin-bottom: 1vh;
     width: 62vw;
@@ -172,6 +177,7 @@
 .teaching-room-content .right-div .other-cam-div img {
     width: 30vw;
     height: 30vw;
+    border-radius: 50%;
 }
 
 .teaching-room-content .right-div .other-cam-div video {
