@@ -1,6 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
 import {firestoreConnect, getFirebase} from "react-redux-firebase";
-import { doc } from "firebase/firestore";
 import {compose} from "redux";
 import {connect} from "react-redux";
 import {Dialog} from "primereact/dialog";
@@ -11,7 +10,6 @@ import placeholder from "../assets/img/profile-picture-placeholder.png";
 import "../assets/css/teaching-room.css"
 import Chat from "./Chat";
 import {Button} from "primereact/button";
-import {rrfProps as state} from "../config/firebaseConfig";
 import {Image} from "primereact/image";
 
 const TeachingRoom = (props) => {
@@ -27,13 +25,29 @@ const TeachingRoom = (props) => {
     const componentLeft = useRef(false);
 
     const configuration = {
+        // iceServers: [
+        //     {
+        //         urls: "turn:turn.anyfirewall.com:443?transport=tcp",
+        //         username: "webrtc",
+        //         credential: "webrtc"
+        //     },
+        // ],
         iceServers: [
             {
-                urls: "turn:turn.anyfirewall.com:443?transport=tcp",
-                username: "webrtc",
-                credential: "webrtc"
+                urls: ["stun:eu-turn6.xirsys.com"]
             },
-        ],
+            {
+                username: "ojgPiT2ZDqKqfLFj_0cEhlasdndv4c0ifDO_M3XM7w6AKbaOhEcgfjNbbuceZ7FRAAAAAGJaPzlpZm9kYW0=",
+                credential: "abec16e4-bd39-11ec-8666-0242ac140004",
+                urls: [
+                    "turn:eu-turn6.xirsys.com:80?transport=udp",
+                    "turn:eu-turn6.xirsys.com:3478?transport=udp",
+                    "turn:eu-turn6.xirsys.com:80?transport=tcp",
+                    "turn:eu-turn6.xirsys.com:3478?transport=tcp",
+                    "turns:eu-turn6.xirsys.com:443?transport=tcp",
+                    "turns:eu-turn6.xirsys.com:5349?transport=tcp"
+                ]
+            }],
         iceCandidatePoolSize: 10,
     };
 
@@ -53,6 +67,7 @@ const TeachingRoom = (props) => {
         stopMediaStream,
         createRoom,
         joinRoom,
+        iceConnectionStateEventListener,
         tutorIceCandidateEventListener,
         studentIceCandidateEventListener,
         trackEventListener
@@ -95,6 +110,7 @@ const TeachingRoom = (props) => {
                     });
                 }
 
+                _peerConnection.removeEventListener('track', iceConnectionStateEventListener);
                 _peerConnection.removeEventListener('track', trackEventListener);
                 _teachingRoomRef.onSnapshot(() => {
                 })
@@ -112,7 +128,7 @@ const TeachingRoom = (props) => {
         }
     }, [peerConnection, localStream, remoteStream, teachingRoomRef,
         studentCandidatesCollectionRef, tutorCandidatesCollectionRef, studentIceCandidateEventListener,
-        tutorIceCandidateEventListener, trackEventListener, role, componentLeft])
+        tutorIceCandidateEventListener, iceConnectionStateEventListener, trackEventListener, role, componentLeft])
 
 
     const getMyProfilePicture = () => {
@@ -140,7 +156,12 @@ const TeachingRoom = (props) => {
             <div className="teaching-room-content">
                 <div className="left-div">
                     <div className="my-cam-div">
-                        <video ref={localVideoRef} autoPlay playsInline/>
+                        <video
+                            ref={localVideoRef}
+                            autoPlay
+                            playsInline
+                            controls
+                        />
                         {/*<Image*/}
                         {/*    src={getMyProfilePicture()}*/}
                         {/*    alt="Profile Picture"*/}
@@ -157,11 +178,13 @@ const TeachingRoom = (props) => {
                 </div>
                 <div className="right-div">
                     <div className="other-cam-div">
-                        <video ref={remoteVideoRef}
-                               autoPlay
-                               playsInline
-                               hidden={connectionState !== "connected"}
-                            />
+                        <video
+                            ref={remoteVideoRef}
+                            autoPlay
+                            playsInline
+                            controls={connectionState === "connected"}
+                            hidden={connectionState !== "connected"}
+                        />
                         {
                             connectionState !== "connected" &&
                             <Image

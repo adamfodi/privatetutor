@@ -138,6 +138,10 @@ export const WebRTCFunctions = (localStream, remoteStream, localVideoRef, remote
         // console.log('Got remote track:', event.streams[0]);
         event.streams[0].getTracks().forEach(track => {
             // console.log('Add a track to the remoteStream:', track);
+            console.log(track)
+            console.log(track.getSettings())
+            // console.log(mediaStream.getVideoTracks()[0].getSettings())
+            //TODO: getTrack W
             remoteStream.current.addTrack(track);
         });
     };
@@ -184,6 +188,7 @@ export const WebRTCFunctions = (localStream, remoteStream, localVideoRef, remote
         stopMediaStream,
         createRoom,
         joinRoom,
+        iceConnectionStateEventListener,
         tutorIceCandidateEventListener,
         studentIceCandidateEventListener,
         trackEventListener

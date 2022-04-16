@@ -1,35 +1,37 @@
 .teaching-room-content {
-    display:flex;
+    display: flex;
     justify-content: space-around;
     align-items: center;
-    margin-top: 1vh;
     background-color: #dcdcdc;
+    height: 90vh;
+    margin-top: 1vh;
 }
 
 .teaching-room-content .left-div {
     width: 36vw;
-    display:flex;
-    flex-direction:column;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    /*background-color: #fcebe4;*/
+    margin-top: 1vh;
+    margin-bottom: 1vh;
 }
 
-.teaching-room-content .left-div >div:first-of-type {
+.teaching-room-content .left-div > div:first-of-type {
     margin-top: 2vh;
     margin-bottom: 2vh;
 }
 
 .teaching-room-content .left-div > div {
-    display:flex;
+    display: flex;
     flex-direction: column;
-    justify-content:center;
+    justify-content: center;
     align-items: center;
 }
 
 .teaching-room-content .left-div .my-cam-div img {
-    width: 12vw;
-    height: 6.75vw;
+    width: 10vw;
+    height: 10vw;
 }
 
 .teaching-room-content .left-div .my-cam-div video {
@@ -38,9 +40,9 @@
 }
 
 .teaching-room-content .left-div .chat-content > div {
-    display:flex;
+    display: flex;
     flex-direction: column;
-    justify-content:center;
+    justify-content: center;
     align-items: center;
 }
 
@@ -87,7 +89,7 @@
 
 .teaching-room-content .left-div .content-td > div {
     margin-right: 1vw;
-    margin-left:1vw;
+    margin-left: 1vw;
 }
 
 .teaching-room-content .left-div .content-td > div > p {
@@ -115,7 +117,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1vh;
+    margin-bottom: 2vh;
     margin-top: 3vh;
 }
 
@@ -143,28 +145,33 @@
     width: 6vw !important;
     height: 4vw !important;
     font-size: 1.5vw;
-    display:flex;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.teaching-room-content .right-div{
+.teaching-room-content .right-div {
+    background-color: yellow;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
     width: 62vw;
-    display:flex;
+    display: flex;
     flex-direction: column;
-    justify-content:space-between;
+    justify-content: space-between;
     align-items: center;
 }
 
 .teaching-room-content .right-div .other-cam-div {
-    display:flex;
-    justify-content:center;
+    width: 60vw;
+    height: 33.75vw;
+    display: flex;
+    justify-content: center;
     align-items: center;
 }
 
 .teaching-room-content .right-div .other-cam-div img {
-    width: 60vw;
-    height: 33.75vw;
+    width: 30vw;
+    height: 30vw;
 }
 
 .teaching-room-content .right-div .other-cam-div video {

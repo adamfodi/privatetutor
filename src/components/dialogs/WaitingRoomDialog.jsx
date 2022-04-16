@@ -24,7 +24,7 @@ const WaitingRoomDialog = props => {
         getOtherProfilePicture
     } = props;
     const [showWebCam, setShowWebCam] = useState(false);
-    const [WebCamLoading, setWebCamLoading] = useState(true);
+    const [webCamLoading, setWebCamLoading] = useState(true);
     const waitingRoomLocalStream = useRef(new MediaStream());
     const waitingRoomLocalVideoRef = useRef();
 
@@ -37,12 +37,14 @@ const WaitingRoomDialog = props => {
                             showWebCam
                                 ? <div>
                                     {
-                                        WebCamLoading && <ProgressSpinner/>
+                                        webCamLoading && <ProgressSpinner/>
                                     }
-                                    <video ref={waitingRoomLocalVideoRef}
-                                           autoPlay
-                                           playsInline
-                                           onPlay={() => setWebCamLoading(false)}
+                                    <video
+                                        ref={waitingRoomLocalVideoRef}
+                                        autoPlay
+                                        playsInline
+                                        controls={!webCamLoading}
+                                        onPlay={() => setWebCamLoading(false)}
                                     />
                                 </div>
                                 :
@@ -86,22 +88,22 @@ const WaitingRoomDialog = props => {
                             ? <Button
                                 label="Óra indítása"
                                 onClick={() => {
-                                    setShowWaitingRoomDialog(false)
                                     localStream.current = waitingRoomLocalStream.current;
                                     localVideoRef.current.srcObject = waitingRoomLocalVideoRef.current.srcObject;
                                     createRoom();
+                                    setShowWaitingRoomDialog(false)
                                 }}
-                                disabled={WebCamLoading}
+                                disabled={webCamLoading}
                             />
                             : <Button
                                 label="Csatlakozás"
                                 onClick={() => {
-                                    setShowWaitingRoomDialog(false)
                                     localStream.current = waitingRoomLocalStream.current;
                                     localVideoRef.current.srcObject = waitingRoomLocalVideoRef.current.srcObject;
                                     joinRoom();
+                                    setShowWaitingRoomDialog(false)
                                 }}
-                                disabled={WebCamLoading || !roomCreated}
+                                disabled={webCamLoading || !roomCreated}
                             />
                     }
                 </div>
