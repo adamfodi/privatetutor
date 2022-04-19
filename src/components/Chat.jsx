@@ -23,10 +23,17 @@ const Chat = props => {
         </div>
     }
 
-    const contentBodyTemplate = rowData => {
+    const messageContentBodyTemplate = rowData => {
         return <div>
             <p className={rowData.uid === firebaseAuth.uid ? "my-message-td-content" : "other-message-td-content"}>
-                {rowData.content}
+                {
+                    rowData.messageType === 'text'
+                        ? rowData.messageContent
+                        : <>
+                            <i className="pi pi-file"/>
+                            <a href={rowData.messageContent.url} download target="_blank">{rowData.messageContent.name}</a>
+                        </>
+                }
             </p>
         </div>
     }
@@ -52,9 +59,9 @@ const Chat = props => {
                     />
 
                     <Column
-                        field="content"
-                        body={contentBodyTemplate}
-                        className="content-td"
+                        field="messageContent"
+                        body={messageContentBodyTemplate}
+                        className="message-content-td"
                     />
 
                     <Column
@@ -74,7 +81,7 @@ const Chat = props => {
                     <div>
                         <Button label="Küldés"
                                 onClick={() => {
-                                    TeachingRoomService.sendMessage(roomID, message, firebaseAuth.uid)
+                                    TeachingRoomService.sendMessage(roomID, firebaseAuth.uid, message, "text")
                                         .then(() => setMessage(''))
                                 }}
                                 disabled={message.length === 0}

@@ -6,7 +6,7 @@ import {MultiSelect} from "primereact/multiselect";
 import {Editor} from "primereact/editor";
 import {InputNumber} from "primereact/inputnumber";
 import {Button} from "primereact/button";
-import Timetable from "./Timetable";
+import Timetable from "../Timetable";
 import {Checkbox} from "primereact/checkbox";
 import {UserService} from "../../services/UserService";
 import Swal from "sweetalert2";
@@ -18,7 +18,7 @@ const Advertisement = (props) => {
 
 
     useEffect(() => {
-        console.log("csak akkor fut le, ha megvaltozott az adat firestoreban")
+        // console.log("csak akkor fut le, ha megvaltozott az adat firestoreban")
         if (advertisement) {
             setNewAdvertisement({...advertisement})
         }
@@ -69,7 +69,6 @@ const Advertisement = (props) => {
             {newAdvertisement
                 ? <div className="component-content">
                     <div className="tutor-advertisement-container">
-                        <p>Töltsd ki a következő mezőekt bla bla ba asddddddddddddddddddddddddddddddl</p>
                         <div className="tutor-advertisement-field">
                             <p>Oktatni kívánt tárgyak</p>
                             <div>

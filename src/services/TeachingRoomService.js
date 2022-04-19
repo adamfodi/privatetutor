@@ -1,6 +1,6 @@
 import {getFirebase} from "react-redux-firebase";
 import {rrfProps as state} from "../config/firebaseConfig";
-import { arrayUnion} from "firebase/firestore";
+import {arrayUnion} from "firebase/firestore";
 
 
 export const TeachingRoomService = {
@@ -23,10 +23,11 @@ export const TeachingRoomService = {
             .delete()
     },
 
-    async sendMessage(roomID,content,uid) {
+    async sendMessage(roomID, uid, messageContent, messageType) {
         const firestore = state.firebase.firestore;
         const message = {
-            content: content,
+            messageType: messageType,
+            messageContent: messageContent,
             time: new Date(),
             uid: uid
         }

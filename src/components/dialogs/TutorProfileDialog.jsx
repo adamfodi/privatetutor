@@ -5,7 +5,7 @@ import {Image} from "primereact/image";
 import {editorHeader} from "../../util/FormFields";
 import {Editor} from "primereact/editor";
 import {Chips} from "primereact/chips";
-import Timetable from "../tutor/Timetable";
+import Timetable from "../Timetable";
 import {Button} from "primereact/button";
 
 const TutorProfileDialog = (props) => {

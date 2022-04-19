@@ -1,6 +1,6 @@
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
-import "../../assets/css/tutor/timetable.css"
+import "../assets/css/tutor/timetable.css"
 import {Button} from "primereact/button";
 
 const Timetable = (props) => {

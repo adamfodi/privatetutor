@@ -11,18 +11,28 @@ import "../assets/css/teaching-room.css"
 import Chat from "./Chat";
 import {Button} from "primereact/button";
 import {Image} from "primereact/image";
+import {ProgressSpinner} from "primereact/progressspinner";
+import {getDownloadURL, getStorage, ref, uploadBytes} from "firebase/storage";
+import Swal from "sweetalert2";
+import {TeachingRoomService} from "../services/TeachingRoomService";
+import {v4 as uuidv4} from "uuid";
 
 const TeachingRoom = (props) => {
     const {firebaseAuth, users, profile, role} = props;
     const navigate = useNavigate();
     const location = useLocation();
-    const [showWaitingRoomDialog, setShowWaitingRoomDialog] = useState(true);
+    const [showWaitingRoomDialog, setShowWaitingRoomDialog] = useState(false);
     const [chat, setChat] = useState([]);
     const [roomCreated, setRoomCreated] = useState(false);
     const [privateLesson] = useState(location.state.privateLesson);
     const [otherRole] = useState(location.state.otherRole);
     const [connectionState, setConnectionState] = useState(null);
     const componentLeft = useRef(false);
+    const [showWebcam, setShowWebcam] = useState(false);
+    const [webcamLoading, setWebcamLoading] = useState(false);
+    const [file, setFile] = useState(null);
+    const fileRef = useRef();
+    const storage = getStorage();
 
     const peerConnection = useRef(null);
     const localStream = useRef(new MediaStream());
@@ -43,8 +53,9 @@ const TeachingRoom = (props) => {
         iceConnectionStateEventListener,
         tutorIceCandidateEventListener,
         studentIceCandidateEventListener,
-        trackEventListener
-    } = WebRTCFunctions(localStream, remoteStream, localVideoRef, remoteVideoRef, peerConnection,
+        trackEventListener,
+        updateMediaStream
+    } = WebRTCFunctions(role, localStream, remoteStream, localVideoRef, remoteVideoRef, peerConnection,
         teachingRoomRef, tutorCandidatesCollectionRef, studentCandidatesCollectionRef, setConnectionState);
 
     useEffect(() => {
@@ -124,26 +135,98 @@ const TeachingRoom = (props) => {
         return 0;
     }
 
-    console.log(remoteStream.current)
+    const uploadButtonClick = (fileRef) => {
+        fileRef.current.click();
+    };
+
+    const uploadChangeFile = (event, fileRef) => {
+        if (event.target.value.length !== 0) {
+            const file = event.target.files[0];
+            fileRef.current.value = null;
+
+            if (file.size <= 10000000) {
+                setFile(file)
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "A kép mérete maximum 10 MB lehet!",
+                    allowOutsideClick: false,
+                });
+            }
+        }
+    };
+
+    const uploadFile = () => {
+        Swal.fire({
+            didOpen: () => {
+                Swal.showLoading();
+            },
+            title: "Feltöltés...",
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        });
+
+        const random = uuidv4().substring(0, 8);
+        const storageRef = ref(storage, location.state.privateLesson.roomID + '/' + random + "-" + file.name);
+
+        uploadBytes(storageRef, file)
+            .then(() => {
+                getDownloadURL(storageRef)
+                    .then((url) => {
+                        TeachingRoomService.sendMessage(
+                            location.state.privateLesson.roomID,
+                            firebaseAuth.uid,
+                            {name: file.name, url: url},
+                            "file"
+                        )
+                            .then(() => {
+                                setFile(null);
+                                Swal.fire({
+                                    timer: 1500,
+                                    icon: "success",
+                                    title: "Sikeres feltöltés!",
+                                    showConfirmButton: false,
+                                    allowOutsideClick: false,
+                                })
+                            })
+                    })
+            })
+            .catch(() => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Hiba történt a file feltöltése során!",
+                    allowOutsideClick: false,
+                });
+            })
+    };
+
+    console.log(file)
+
 
     return (
         <div className="teaching-room-container">
             <div className="teaching-room-content">
                 <div className="left-div">
                     <div className="my-cam-div">
-                        <video
-                            ref={localVideoRef}
-                            autoPlay
-                            playsInline
-                            muted
-                            hidden={showWaitingRoomDialog || !localStream.current.active}
-                        />
                         {
-                            !showWaitingRoomDialog && !localStream.current.active &&
-                            <Image
-                                src={getMyProfilePicture()}
-                                alt="Profile Picture"
-                            />
+                            showWebcam
+                                ? <div>
+                                    {
+                                        webcamLoading && <ProgressSpinner/>
+                                    }
+                                    <video
+                                        ref={localVideoRef}
+                                        autoPlay
+                                        playsInline
+                                        muted
+                                        onPlay={() => setWebcamLoading(false)}
+                                    />
+                                </div>
+                                :
+                                <Image
+                                    src={getMyProfilePicture()}
+                                    alt="Profile Picture"
+                                />
                         }
                     </div>
                     <div>
@@ -159,6 +242,11 @@ const TeachingRoom = (props) => {
                     </div>
                 </div>
                 <div className="right-div">
+                    <div className="exit">
+                        <Button label="Kilépés"
+                                onClick={() => navigate("/private-lessons")}
+                        />
+                    </div>
                     <div className="other-cam-div">
                         <video
                             ref={remoteVideoRef}
@@ -175,12 +263,67 @@ const TeachingRoom = (props) => {
                             />
                         }
                     </div>
-                    <div className="clock-div">
-                        <div>
-                            <Button label="Kilépés"
-                                    onClick={() => navigate("/private-lessons")}
-                            />
+                    <div>
+                        <div className="file-upload">
+                            <div>
+                                <p>File feltöltés</p>
+                                <div>
+                                    <Button type="button"
+                                            label="Kiválasztás"
+                                            className="p-button-primary"
+                                            onClick={() => uploadButtonClick(fileRef)}
+                                            disabled={file !== null}
+                                    />
+                                    <input type="file"
+                                           id="file"
+                                           ref={fileRef}
+                                           style={{display: "none"}}
+                                           onChange={event => uploadChangeFile(event, fileRef)}
+                                    />
+                                    <p>{file && file.name}</p>
+                                </div>
+                                <div>
+                                    <Button type="button"
+                                            label="Törlés"
+                                            className="p-button-danger"
+                                            onClick={() => setFile(null)}
+                                            disabled={!file}
+                                    />
+                                    <Button type="button"
+                                            label="Feltöltés"
+                                            className="p-button-success"
+                                            onClick={() => uploadFile()}
+                                            disabled={!file}
+                                    />
+                                </div>
+                            </div>
                         </div>
+                        {/*<div className="camera-button-div">*/}
+                        {/*    <Button icon="pi pi-camera"*/}
+                        {/*            iconPos="right"*/}
+                        {/*            label={showWebcam ? "Kamera kikapcsolása" : "Kamera bekapcsolása"}*/}
+                        {/*            className={showWebcam ? "p-button-danger" : "p-button-success"}*/}
+                        {/*            onClick={() => {*/}
+                        {/*                if (showWebcam) {*/}
+                        {/*                    setWebcamLoading(false)*/}
+                        {/*                    stopMediaStream(localStream);*/}
+                        {/*                    setShowWebcam(false);*/}
+                        {/*                    // updateMediaStream()*/}
+                        {/*                    //     .then(() => console.log("HAHO"))*/}
+                        {/*                } else {*/}
+                        {/*                    setShowWebcam(true)*/}
+                        {/*                    setWebcamLoading(true)*/}
+                        {/*                    startWebcam(localStream, localVideoRef)*/}
+                        {/*                        .then(() => {*/}
+                        {/*                            setShowWebcam(true);*/}
+                        {/*                            // updateMediaStream()*/}
+                        {/*                            //     .then(() => console.log("HAHO2"))*/}
+                        {/*                        })*/}
+                        {/*                        .catch(() => setShowWebcam(false))*/}
+                        {/*                }*/}
+                        {/*            }}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
                     </div>
                 </div>
             </div>
@@ -197,6 +340,10 @@ const TeachingRoom = (props) => {
                     chat={chat}
                     roomID={privateLesson.roomID}
                     setShowWaitingRoomDialog={setShowWaitingRoomDialog}
+                    showWebcam={showWebcam}
+                    setShowWebcam={setShowWebcam}
+                    webcamLoading={webcamLoading}
+                    setWebcamLoading={setWebcamLoading}
                     roomCreated={roomCreated}
                     localStream={localStream}
                     localVideoRef={localVideoRef}
