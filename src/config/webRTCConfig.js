@@ -10,12 +10,13 @@ export const RTCPeerConnectionConfiguration = {
                 "turn:eu-turn6.xirsys.com:80?transport=udp",
                 "turn:eu-turn6.xirsys.com:3478?transport=udp",
                 "turn:eu-turn6.xirsys.com:80?transport=tcp",
-                // "turn:eu-turn6.xirsys.com:3478?transport=tcp",
-                // "turns:eu-turn6.xirsys.com:443?transport=tcp",
-                // "turns:eu-turn6.xirsys.com:5349?transport=tcp"
+                "turn:eu-turn6.xirsys.com:3478?transport=tcp",
+                "turns:eu-turn6.xirsys.com:443?transport=tcp",
+                "turns:eu-turn6.xirsys.com:5349?transport=tcp"
             ]
         }],
     iceCandidatePoolSize: 10,
+
 };
 
 export const RTCPeerConnectionOfferOptions = {

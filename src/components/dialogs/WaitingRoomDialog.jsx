@@ -21,7 +21,7 @@ const WaitingRoomDialog = props => {
         localStream,
         localVideoRef,
         startWebcam,
-        stopMediaStream,
+        stopLocalMediaStream,
         createRoom,
         joinRoom,
         getMyProfilePicture,
@@ -64,7 +64,7 @@ const WaitingRoomDialog = props => {
                                 onClick={() => {
                                     if (showWebcam) {
                                         setWebcamLoading(false)
-                                        stopMediaStream(waitingRoomLocalStream);
+                                        stopLocalMediaStream(waitingRoomLocalStream);
                                         setShowWebcam(false);
                                     } else {
                                         setShowWebcam(true)
@@ -79,8 +79,15 @@ const WaitingRoomDialog = props => {
                 {
                     role === 'student' &&
                         <p className="info">
-                            Az órához csak akkor lehet csatlakozni, ha az oktató azt már elindította!
+                            Az órához csak akkor lehet csatlakozni, ha az oktató azt már elindította és,
+                            ha a kamera be van kapcsolva!
                         </p>
+                }
+                {
+                    role === 'tutor' &&
+                    <p className="info">
+                        Az órához csak akkor lehet csatlakozni, ha a kamera be van kapcsolva!
+                    </p>
                 }
                 <div className="action-button-div">
                     {
@@ -95,7 +102,7 @@ const WaitingRoomDialog = props => {
                                     createRoom();
                                     setShowWaitingRoomDialog(false)
                                 }}
-                                disabled={webcamLoading || !showWebcam}
+                                disabled={!showWebcam || webcamLoading}
                             />
                             : <Button
                                 label="Csatlakozás"
@@ -107,7 +114,7 @@ const WaitingRoomDialog = props => {
                                     joinRoom();
                                     setShowWaitingRoomDialog(false)
                                 }}
-                                disabled={!roomCreated || webcamLoading}
+                                disabled={!roomCreated || !showWebcam || webcamLoading}
                             />
                     }
                 </div>

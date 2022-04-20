@@ -21,18 +21,21 @@ const TeachingRoom = (props) => {
     const {firebaseAuth, users, profile, role} = props;
     const navigate = useNavigate();
     const location = useLocation();
-    const [showWaitingRoomDialog, setShowWaitingRoomDialog] = useState(false);
+    const [showWaitingRoomDialog, setShowWaitingRoomDialog] = useState(true);
     const [chat, setChat] = useState([]);
     const [roomCreated, setRoomCreated] = useState(false);
     const [privateLesson] = useState(location.state.privateLesson);
     const [otherRole] = useState(location.state.otherRole);
     const [connectionState, setConnectionState] = useState(null);
     const componentLeft = useRef(false);
-    const [showWebcam, setShowWebcam] = useState(false);
-    const [webcamLoading, setWebcamLoading] = useState(false);
+    const [showLocalWebcam, setShowLocalWebcam] = useState(false);
+    const [localWebcamLoading, setLocalWebcamLoading] = useState(false);
+    const [remoteWebcamLoading, setRemoteWebcamLoading] = useState(false);
     const [file, setFile] = useState(null);
     const fileRef = useRef();
     const storage = getStorage();
+
+    const remoteMediaStreamStatus = useRef("off");
 
     const peerConnection = useRef(null);
     const localStream = useRef(new MediaStream());
@@ -47,16 +50,16 @@ const TeachingRoom = (props) => {
     const {
         startWebcam,
         startScreenShare,
-        stopMediaStream,
+        stopLocalMediaStream,
         createRoom,
         joinRoom,
         iceConnectionStateEventListener,
         tutorIceCandidateEventListener,
         studentIceCandidateEventListener,
-        trackEventListener,
-        updateMediaStream
+        trackEventListener
     } = WebRTCFunctions(role, localStream, remoteStream, localVideoRef, remoteVideoRef, peerConnection,
-        teachingRoomRef, tutorCandidatesCollectionRef, studentCandidatesCollectionRef, setConnectionState);
+        teachingRoomRef, tutorCandidatesCollectionRef, studentCandidatesCollectionRef, setConnectionState,
+    );
 
     useEffect(() => {
         console.log("Component mounted!")
@@ -113,7 +116,6 @@ const TeachingRoom = (props) => {
     }, [peerConnection, localStream, remoteStream, teachingRoomRef,
         studentCandidatesCollectionRef, tutorCandidatesCollectionRef, studentIceCandidateEventListener,
         tutorIceCandidateEventListener, iceConnectionStateEventListener, trackEventListener, role, componentLeft])
-
 
     const getMyProfilePicture = () => {
         const url = profile.profile.profilePictureUrl;
@@ -200,26 +202,23 @@ const TeachingRoom = (props) => {
             })
     };
 
-    console.log(file)
-
-
     return (
         <div className="teaching-room-container">
             <div className="teaching-room-content">
                 <div className="left-div">
                     <div className="my-cam-div">
                         {
-                            showWebcam
+                            showLocalWebcam
                                 ? <div>
                                     {
-                                        webcamLoading && <ProgressSpinner/>
+                                        localWebcamLoading && <ProgressSpinner/>
                                     }
                                     <video
                                         ref={localVideoRef}
                                         autoPlay
                                         playsInline
                                         muted
-                                        onPlay={() => setWebcamLoading(false)}
+                                        onPlay={() => setLocalWebcamLoading(false)}
                                     />
                                 </div>
                                 :
@@ -301,25 +300,23 @@ const TeachingRoom = (props) => {
                         {/*<div className="camera-button-div">*/}
                         {/*    <Button icon="pi pi-camera"*/}
                         {/*            iconPos="right"*/}
-                        {/*            label={showWebcam ? "Kamera kikapcsolása" : "Kamera bekapcsolása"}*/}
-                        {/*            className={showWebcam ? "p-button-danger" : "p-button-success"}*/}
+                        {/*            label={showLocalWebcam ? "Kamera kikapcsolása" : "Kamera bekapcsolása"}*/}
+                        {/*            className={showLocalWebcam ? "p-button-danger" : "p-button-success"}*/}
                         {/*            onClick={() => {*/}
-                        {/*                if (showWebcam) {*/}
-                        {/*                    setWebcamLoading(false)*/}
-                        {/*                    stopMediaStream(localStream);*/}
-                        {/*                    setShowWebcam(false);*/}
-                        {/*                    // updateMediaStream()*/}
-                        {/*                    //     .then(() => console.log("HAHO"))*/}
+                        {/*                if (showLocalWebcam) {*/}
+                        {/*                    setLocalWebcamLoading(false)*/}
+                        {/*                    stopLocalMediaStream(localStream)*/}
+                        {/*                        .then(() => setShowLocalWebcam(false))*/}
+                        {/*                    console.log("finished stopping webcam")*/}
                         {/*                } else {*/}
-                        {/*                    setShowWebcam(true)*/}
-                        {/*                    setWebcamLoading(true)*/}
+                        {/*                    setShowLocalWebcam(true)*/}
+                        {/*                    setLocalWebcamLoading(true)*/}
                         {/*                    startWebcam(localStream, localVideoRef)*/}
                         {/*                        .then(() => {*/}
-                        {/*                            setShowWebcam(true);*/}
-                        {/*                            // updateMediaStream()*/}
-                        {/*                            //     .then(() => console.log("HAHO2"))*/}
+                        {/*                            setShowLocalWebcam(true);*/}
+                        {/*                            console.log("finished starting webcam")*/}
                         {/*                        })*/}
-                        {/*                        .catch(() => setShowWebcam(false))*/}
+                        {/*                        .catch(() => setShowLocalWebcam(false))*/}
                         {/*                }*/}
                         {/*            }}*/}
                         {/*    />*/}
@@ -340,15 +337,15 @@ const TeachingRoom = (props) => {
                     chat={chat}
                     roomID={privateLesson.roomID}
                     setShowWaitingRoomDialog={setShowWaitingRoomDialog}
-                    showWebcam={showWebcam}
-                    setShowWebcam={setShowWebcam}
-                    webcamLoading={webcamLoading}
-                    setWebcamLoading={setWebcamLoading}
+                    showWebcam={showLocalWebcam}
+                    setShowWebcam={setShowLocalWebcam}
+                    webcamLoading={localWebcamLoading}
+                    setWebcamLoading={setLocalWebcamLoading}
                     roomCreated={roomCreated}
                     localStream={localStream}
                     localVideoRef={localVideoRef}
                     startWebcam={startWebcam}
-                    stopMediaStream={stopMediaStream}
+                    stopLocalMediaStream={stopLocalMediaStream}
                     createRoom={createRoom}
                     joinRoom={joinRoom}
                     getMyProfilePicture={getMyProfilePicture}
