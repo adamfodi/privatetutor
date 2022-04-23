@@ -13,12 +13,14 @@ import Profile from "./components/profile/Profile";
 import {connect} from "react-redux";
 import Advertisement from "./components/tutor/Advertisement";
 import {compose} from "redux";
-import {firestoreConnect} from "react-redux-firebase";
 import TeachingRoom from "./components/TeachingRoom";
 import YOLO from "./components/YOLO";
 import PrivateLessons from "./components/PrivateLessons";
+import Messages from "./components/Messages";
+
+
 const App = (props) => {
-    const {firebaseAuth} = props;
+    const {role, firebaseAuth} = props;
 
     return (
         <BrowserRouter>
@@ -31,13 +33,23 @@ const App = (props) => {
 
                 <Route
                     exact path="/signin"
-                    element={firebaseAuth.isEmpty ? <SignIn/> : <Navigate to="/main"/>}/>
+                    element={firebaseAuth.isEmpty ? <SignIn/> : <Navigate to="/main"/>}
+                />
+
                 <Route
                     exact path="/signup"
-                    element={firebaseAuth.isEmpty ? <SignUp/> : <Navigate to="/main"/>}/>
+                    element={firebaseAuth.isEmpty ? <SignUp/> : <Navigate to="/main"/>}
+                />
+
                 <Route
                     exact path="/profile"
-                    element={!firebaseAuth.isEmpty ? <Profile/> : <Navigate to="/main"/>}/>
+                    element={!firebaseAuth.isEmpty ? <Profile/> : <Navigate to="/main"/>}
+                />
+
+                <Route
+                    exact path="/messages"
+                    element={!firebaseAuth.isEmpty ? <Messages/> : <Navigate to="/main"/>}
+                />
 
                 <Route
                     exact path="/private-lessons"
@@ -52,7 +64,7 @@ const App = (props) => {
 
                 <Route
                     exact path="/tutor/advertisement"
-                    element={!firebaseAuth.isEmpty ? <Advertisement/> : <Navigate to="/main"/>}
+                    element={!firebaseAuth.isEmpty && role === "tutor" ? <Advertisement/> : <Navigate to="/main"/>}
                 />
 
 
@@ -72,12 +84,9 @@ const App = (props) => {
 
 const mapStateToProps = state => {
     return {
-        firebaseAuth: state.firebase.auth,
-        privateLessons: state.firestore.ordered.privateLessons
+        role: state.role,
+        firebaseAuth: state.firebase.auth
     };
 };
 
-export default compose(
-    firestoreConnect([{collection: "privateLessons"}]),
-    connect(mapStateToProps)
-)(App);
+export default compose(connect(mapStateToProps))(App);

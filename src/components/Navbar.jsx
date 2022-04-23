@@ -10,10 +10,9 @@ import {AuthService} from "../services/AuthService";
 import {clearRole} from "../redux/actions/roleActions";
 
 const Navbar = props => {
-    const {clearRole} = props;
+    const {role, firebaseAuth, personalData, clearRole} = props;
     const navigate = useNavigate();
     const menu = useRef(null);
-    const {role, firebaseAuth, personalData} = props;
     const displayName = personalData ? personalData.fullName : null;
 
     const menubarStartTemplate = () => {
@@ -132,9 +131,8 @@ const Navbar = props => {
                 label: 'Üzenetek',
                 icon: 'pi pi-envelope',
                 command: () => {
-                    navigate("")
-                },
-                disabled: true
+                    navigate("/messages")
+                }
             },
 
             {

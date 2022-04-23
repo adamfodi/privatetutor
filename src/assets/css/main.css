@@ -15,10 +15,6 @@
     background-color: #eaf1fa;
 }
 
-.main-container .filter-container > div {
-
-}
-
 .main-container .filter-container-header {
     display: flex;
     flex-wrap: wrap;

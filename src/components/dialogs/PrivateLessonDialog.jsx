@@ -40,7 +40,7 @@ const PrivateLessonDialog = (props) => {
         users && setUsersList(users.map((user) => {
             return {
                 nameWithEmail: user.profile.personalData.fullName + ' - ' + user.profile.personalData.email,
-                UID: user.id
+                uid: user.id
             }
         }))
     }, [users])
@@ -135,7 +135,7 @@ const PrivateLessonDialog = (props) => {
             dateTo.setMinutes(hourMinuteTo.getMinutes())
 
             const newPrivateLesson = {
-                studentUID: student.UID,
+                studentUID: student.uid,
                 tutorUID: firebaseAuth.uid,
                 dateFrom: dateFrom,
                 dateTo: dateTo,
@@ -177,7 +177,7 @@ const PrivateLessonDialog = (props) => {
         <div className="private-lesson-dialog-content">
             <p className="private-lesson-dialog-content-label-p">Válassz egy hallgatót!</p>
             <Dropdown valueTemplate={student ? student.nameWithEmail : null}
-                      options={usersList.filter((user) => user.UID !== firebaseAuth.uid)}
+                      options={usersList.filter((user) => user.uid !== firebaseAuth.uid)}
                       onChange={(e) => setStudent(e.value)}
                       optionLabel="nameWithEmail"
                       filter

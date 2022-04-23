@@ -1,0 +1,257 @@
+.messages-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 1120px;
+    border-radius: 15px;
+    background-color: white;
+    margin: 30px auto;
+    overflow: auto;
+}
+
+.messages-container button {
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 7px;
+}
+
+.messages-container > p {
+    font-size: 50px;
+    font-family: Georgia, Times New Roman, sans-serif;
+    margin: 20px 0;
+}
+
+.messages-container > div:first-of-type {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 1050px;
+    height: 700px;
+    border: 3px solid #212121;
+    background-color: #fafafa;
+    border-radius: 10px;
+    margin: 10px 0 20px 0;
+}
+
+.messages-container .menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100%;
+    width: 250px;
+    border-right: 3px solid #212121;
+}
+
+.messages-container .menu button {
+    width: 200px;
+    font-size: 25px;
+    margin: 10px 0;
+    background-color: #212121;
+}
+
+.messages-container .menu .active-button {
+    background-color: #498205;
+}
+
+.messages-container .menu button:first-of-type {
+    margin: 50px 0 100px 0;
+}
+
+.messages-container .menu .p-badge {
+    width: 4rem;
+    height: 2rem;
+    border-radius: 0;
+    padding: 0;
+    margin: -42px -10px 0 5px;
+    line-height: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+}
+
+.messages-container .messages {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 800px;
+}
+
+.messages-container .messages > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+}
+
+.messages-container .messages > div > div:first-of-type {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.messages-container .messages > div > div:first-of-type > p {
+    font-size: 30px;
+    margin: 0;
+    background-color: #212121;
+    font-family: Bahnschrift, sans-serif;
+    padding: 10px 100px;
+    color: white;
+    border: 3px solid #212121;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.messages-container .new-message-div .addressee {
+    width: 750px;
+    display: flex;
+}
+
+.messages-container .new-message-div .addressee p {
+    font-size: 20px;
+    width: 80px;
+}
+
+.messages-container .new-message-div .addressee .p-dropdown {
+    width: 620px;
+    font-weight: bold;
+}
+
+.messages-container .new-message-div .addressee .p-dropdown span {
+    margin: auto;
+    font-size: 20px;
+    color: black;
+}
+
+.messages-container .new-message-div .clear {
+    display: flex;
+    align-items: center;
+    width: 40px;
+    margin-left: 10px;
+}
+
+.messages-container .new-message-div .subject {
+    width: 750px;
+    display: flex;
+    margin-top: 10px;
+}
+
+.messages-container .new-message-div .subject p {
+    font-size: 20px;
+    width: 80px;
+}
+
+.messages-container .new-message-div .subject .p-inputtext {
+    font-size: 20px;
+    width: 620px;
+    font-weight: bold;
+    color: black;
+    opacity: 1;
+}
+
+.messages-container .new-message-div .message-content {
+    margin-top: 20px;
+}
+
+.messages-container .new-message-div .message-content .p-editor-content {
+    height: 300px;
+}
+
+.messages-container .new-message-div .message-content .ql-editor {
+    font-size: 20px;
+    color: black;
+}
+
+.messages-container .new-message-div .button-div {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: right;
+}
+
+.messages-container .new-message-div .button-div button {
+    font-size: 20px;
+    padding: 10px 30px;
+}
+
+.messages-container .new-message-div .button-div button:hover {
+    background-color: #023660;
+}
+
+.messages-container .new-message-div .button-div button:active {
+    background-color: #012b4d;
+}
+
+.messages-container .new-message-button {
+    background-color: #034d88;
+}
+
+.messages-container .datatable-div {
+    width: 95%;
+    border: 2px solid #212121;
+}
+
+.messages-container .datatable-div .p-datatable-table {
+    table-layout: fixed !important;
+    width: 100%;
+    margin: 0;
+}
+
+.messages-container .datatable-div th div {
+    display: flex;
+    justify-content: center;
+}
+
+.messages-container .datatable-div tr {
+    background-color: #c4e3b5 !important;
+}
+
+.messages-container .datatable-div tr:hover {
+    background-color: yellowgreen !important;
+    cursor: pointer;
+}
+
+.messages-container .datatable-div .p-datatable-emptymessage {
+    background-color: white !important;
+}
+
+.messages-container .datatable-div .p-datatable-emptymessage:hover {
+    background-color: white !important;
+    cursor: auto;
+}
+
+.messages-container .datatable-div tbody td:first-of-type, .messages-container .datatable-div thead th:first-of-type {
+    width: 30%;
+}
+
+.messages-container .datatable-div tbody td:nth-of-type(2), .messages-container .datatable-div thead th:nth-of-type(2) {
+    width: 45%;
+}
+
+.messages-container .datatable-div tbody td:nth-of-type(3), .messages-container .datatable-div thead th:nth-of-type(3) {
+    text-align: center;
+}
+
+.messages-container .datatable-div tbody td:last-of-type, .messages-container .datatable-div thead th:last-of-type {
+    text-align: center;
+}
+
+.messages-container .datatable-div td > p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 15px;
+}
+
+.messages-container .datatable-div .unread {
+    font-weight: bold;
+}
+
+
+

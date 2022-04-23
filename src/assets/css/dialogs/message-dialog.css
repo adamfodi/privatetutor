@@ -1,0 +1,101 @@
+.message-dialog {
+    width: 1000px;
+    height: 800px;
+    overflow: auto;
+}
+
+.message-dialog .p-dialog-header {
+    text-align: center;
+}
+
+.message-dialog .p-dialog-title {
+    border: none !important;
+}
+
+.message-dialog .p-dialog-header-icon {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.message-dialog-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.message-dialog-content > div > div {
+    margin: 10px;
+}
+
+.message-dialog-content > div > div:first-of-type, .message-dialog-content > div > div:nth-of-type(2) {
+    display: flex;
+}
+
+.message-dialog-content > div > div:first-of-type p, .message-dialog-content > div > div:nth-of-type(2) p {
+    font-size: 20px;
+    width: 10%;
+    margin-right: 10px;
+}
+
+.message-dialog-content > div > div:first-of-type .p-inputtext, .message-dialog-content > div > div:nth-of-type(2) .p-inputtext {
+    font-size: 20px;
+    width: 100%;
+    font-weight: bold;
+    color: black;
+    opacity: 1;
+}
+
+.message-dialog-content > div > div:nth-of-type(3) {
+    margin: 30px 10px 10px 10px;
+}
+
+.message-dialog-content > div > div:last-of-type {
+    text-align: right;
+    margin-top: 0 !important;
+}
+
+.message-dialog-content .read-message-div .p-editor-content {
+    height: 300px;
+    border: 1px solid black !important;
+}
+
+.message-dialog-content .send-message-div .p-editor-content {
+    height: 300px;
+}
+
+.message-dialog-content .ql-editor {
+    font-size: 20px;
+    color: black;
+}
+
+.message-dialog-content .read-message-div .p-editor-toolbar {
+    display: none;
+}
+
+.message-dialog-content .show-send-message-button {
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 20px;
+    padding: 10px 30px;
+    width: 150px;
+}
+
+.message-dialog-content .send-message-button-div {
+    text-align: right;
+}
+
+.message-dialog-content .send-message-button-div button:hover {
+    background-color: #023660;
+}
+
+.message-dialog-content .send-message-button-div button:active {
+    background-color: #012b4d;
+}
+
+.message-dialog-content .send-message-button-div .send-message-button {
+    background-color: #034d88;
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 20px;
+    padding: 10px 30px;
+    width: 150px;
+}

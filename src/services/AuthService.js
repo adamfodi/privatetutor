@@ -24,6 +24,10 @@ export const AuthService = {
                             profilePictureUrl: null,
                             feedback: null
                         },
+                        messages: {
+                            incoming: [],
+                            outgoing: []
+                        },
                         tutor: {
                             advertisement: {
                                 introduction: null,
