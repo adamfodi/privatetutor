@@ -97,6 +97,10 @@
     background-color: yellowgreen !important;
 }
 
+.main-container .datatable-container .p-datatable-emptymessage td{
+    text-align: center;
+}
+
 .main-container .datatable-container .p-column-title {
     text-align: center;
 }

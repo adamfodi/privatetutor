@@ -11,7 +11,7 @@ import SignUp from "./components/auth/SignUp";
 import Main from "./components/Main";
 import Profile from "./components/profile/Profile";
 import {connect} from "react-redux";
-import Advertisement from "./components/tutor/Advertisement";
+import Ad from "./components/tutor/Ad";
 import {compose} from "redux";
 import TeachingRoom from "./components/TeachingRoom";
 import YOLO from "./components/YOLO";
@@ -63,8 +63,8 @@ const App = (props) => {
 
 
                 <Route
-                    exact path="/tutor/advertisement"
-                    element={!firebaseAuth.isEmpty && role === "tutor" ? <Advertisement/> : <Navigate to="/main"/>}
+                    exact path="/tutor/ad"
+                    element={!firebaseAuth.isEmpty && role === "tutor" ? <Ad/> : <Navigate to="/main"/>}
                 />
 
 

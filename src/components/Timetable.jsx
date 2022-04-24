@@ -1,6 +1,6 @@
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
-import "../assets/css/tutor/timetable.css"
+import "../assets/css/timetable.css"
 import {Button} from "primereact/button";
 
 const Timetable = (props) => {
@@ -63,7 +63,7 @@ const Timetable = (props) => {
         );
     }
 
-    console.log(timetable)
+    // console.log(timetable)
 
     return (
         <div className="timetable-content">

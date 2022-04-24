@@ -96,7 +96,7 @@ const Navbar = props => {
                     label: 'Hirdetés',
                     icon: 'pi pi-fw pi-pencil',
                     command: () => {
-                        navigate("/tutor/advertisement")
+                        navigate("/tutor/ad")
                     },
                 },
             );

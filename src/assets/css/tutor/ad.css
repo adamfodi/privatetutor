@@ -1,0 +1,112 @@
+.ad-container {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 1120px;
+    border-radius: 15px;
+    background-color: white;
+    margin: 30px auto;
+    overflow: auto;
+}
+
+.ad-container button {
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.ad-container > p {
+    font-size: 50px;
+    font-family: Georgia, Times New Roman, sans-serif;
+    margin: 20px 0;
+}
+
+.ad-container > div {
+    width: 95%;
+}
+
+.ad-container .subjects-div, .ad-container .hourly-rate-div {
+    display: flex;
+    align-items: center;
+}
+
+.ad-container .subjects-div > p, .ad-container .hourly-rate-div > p,
+.ad-container .introduction-div > p, .ad-container .timetable-div > p, .ad-container .active-div > p {
+    width: 20% !important;
+    font-size: 25px;
+}
+
+.ad-container .subjects-div > div {
+    width: 80% !important;
+    background-color: yellow;
+}
+
+.ad-container .subjects-div .p-multiselect {
+    width: 100%;
+    overflow: hidden;
+    font-size: 25px;
+}
+
+.ad-container .subjects-div .p-multiselect-token {
+    background-color: #212121;
+    color: white;
+    font-size: 17px;
+    margin-top: 3px;
+}
+
+.ad-container .hourly-rate-div .p-inputtext {
+    font-size: 21px;
+}
+
+.ad-container .introduction-div .ql-editor p  {
+    font-size: 20px;
+}
+
+.ad-container .timetable-div .timetable-content {
+    border: 2px solid #212121;
+}
+
+.ad-container .active-div {
+    width: 75%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ad-container .active-div p {
+    width: 100% !important;
+}
+
+.ad-container .active-div .p-checkbox, .ad-container .active-div .p-checkbox-box {
+    width: 25px;
+    height: 25px;
+    box-shadow: none !important;
+}
+
+.ad-container .active-div .p-checkbox-icon {
+    font-size: 25px !important;
+}
+
+.ad-container .submit-button-div{
+    text-align: center;
+}
+
+.ad-container .submit-button-div button{
+    font-size: 25px;
+    padding: 10px 50px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.ad-container .progress-spinner-div {
+    width: 300px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ad-container .progress-spinner-div .p-progress-spinner {
+    width: 200px;
+    height: 200px;
+}
