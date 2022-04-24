@@ -22,7 +22,7 @@ export const AuthService = {
                                 gender: newUser.gender,
                             },
                             profilePictureUrl: null,
-                            feedback: null
+                            feedback: []
                         },
                         messages: {
                             incoming: [],
@@ -36,6 +36,7 @@ export const AuthService = {
                                 hourlyRate: null,
                                 active: false
                             },
+                            hoursHeld: 0
                         }
                     })
             })

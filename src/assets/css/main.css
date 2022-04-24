@@ -1,267 +1,216 @@
 .main-container {
     display: flex;
     justify-content: center;
-    width: 90%;
+    width: 1300px;
     background-color: white;
     margin: 30px auto;
-    /*border-radius: 15px;*/
+    border-radius: 15px;
+}
+
+.main-container button {
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .main-container .filter-container {
-    width: 18vw;
-    height: 600px;
-    margin: 2em;
-    border: 3px solid #19616b;
-    background-color: #eaf1fa;
-}
-
-.main-container .filter-container-header {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 300px;
+    height: 600px;
+    margin: 30px;
+    border: 3px solid #212121;
+    background-color: #fafafa
 }
 
-.main-container .filter-container-header >p {
+.main-container .filter-container > div {
+    width: 95%;
+}
+
+.main-container .filter-container > div > p {
+    font-size: 20px;
+}
+
+.main-container .header-div {
+    text-align: center;
+}
+
+.main-container .header-div > p {
     font-weight: bold;
+    font-size: 25px !important;
 }
 
-.main-container .filter-container .filter-container-name input{
-    width: 15vw;
-    margin: auto;
-}
-
-.main-container .filter-container .filter-container-subjects .p-dropdown{
-    width: 15vw;
-}
-
-.main-container .filter-container .filter-container-timetable .p-multiselect{
-    width: 15vw;
+.main-container .filter-container .name-div input {
+    width: 100%;
     overflow: hidden;
 }
 
+.main-container .filter-container .subjects-div .p-dropdown {
+    width: 100%;
+    overflow: hidden;
+}
+
+.main-container .filter-container .timetable-div .p-multiselect {
+    width: 100%;
+    overflow: hidden;
+}
+
+.main-container .filter-container .clear-div {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.main-container .filter-container .clear-div button {
+    font-size: 20px;
+}
+
 .main-container .datatable-container {
-    width: 68vw;
-    margin: 2em;
-    border: 3px solid #19616b;
+    width: 850px;
+    margin: 30px;
+    border: 3px solid #212121;
+    background-color: #fafafa
 }
 
-.main-container table {
+.main-container .datatable-container .p-datatable-table {
     table-layout: fixed !important;
-    border-collapse: separate;
-    border-spacing: 0 30px;
+    width: 100%;
 }
 
-.main-container .p-column-header-content {
-    display:flex;
-    justify-content: center;
+.main-container .datatable-container thead .picture-and-profile-template-td:hover {
+    cursor: auto;
 }
 
-.main-container tbody tr {
-    background-color: #ffe8df;
-    background-image: linear-gradient(to right, #ffe8df, #fa906d) !important;
+.main-container .datatable-container .p-column-header-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 75px;
 }
 
-.main-container tbody td {
-    height: 200px !important;
-    padding: 6px !important;
-    border-top: 2px solid orangered !important;
-    border-bottom: 2px solid orangered !important;
+.main-container .datatable-container tr {
+    background-color: #d8f1d2 !important;
 }
 
-.main-container tbody td:first-of-type {
-    border-left: 2px solid orangered !important;
+.main-container .datatable-container tr:hover {
+    background-color: yellowgreen !important;
+    cursor: pointer;
 }
 
-.main-container tbody td:last-of-type {
-    border-right: 2px solid orangered !important;
+.main-container .datatable-container .p-column-title {
+    text-align: center;
 }
 
-.main-container thead th, .main-container .p-paginator-bottom {
-    border-bottom: 2px solid #19616b !important;
+.main-container .datatable-container tr td {
+    padding: 5px;
+    border-bottom: 5px solid white;
 }
 
-.main-container tbody .picture-and-profile-template-td {
-    width: 15% !important;
+.main-container .datatable-container tr:hover {
+    background-color: yellowgreen !important;
 }
 
-.main-container tbody .picture-and-profile-template-td > div {
-    height: 100%;
+.main-container .datatable-container .p-column-title {
+    text-align: center;
+}
+
+.main-container .datatable-container .picture-and-profile-template-td {
+    width: 20%;
+}
+
+.main-container .datatable-container .picture-and-profile-template-td > div {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
 }
 
-.main-container tbody .picture-and-profile-template-td img {
+.main-container .datatable-container .picture-and-profile-template-td img {
+    border-radius: 50%;
+    width: 140px;
+    height: 140px;
+    border: 1px solid #212121;
+}
+
+.main-container .datatable-container .picture-and-profile-template-td .p-image-preview-indicator {
     border-radius: 50%;
     width: 140px;
     height: 140px;
 }
 
-.main-container tbody .picture-and-profile-template-td .p-image-preview-indicator {
-    border-radius: 50%;
+.main-container .datatable-container .picture-and-profile-template-td button {
     width: 140px;
-    height: 140px;
-}
-
-.main-container tbody .name-and-subjects-body-template-td {
-    width: 40%;
-}
-
-.main-container tbody .name-and-subjects-body-template-td > div {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.main-container tbody .name-and-subjects-body-template-td > div > p:first-of-type {
-    height: 40px;
-    margin-top: 0;
-    margin-bottom: 0;
-    font-size: 30px;
-    font-weight: bold;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
-.main-container tbody .name-and-subjects-body-template-td > div > p:last-of-type {
-    height: 30px;
-    margin-top: 0;
-    margin-bottom: 0;
     font-size: 20px;
-    font-style: italic;
-    overflow: hidden;
+}
+
+.main-container .datatable-container .name-and-subjects-body-template-td {
+    width: 45%;
+}
+
+.main-container .datatable-container .name-and-subjects-body-template-td > div > p:first-of-type {
+    font-size: 30px;
     white-space: nowrap;
+    overflow: hidden;
     text-overflow: ellipsis;
+    margin: 0 0 14px 0;
+    font-weight: bold;
 }
 
-.main-container tbody .name-and-subjects-body-template-td .p-chips {
-    height: 117px;
+.main-container .datatable-container .name-and-subjects-body-template-td > div > p:last-of-type {
+    font-size: 15px;
+    font-weight: bold;
+    margin: 1px;
 }
 
-.main-container tbody .name-and-subjects-body-template-td .p-chips-multiple-container {
-    height: 117px;
+.main-container .datatable-container .name-and-subjects-body-template-td .p-chips-multiple-container {
+    height: 110px;
     width: 100%;
     overflow: auto;
-    border: 3px solid #19616b;
+    border: 2px solid #212121;
     align-items: flex-start;
 }
 
-.main-container tbody .name-and-subjects-body-template-td .p-chips-token {
-    background-color: #19616b;
+.main-container .datatable-container .name-and-subjects-body-template-td .p-chips-token {
+    background-color: #212121;
     color: white;
     font-size: 17px;
-    margin-top: 0.2rem;
+    margin-top: 3px;
 }
 
-.main-container tbody .lessons-body-template-td {
-    width: 15%;
-    /*background-color: #fdc9b3;*/
+.main-container .datatable-container tbody .hours-held-body-template-td,
+.main-container .datatable-container tbody .rating-body-template-td {
+    text-align: center;
 }
 
-.main-container tbody .lessons-body-template-td > div {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+.main-container .datatable-container tbody .hours-held-body-template-td p,
+.main-container .datatable-container tbody .rating-body-template-td p {
+    font-size: 30px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.main-container tbody .lessons-body-template-td > div > div {
-    margin: 0 auto;
+.main-container .datatable-container tbody .hourly-rate-body-template-td {
+    text-align: center;
 }
 
-.main-container tbody .lessons-body-template-td > div img {
-    height: 102px;
-    width: 121px;
+.main-container .datatable-container tbody .hourly-rate-body-template-td p:first-of-type {
+    font-size: 30px;
+    font-weight: bold;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.main-container tbody .lessons-body-template-td .p-badge{
-    font-size: 25px;
-    height: 75px;
-    width: 75px;
-    border-radius: 50%;
-    margin: auto;
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 2px;
-    background-color: yellowgreen;
-    color: darkgreen;
+.main-container .datatable-container tbody .hourly-rate-body-template-td p:last-of-type {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.main-container tbody .rating-body-template-td {
-    width: 15%;
-    /*background-color: #fdc9b3;*/
-}
-
-.main-container tbody .rating-body-template-td > div {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.main-container tbody .rating-body-template-td > div > div {
-    margin: 0 auto;
-}
-
-.main-container tbody .rating-body-template-td > div img {
-    height: 102px;
-    width: 114px;
-}
-
-.main-container tbody .rating-body-template-td .p-badge{
-    font-size: 25px;
-    height: 75px;
-    width: 75px;
-    border-radius: 50%;
-    margin: auto;
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 2px;
-    background-color: orangered;
-    color: yellow;
-}
-
-.main-container tbody .hourly-rate-body-template-td {
-    width: 15%;
-    /*background-color: #fdc9b3;*/
-}
-
-.main-container tbody .hourly-rate-body-template-td > div {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.main-container tbody .hourly-rate-body-template-td > div > div {
-    margin: 0 auto;
-}
-
-.main-container tbody .hourly-rate-body-template-td > div img {
-    height: 102px;
-    width: 102px;
-}
-
-.main-container tbody .hourly-rate-body-template-td .p-badge{
-    font-size: 25px;
-    height: 75px;
-    margin: auto;
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0 4px 2px 4px;
-    background-color: rebeccapurple;
-    color: white;
-}
-
-
-@media (max-width:1200px){
-    /*.main-container .filter-container {*/
-    /*    width: 15vw*/
-    /*}*/
-
-    .main-container .datatable-container {
-        width: 65vw
-    }
-}
