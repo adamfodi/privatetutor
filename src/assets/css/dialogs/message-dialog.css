@@ -28,12 +28,12 @@
 
 .message-dialog-content > div > div:first-of-type, .message-dialog-content > div > div:nth-of-type(2) {
     display: flex;
+    justify-content: space-between;
 }
 
 .message-dialog-content > div > div:first-of-type p, .message-dialog-content > div > div:nth-of-type(2) p {
     font-size: 20px;
     width: 10%;
-    margin-right: 10px;
 }
 
 .message-dialog-content > div > div:first-of-type .p-inputtext, .message-dialog-content > div > div:nth-of-type(2) .p-inputtext {
@@ -44,11 +44,15 @@
     opacity: 1;
 }
 
-.message-dialog-content > div > div:nth-of-type(3) {
+.message-dialog-content  .read-message-div  .content-div {
+    margin: 20px 10px 10px 10px;
+}
+
+.message-dialog-content  .send-message-div  .content-div {
     margin: 30px 10px 10px 10px;
 }
 
-.message-dialog-content > div > div:last-of-type {
+.message-dialog-content > div > .answer-div {
     text-align: right;
     margin-top: 0 !important;
 }
@@ -98,4 +102,43 @@
     font-size: 20px;
     padding: 10px 30px;
     width: 150px;
+}
+
+.message-dialog-content .date-div {
+    text-align: right;
+    margin-right: 20px;
+}
+
+.message-dialog-content .date-div p {
+    font-size: 20px;
+}
+
+.message-dialog .p-toast-message-content {
+    display: flex;
+    align-items: center;
+}
+
+.message-dialog .p-toast-message-text {
+    font-size: 25px;
+}
+
+.message-dialog .p-toast-icon-close {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.message-dialog .p-toast-icon-close-icon {
+    font-size: 25px;
+}
+
+@media only screen and (max-width: 800px) {
+    .message-dialog-content > div > div:first-of-type .p-inputtext, .message-dialog-content > div > div:nth-of-type(2) .p-inputtext {
+        width: 90%;
+    }
+}
+
+@media only screen and (max-width: 700px) {
+    .message-dialog-content > div > div:first-of-type .p-inputtext, .message-dialog-content > div > div:nth-of-type(2) .p-inputtext {
+        width: 85%;
+    }
 }

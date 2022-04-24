@@ -13,7 +13,6 @@
 .messages-container button {
     box-shadow: none !important;
     border: none !important;
-    border-radius: 7px;
 }
 
 .messages-container > p {
@@ -60,8 +59,8 @@
 }
 
 .messages-container .menu .p-badge {
-    width: 4rem;
-    height: 2rem;
+    width: 70px;
+    height: 50px;
     border-radius: 0;
     padding: 0;
     margin: -42px -10px 0 5px;
@@ -251,6 +250,24 @@
 
 .messages-container .datatable-div .unread {
     font-weight: bold;
+}
+
+.messages-container .p-toast-message-content {
+    display: flex;
+    align-items: center;
+}
+
+.messages-container .p-toast-message-text {
+    font-size: 25px;
+}
+
+.messages-container .p-toast-icon-close {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.messages-container .p-toast-icon-close-icon {
+    font-size: 25px;
 }
 
 

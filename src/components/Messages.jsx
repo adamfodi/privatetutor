@@ -237,8 +237,8 @@ const Messages = props => {
                                         <Button
                                             icon="pi pi-times"
                                             className="p-button-rounded p-button-danger"
-                                            tooltip="Törlés"
                                             onClick={() => setAddressee(null)}
+                                            disabled={!addressee}
                                         />
                                     </div>
                                 </div>
@@ -253,8 +253,8 @@ const Messages = props => {
                                         <Button
                                             icon="pi pi-times"
                                             className="p-button-rounded p-button-danger"
-                                            tooltip="Törlés"
                                             onClick={() => setSubject("")}
+                                            disabled={subject.length === 0}
                                         />
                                     </div>
                                 </div>
@@ -292,6 +292,8 @@ const Messages = props => {
                                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
                                     currentPageReportTemplate="Összes üzenet: {totalRecords}"
                                     rows={6}
+                                    sortField="date"
+                                    sortOrder={-1}
                                     onRowClick={(e) => {
                                         if (profile && showIncomingMessages && profile.messages.incoming.length !== 0) {
                                             setMessageDialogProperties(
@@ -345,7 +347,7 @@ const Messages = props => {
                 position={"center"}
                 modal
                 onHide={() => {
-                    if (messageDialogProperties.message.type === "incoming" && messageDialogProperties.message.read === false) {
+                    if (messageDialogProperties.type === "incoming" && messageDialogProperties.message.read === false) {
                         MessageService.setIncomingMessageRead(firebaseAuth.uid, messageDialogProperties.message)
                             .catch(() => {
                             })
@@ -362,6 +364,7 @@ const Messages = props => {
                     <MessageDialog
                         message={messageDialogProperties.message}
                         type={messageDialogProperties.type}
+                        setShowMessageDialog={setShowMessageDialog}
                     />
                 }
             </Dialog>
