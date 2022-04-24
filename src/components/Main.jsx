@@ -13,11 +13,11 @@ import {Chips} from "primereact/chips";
 import {InputText} from "primereact/inputtext";
 import {Dropdown} from "primereact/dropdown";
 import {MultiSelect} from "primereact/multiselect";
-import TutorProfileDialog from "./dialogs/TutorProfileDialog";
+import ProfileDialog from "./dialogs/ProfileDialog";
 import {Dialog} from "primereact/dialog";
 
 const Main = props => {
-    const {auth, users} = props;
+    const {users} = props;
     const [filteredTutors, setFilteredTutors] = useState([]);
     const [nameFilter, setNameFilter] = useState('');
     const [subjectFilter, setSubjectFilter] = useState(null);
@@ -154,8 +154,6 @@ const Main = props => {
         </div>
     }
 
-    console.log(filteredTutors)
-
     return (
         <div className="main-container">
             <div className="datatable-container">
@@ -264,25 +262,26 @@ const Main = props => {
                     />
                 </div>
             </div>
-            <Dialog header="Oktatói profil"
+            <Dialog header="Profil"
                     visible={showTutorProfileDialog}
-                    position={"bottom"}
+                    position={"center"}
                     modal
                     onHide={() => setShowTutorProfileDialog(false)}
+                    draggable={false}
                     resizable={false}
-                    className="new-private-lesson-dialog"
+                    className="profile-dialog"
             >
-                <TutorProfileDialog data={currentTutorProfileDialog}/>
+                <ProfileDialog
+                    data={currentTutorProfileDialog}
+                />
             </Dialog>
         </div>
-
     )
 }
 
 
 const mapStateToProps = state => {
     return {
-        auth: state.firebase.auth,
         users: state.firestore.ordered.users
     };
 };

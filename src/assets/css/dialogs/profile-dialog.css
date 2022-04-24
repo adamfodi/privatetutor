@@ -1,0 +1,138 @@
+.profile-dialog {
+    width: 1000px;
+    height: 1000px;
+    overflow: auto;
+}
+
+.profile-dialog .p-dialog-title {
+    border: none !important;
+}
+
+.profile-dialog .p-dialog-header-icon {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.profile-dialog-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-dialog-content img {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+}
+
+.profile-dialog-content .name {
+    font-size: 35px;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+.profile-dialog-content .personal-data-div {
+    width: 100%;
+}
+
+.profile-dialog-content .personal-data-div > p {
+    font-size: 25px;
+}
+
+.profile-dialog-content .personal-data-div > div {
+    box-shadow: 0 3px 5px grey, 0 0 2px grey, 0 1px 4px grey !important;
+    border-radius: 0;
+}
+
+.profile-dialog-content .personal-data-div > div >div {
+    display: flex;
+    align-items: center;
+}
+
+.profile-dialog-content .personal-data-div > div >div >p:first-of-type {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 15px 10px;
+}
+
+.profile-dialog-content .personal-data-div > div >div >p:last-of-type {
+    margin: 0;
+    font-size: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.profile-dialog-content .introduction-div {
+    width: 100%;
+}
+
+.profile-dialog-content .introduction-div > p {
+    font-size: 25px;
+}
+
+.profile-dialog-content .introduction-div .p-editor-toolbar {
+    display: none;
+}
+
+.profile-dialog-content .introduction-div .p-editor-content {
+    border: none !important;
+    font-size: 20px;
+}
+
+.profile-dialog-content .introduction-div .p-editor-container {
+    box-shadow: 0 3px 5px grey, 0 0 2px grey, 0 1px 4px grey !important;
+    border-radius: 0;
+}
+
+.profile-dialog-content .subjects-div {
+    width: 100%;
+}
+
+.profile-dialog-content .subjects-div > p {
+    font-size: 25px;
+}
+
+.profile-dialog-content .subjects-div .p-chips {
+    width: 100%;
+}
+
+.profile-dialog-content .subjects-div .p-chips ul {
+    width: 100%;
+    border: none;
+    border-radius: 0;
+    box-shadow: 0 3px 5px grey, 0 0 2px grey, 0 1px 4px grey !important;
+    padding: 10px;
+}
+
+.profile-dialog-content .subjects-div .p-chips-token {
+    background-color: #212121;
+    color: white;
+    margin: 5px;
+    padding: 10px 20px;
+}
+
+.profile-dialog-content .timetable-div {
+    width: 100%;
+}
+
+.profile-dialog-content .timetable-div > p {
+    font-size: 25px;
+}
+
+.profile-dialog-content .timetable-div .timetable-content {
+    box-shadow: 0 3px 5px grey, 0 0 2px grey, 0 1px 4px grey !important;
+    border-radius: 0;
+}
+
+.profile-dialog-content .send-message {
+    font-size: 30px;
+    margin-top: 30px;
+    border: none !important;
+    box-shadow: none !important;
+}
+

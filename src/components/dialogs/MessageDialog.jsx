@@ -12,14 +12,26 @@ import moment from "moment";
 const MessageDialog = (props) => {
     const {message, type, setShowMessageDialog} = props;
     const [showReadMessage, setShowReadMessage] = useState((type === "incoming" || type === "outgoing"));
-    const [showSendMessage, setShowSendMessage] = useState(type === "sending");
+    const [showSendReplyMessage, setShowSendReplyMessage] = useState(false);
+    const [showSendNewMessage, setShowSendNewMessage] = useState(type === "new");
+    const [subject, setSubject] = useState('');
     const [messageContent, setMessageContent] = useState(null);
     const errorToast = useRef(null);
+
+    moment.locale('hu')
 
     console.log(message)
 
     const validateMessage = () => {
         const errorToast = []
+
+        if (type === "new" && subject.length === 0) {
+            errorToast.push({
+                life: 5000,
+                severity: 'error',
+                summary: 'Nincs Tárgy!',
+            })
+        }
 
         if (!messageContent) {
             errorToast.push({
@@ -28,6 +40,7 @@ const MessageDialog = (props) => {
                 summary: 'Üres üzenet!',
             })
         }
+
         return errorToast;
     }
 
@@ -44,18 +57,33 @@ const MessageDialog = (props) => {
                 allowEscapeKey: false
             });
 
-            const answer = {
-                fromUID: message.toUID,
-                fromName: message.toName,
-                toUID: message.fromUID,
-                toName: message.fromName,
-                subject: "Válasz: " + message.subject,
-                content: messageContent,
-                date: new Date()
+            let msg;
+
+            if (type === "new") {
+                msg = {
+                    fromUID: message.fromUID,
+                    fromName: message.fromName,
+                    toUID: message.toUID,
+                    toName: message.toName,
+                    subject: subject,
+                    content: messageContent,
+                    date: new Date()
+                }
+            } else {
+                msg = {
+                    fromUID: message.toUID,
+                    fromName: message.toName,
+                    toUID: message.fromUID,
+                    toName: message.fromName,
+                    subject: "Válasz: " + message.subject,
+                    content: messageContent,
+                    date: new Date()
+                }
             }
 
-            MessageService.sendMessage(answer)
+            MessageService.sendMessage(msg)
                 .then(() => {
+                    setSubject('');
                     setMessageContent(null)
                     Swal.fire({
                         didOpen: () => {
@@ -134,7 +162,7 @@ const MessageDialog = (props) => {
                             <div className="answer-div">
                                 <Button
                                     label="Válasz"
-                                    onClick={() => setShowSendMessage(!showSendMessage)}
+                                    onClick={() => setShowSendReplyMessage(!showSendReplyMessage)}
                                     className="p-button-success show-send-message-button"
                                 />
                             </div>
@@ -144,7 +172,7 @@ const MessageDialog = (props) => {
                 }
 
                 {
-                    showSendMessage &&
+                    showSendReplyMessage &&
                     <div className="send-message-div">
                         <div>
                             <p>
@@ -165,16 +193,53 @@ const MessageDialog = (props) => {
                             />
                         </div>
                         <div className="content-div">
-                            {
-                                message.content &&
-                                <div className="message">
-                                    <Editor
-                                        headerTemplate={editorHeader}
-                                        value={messageContent}
-                                        onTextChange={(e) => setMessageContent(e.htmlValue)}
-                                    />
-                                </div>
-                            }
+                            <div className="message">
+                                <Editor
+                                    headerTemplate={editorHeader}
+                                    value={messageContent}
+                                    onTextChange={(e) => setMessageContent(e.htmlValue)}
+                                />
+                            </div>
+                        </div>
+                        <div className="send-message-button-div">
+                            <Button
+                                label="Küldés"
+                                className="send-message-button"
+                                onClick={() => sendMessage()}
+                            />
+                        </div>
+                    </div>
+                }
+
+                {
+                    showSendNewMessage &&
+                    <div className="send-message-div">
+                        <div>
+                            <p>
+                                Címzett
+                            </p>
+                            <InputText
+                                value={message.toName}
+                                disabled
+                            />
+                        </div>
+                        <div>
+                            <p>
+                                Tárgy
+                            </p>
+                            <InputText
+                                value={subject}
+                                onChange={(e) => setSubject(e.target.value)}
+                            />
+                        </div>
+                        <div className="content-div">
+                            <div className="message">
+                                <Editor
+                                    headerTemplate={editorHeader}
+                                    value={messageContent}
+                                    onTextChange={(e) => setMessageContent(e.htmlValue)}
+                                />
+                            </div>
                         </div>
                         <div className="send-message-button-div">
                             <Button
@@ -189,7 +254,6 @@ const MessageDialog = (props) => {
             </div>
             <Toast ref={errorToast}/>
         </>
-
     )
 }
 

@@ -95,7 +95,6 @@
 
 .main-container .datatable-container tr:hover {
     background-color: yellowgreen !important;
-    cursor: pointer;
 }
 
 .main-container .datatable-container .p-column-title {
