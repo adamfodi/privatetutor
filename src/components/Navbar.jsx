@@ -16,19 +16,16 @@ const Navbar = props => {
     const displayName = personalData ? personalData.fullName : null;
 
     const menubarStartTemplate = () => {
-        switch (role) {
-            case "student":
+        if (firebaseAuth.uid) {
+            if (role === "student") {
                 return <p>Hallgató</p>
+            }
 
-            case "tutor":
+            if (role === "tutor") {
                 return <p>Oktató</p>
-
-            case "admin":
-                return <p>Admin</p>
-
-            default:
-                return null;
+            }
         }
+        return null;
     }
 
     const menubarEndTemplate = () => {
