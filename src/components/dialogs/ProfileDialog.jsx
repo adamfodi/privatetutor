@@ -17,17 +17,17 @@ const ProfileDialog = (props) => {
 
     moment.locale('hu')
 
-
     const setNewMessageTemplate = () => {
-        return {
-            fromUID: props.auth.uid,
-            fromName: props.profile.personalData.fullName,
-            toUID: props.data.id,
-            toName: props.data.profile.personalData.fullName,
-        }
-    }
 
-    console.log(setNewMessageTemplate())
+        return props.firebaseAuth.uid
+            ? {
+                fromUID: props.firebaseAuth.uid,
+                fromName: props.profile.personalData.fullName,
+                toUID: props.data.id,
+                toName: props.data.profile.personalData.fullName,
+            }
+            : null
+    }
 
     return (
         <>
@@ -78,7 +78,7 @@ const ProfileDialog = (props) => {
                     />
                 </div>
 
-                {props.auth.uid !== props.data.id &&
+                {props.firebaseAuth.uid && props.firebaseAuth.uid !== props.data.id &&
                     <Button
                         label="Üzenet küldése"
                         className="send-message"
@@ -111,7 +111,7 @@ const ProfileDialog = (props) => {
 
 const mapStateToProps = state => {
     return {
-        auth: state.firebase.auth,
+        firebaseAuth: state.firebase.auth,
         profile: !state.firebase.auth.isEmpty && !state.firebase.profile.isEmpty
             ? state.firebase.profile.profile
             : null
