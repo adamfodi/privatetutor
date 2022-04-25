@@ -7,6 +7,8 @@ export const WebRTCFunctions = (role, localStream, remoteStream, localVideoRef, 
     const startWebcam = async (localStream, localVideoRef) => {
         // console.log("Webcam starting...")
         // // console.log(peerConnection.current)
+        console.log(localStream.current)
+        console.log(localVideoRef.current)
 
         await navigator
             .mediaDevices
@@ -17,10 +19,30 @@ export const WebRTCFunctions = (role, localStream, remoteStream, localVideoRef, 
                 }
             )
             .then(async mediaStream => {
-                // // console.log(mediaStream)
+                console.log(mediaStream)
                 localStream.current = mediaStream;
                 localVideoRef.current.srcObject = mediaStream;
+                // if (peerConnection.current){
+                //     peerConnection.current.getSenders().forEach((rtpSender) => {
+                //         if (rtpSender.track.kind === 'video') {
+                //             rtpSender.replaceTrack(localStream.current.getVideoTracks()[0]).then(function() {
+                //                 console.log("Replaced video track from camera to screen");
+                //             }).catch(function(error) {
+                //                 console.log("Could not replace video track: " + error);
+                //             });
+                //         }
+                //
+                //         if (rtpSender.track.kind === 'audio') {
+                //             rtpSender.replaceTrack(localStream.current.getAudioTracks()[0]).then(function() {
+                //                 console.log("Replaced audio track from camera to screen");
+                //             }).catch(function(error) {
+                //                 console.log("Could not replace audio track: " + error);
+                //             });
+                //         }
+                //     })
+                // }
             });
+
     };
 
     const startScreenShare = async (localStream, localVideoRef) => {
@@ -45,6 +67,26 @@ export const WebRTCFunctions = (role, localStream, remoteStream, localVideoRef, 
             track.enabled = false;
             track.stop();
         })
+
+        // if (peerConnection.current){
+        //     peerConnection.current.getSenders().forEach((rtpSender) => {
+        //         if (rtpSender.track.kind === 'video') {
+        //             rtpSender.replaceTrack(localStream.current.getVideoTracks()[0]).then(function() {
+        //                 console.log("Replaced video track from camera to screen");
+        //             }).catch(function(error) {
+        //                 console.log("Could not replace video track: " + error);
+        //             });
+        //         }
+        //
+        //         if (rtpSender.track.kind === 'audio') {
+        //             rtpSender.replaceTrack(localStream.current.getAudioTracks()[0]).then(function() {
+        //                 console.log("Replaced audio track from camera to screen");
+        //             }).catch(function(error) {
+        //                 console.log("Could not replace audio track: " + error);
+        //             });
+        //         }
+        //     })
+        // }
     };
 
     const createRoom = async () => {
@@ -177,7 +219,6 @@ export const WebRTCFunctions = (role, localStream, remoteStream, localVideoRef, 
             }
         });
     };
-
 
     const tutorCandidatesSnapshot = () => {
         // console.log("tutorCandidatesSnapshot")

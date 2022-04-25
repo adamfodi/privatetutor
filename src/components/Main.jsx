@@ -213,7 +213,7 @@ const Main = props => {
             </div>
             <div className="filter-container">
                 <div className="header-div">
-                    <p>Keresés és szűrés</p>
+                    <p>Szűrés</p>
                 </div>
                 <div className="name-div">
                     <p>Név</p>

@@ -19,13 +19,11 @@ const Profile = props => {
         }
     }, [profile]);
 
-    console.log(newProfile)
-
     return (
-        <div className="component-container">
-            <p className="component-header">Profil</p>
-            <div className="component-content">
-                <div className="profile-container">
+        <div className="profile-container">
+            <p className="header">Profil</p>
+            <div className="content">
+                <div>
                     {newProfile
                         ? <TabView>
                             <TabPanel header="Személyes adatok">

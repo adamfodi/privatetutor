@@ -77,7 +77,7 @@ const PrivateLessons = props => {
         return (
             <div>
                 <Image
-                    src={otherUser ? otherUser.profile.profilePictureUrl : placeholder}
+                    src={otherUser && otherUser.profile.profilePictureUrl ? otherUser.profile.profilePictureUrl  : placeholder}
                     alt="Profile Picture"
                 />
             </div>

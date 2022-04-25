@@ -124,7 +124,7 @@ const TeachingRoom = (props) => {
 
     const getOtherProfilePicture = () => {
         const otherUser = users.filter(user => user.id === privateLesson[otherRole + "UID"])[0];
-        return otherUser ? otherUser.profile.profilePictureUrl : placeholder;
+        return otherUser && otherUser.profile.profilePictureUrl ? otherUser.profile.profilePictureUrl  : placeholder;
     }
 
     const sortMessagesByDate = (a, b) => {
@@ -201,6 +201,8 @@ const TeachingRoom = (props) => {
                 });
             })
     };
+
+    console.log(remoteVideoRef.current)
 
     return (
         <div className="teaching-room-container">
@@ -297,6 +299,16 @@ const TeachingRoom = (props) => {
                                 </div>
                             </div>
                         </div>
+                        {/*<Button*/}
+                        {/*    label="kikapcs"*/}
+                        {/*    onClick={() => stopLocalMediaStream(localStream)}*/}
+                        {/*/>*/}
+                        {/*<Button*/}
+                        {/*    label="bekapcs"*/}
+                        {/*    onClick={() => startWebcam(localStream, localVideoRef)}*/}
+                        {/*/>*/}
+
+
                         {/*<div className="camera-button-div">*/}
                         {/*    <Button icon="pi pi-camera"*/}
                         {/*            iconPos="right"*/}
