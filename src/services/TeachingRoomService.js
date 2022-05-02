@@ -1,6 +1,6 @@
 import {getFirebase} from "react-redux-firebase";
 import {rrfProps as state} from "../config/firebaseConfig";
-import {arrayUnion} from "firebase/firestore";
+import {arrayUnion, deleteField} from "firebase/firestore";
 
 
 export const TeachingRoomService = {
@@ -11,7 +11,11 @@ export const TeachingRoomService = {
             .collection("teachingRooms")
             .doc(roomID)
             .set({
-                chat: []
+                chat: [],
+                mediaStream: {
+                    studentMediaStreamOn: false,
+                    tutorMediaStreamOn: false
+                },
             })
     },
 
@@ -48,6 +52,22 @@ export const TeachingRoomService = {
             .doc(roomID)
             .update({
                 mediaStream: mediaStream
+            })
+    },
+
+    resetTeachingRoom(roomID) {
+        const firestore = state.firebase.firestore;
+
+         firestore()
+            .collection("teachingRooms")
+            .doc(roomID)
+            .update({
+                mediaStream: {
+                    studentMediaStreamOn: false,
+                    tutorMediaStreamOn: false
+                },
+                offer: deleteField(),
+                answer: deleteField()
             })
     },
 }

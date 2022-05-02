@@ -27,7 +27,6 @@ const TeachingRoom = (props) => {
     const [privateLesson] = useState(location.state.privateLesson);
     const [otherRole] = useState(location.state.otherRole);
     const [connectionState, setConnectionState] = useState(null);
-    const componentLeft = useRef(false);
     const [file, setFile] = useState(null);
     const [localMediaStreamOn, setLocalMediaStreamOn] = useState(false)
     const [remoteMediaStreamOn, setRemoteMediaStreamOn] = useState(false)
@@ -35,7 +34,6 @@ const TeachingRoom = (props) => {
     const [localMediaStreamType, setLocalMediaStreamType] = useState("camera");
     const fileRef = useRef();
     const storage = getStorage();
-    // TODO: CONNECTION STATE FELTETEL HIDDENHEZ ES BUTTON LOADING DISABLED
 
     const peerConnection = useRef(null);
     const localStream = useRef(new MediaStream());
@@ -49,7 +47,12 @@ const TeachingRoom = (props) => {
 
     useEffect(() => {
         console.log("Component mounted!")
-        teachingRoomRef.current.onSnapshot(async (snapshot) => {
+        const _peerConnection = peerConnection;
+        const _localStream = localStream;
+        const _remoteStream = remoteStream;
+
+        const unsubscribe = teachingRoomRef.current.onSnapshot(async (snapshot) => {
+            console.log("1")
             snapshot.data().offer && setRoomCreated(true);
             role === "student" && setRemoteMediaStreamOn(snapshot.data().mediaStream.tutorMediaStreamOn);
             role === "tutor" && setRemoteMediaStreamOn(snapshot.data().mediaStream.studentMediaStreamOn);
@@ -57,24 +60,15 @@ const TeachingRoom = (props) => {
         });
 
         return () => {
-            console.log("Component unmounting...!")
-            componentLeft.current = true;
-        }
-    }, [role])
+            if (_peerConnection.current) {
+                console.log("Component unmount")
+                unsubscribe();
+                WebRTCService.unSubscribe(role, _peerConnection, _localStream, _remoteStream)
 
-    useEffect(() => {
-        const _peerConnection = peerConnection;
-        const _localStream = localStream;
-        const _remoteStream = remoteStream;
-
-        return () => {
-            if (_peerConnection.current && componentLeft.current) {
-                // console.log("UNSUBSCRIBE")
-                WebRTCService.unSubscribe(role, _peerConnection, _localStream, _remoteStream,
-                    teachingRoomRef, studentCandidatesCollectionRef, tutorCandidatesCollectionRef)
+                // TeachingRoomService.resetTeachingRoom(privateLesson.roomID)
             }
         }
-    }, [role])
+    }, [privateLesson.roomID, role])
 
     const setMediaStream = (localMediaStreamOn) => {
         return {
@@ -133,6 +127,15 @@ const TeachingRoom = (props) => {
     }
 
     const createRoom = async (webcamPlaying, waitingRoomLocalStream, waitingRoomLocalVideoRef) => {
+        Swal.fire({
+            didOpen: () => {
+                Swal.showLoading();
+            },
+            title: "Óra indítása...",
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        });
+
         let _localMediaStreamOn = false;
 
         if (!webcamPlaying) {
@@ -144,17 +147,40 @@ const TeachingRoom = (props) => {
         }
 
         WebRTCService.createRoom(peerConnection, localStream, remoteStream, remoteVideoRef, setConnectionState,
-            tutorCandidatesCollectionRef, teachingRoomRef, studentCandidatesCollectionRef)
+            tutorCandidatesCollectionRef, teachingRoomRef, studentCandidatesCollectionRef, navigate)
             .then(() => {
                 TeachingRoomService.setMediaStream(privateLesson.roomID, setMediaStream(_localMediaStreamOn))
                     .then(() => {
                         setLocalMediaStreamOn(_localMediaStreamOn);
                         setShowWaitingRoomDialog(false);
+                        Swal.fire({
+                            timer: 1500,
+                            icon: "success",
+                            title: "Sikeres óra indítás!",
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                        })
                     })
-            });
+            })
+            .catch(() => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Hiba történt az óra indítása során!",
+                    allowOutsideClick: false,
+                });
+            })
     }
 
     const joinRoom = async (webcamPlaying, waitingRoomLocalStream, waitingRoomLocalVideoRef) => {
+        Swal.fire({
+            didOpen: () => {
+                Swal.showLoading();
+            },
+            title: "Csatlakozás...",
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        });
+
         let _localMediaStreamOn = false;
 
         if (!webcamPlaying) {
@@ -166,13 +192,27 @@ const TeachingRoom = (props) => {
         }
 
         WebRTCService.joinRoom(peerConnection, localStream, remoteStream, remoteVideoRef, setConnectionState,
-            tutorCandidatesCollectionRef, teachingRoomRef, studentCandidatesCollectionRef)
+            tutorCandidatesCollectionRef, teachingRoomRef, studentCandidatesCollectionRef, navigate)
             .then(() => {
                 TeachingRoomService.setMediaStream(privateLesson.roomID, setMediaStream(_localMediaStreamOn))
                     .then(() => {
                         setLocalMediaStreamOn(_localMediaStreamOn);
                         setShowWaitingRoomDialog(false);
+                        Swal.fire({
+                            timer: 1500,
+                            icon: "success",
+                            title: "Sikeres csatlakozás!",
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                        })
                     })
+            })
+            .catch(() => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Hiba történt a csatlakozás során!",
+                    allowOutsideClick: false,
+                });
             });
     }
 
@@ -280,7 +320,6 @@ const TeachingRoom = (props) => {
                                 playsInline
                                 muted
                                 hidden={!localMediaStreamOn}
-                                onEnded={() => console.log("wtf")}
                             />
                         </div>
                         <div className="buttons-div">
