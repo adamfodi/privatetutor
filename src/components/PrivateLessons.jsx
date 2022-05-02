@@ -101,7 +101,15 @@ const PrivateLessons = props => {
             rowData.status === 'accepted' &&
             <div>
                 <Button label="Csatlakozás"
-                        onClick={() => navigate("/teaching-room", {state: {privateLesson: rowData, otherRole: otherRole}})}
+                        onClick={() => navigate("/teaching-room",
+                            {
+                                state:
+                                    {
+                                        privateLesson: {...rowData,dateTo : rowData.dateTo.toDate()} ,
+                                        otherRole: otherRole
+                                    }
+                            }
+                            )}
                         disabled={rowData.dateFrom.toDate() > currentTime || rowData.dateTo.toDate() < currentTime}
                 />
             </div>

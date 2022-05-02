@@ -39,4 +39,15 @@ export const TeachingRoomService = {
                 chat: arrayUnion(message)
             })
     },
+
+    async setMediaStream(roomID, mediaStream) {
+        const firestore = state.firebase.firestore;
+
+        await firestore()
+            .collection("teachingRooms")
+            .doc(roomID)
+            .update({
+                mediaStream: mediaStream
+            })
+    },
 }

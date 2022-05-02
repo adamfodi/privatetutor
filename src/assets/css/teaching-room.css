@@ -2,8 +2,8 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    background-color: #dcdcdc;
-    height: 90vh;
+    background-color: #7a7a7a;
+    height: 92vh;
     margin-top: 1vh;
 }
 
@@ -19,11 +19,6 @@
     justify-content: center;
     align-items: center;
     margin-top: 1vh;
-    margin-bottom: 1vh;
-}
-
-.teaching-room-content .left-div > div:first-of-type {
-    margin-top: 2vh;
     margin-bottom: 2vh;
 }
 
@@ -35,31 +30,56 @@
 }
 
 .teaching-room-content .left-div .my-cam-div {
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    width: 34vw;
+    height: 8vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    border: 0.3vh solid #212121;
+    box-shadow: 0.1vh 0.5vh 0.5vh 0.4vh #212121;
+    background-color: white;
+}
+
+.teaching-room-content .left-div .my-cam-div .media-div {
     width: 15vw;
-    height: 7vw;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.teaching-room-content .left-div .my-cam-div img {
+.teaching-room-content .left-div .my-cam-div .media-div img {
     width: 6.75vw;
     height: 6.75vw;
     border-radius: 50%;
 }
 
-.teaching-room-content .left-div .my-cam-div video {
+.teaching-room-content .left-div .my-cam-div .media-div video {
     width: 12vw;
     height: 6.75vw;
 }
 
-.teaching-room-content .left-div .my-cam-div .p-progress-spinner {
+.teaching-room-content .left-div .my-cam-div .buttons-div {
+    width: 15vw;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 6.75vw;
+}
+
+.teaching-room-content .left-div .my-cam-div .buttons-div .on-buttons{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     height: 6.75vw;
-    margin-bottom: -6.75vw;
+}
+
+.teaching-room-content .left-div .my-cam-div .buttons-div button {
+    width: 13vw;
+    height: 3vw;
+    font-size: 2vh;
 }
 
 .teaching-room-content .left-div .chat-content > div {
@@ -69,9 +89,16 @@
     align-items: center;
 }
 
-.teaching-room-content .left-div .p-datatable {
+.teaching-room-content .left-div .chat-div {
     width: 34vw;
+    border: 0.3vh solid #212121;
+    box-shadow: 0.1vh 0.5vh 0.5vh 0.4vh #212121;
+}
+
+.teaching-room-content .left-div .p-datatable {
+    width: 33vw;
     height: 30vw;
+    margin-top: 1vh;
 }
 
 .teaching-room-content .left-div .p-datatable-thead {
@@ -128,7 +155,7 @@
     font-size: 2vh;
 }
 
-.teaching-room-content .left-div .message-content-td > div  a {
+.teaching-room-content .left-div .message-content-td > div a {
     color: white;
     margin-left: 0.5vw;
 }
@@ -145,11 +172,10 @@
 }
 
 .teaching-room-content .left-div .send-message-div {
-    width: 34vw;
+    width: 33vw;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2vh;
     margin-top: 1vh;
 }
 
@@ -157,7 +183,7 @@
     border: 0.2vw solid orangered !important;
     resize: none;
     font-size: 1vw;
-    width: 27vw !important;
+    width: 26vw !important;
     height: 5vw !important;
 }
 
@@ -190,17 +216,24 @@
     align-items: center;
 }
 
-.teaching-room-content .right-div .exit {
-    width: 100%;
+.teaching-room-content .right-div .clock-and-exit-div {
+    width: 60vw;
     display: flex;
-    justify-content: right;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.teaching-room-content .right-div .exit button {
+.teaching-room-content .right-div .clock-and-exit-div > span:first-of-type {
+    font-size: 1.5vw;
+    background-color: #212121;
+    color: white;
+    padding: 0.2vw 2vw;
+}
+
+.teaching-room-content .right-div .clock-and-exit-div button {
     width: 8vw !important;
-    height: 2vw !important;
-    font-size: 1.2vw;
-    margin-bottom: 1vh;
+    height: 2.5vw !important;
+    font-size: 1.5vw;
     text-align: center !important;
     display: flex !important;
     justify-content: center !important;
@@ -213,6 +246,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    border: 0.3vh solid #212121;
+    box-shadow: 0.1vh 0.5vh 0.5vh 0.4vh #212121;
+    margin-top: 3.5vh;
+    margin-bottom: 2vh;
+    background-color: white;
 }
 
 .teaching-room-content .right-div .other-cam-div img {
@@ -222,63 +260,67 @@
 }
 
 .teaching-room-content .right-div .other-cam-div video {
-    max-width: 60vw;
-    max-height: 33.75vw;
+    max-width: 58vw;
+    max-height: 32vw;
 }
 
-.teaching-room-content .right-div > div:last-of-type {
-    width: 100%;
-    display:flex;
-    justify-content: left;
+.teaching-room-content .right-div .file-upload-div {
+    width: 60vw;
+    border: 0.3vh solid #212121;
+    box-shadow: 0.1vh 0.5vh 0.5vh 0.4vh #212121;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 6vw;
+    background-color: white;
 }
 
-.teaching-room-content .right-div .file-upload {
-    margin-left: 1vw;
-    width: 30vw;
-}
-
-.teaching-room-content .right-div .file-upload >div >p {
-    font-size: 1.2vw;
+.teaching-room-content .right-div .file-upload-div > p {
+    font-size: 1.5vw;
     font-weight: bold;
-    margin: 0 0 1vh 0;
+    margin: 0 0 1vh 1vh;
 }
-.teaching-room-content .right-div .file-upload >div >div:first-of-type {
-    display:flex;
+
+.teaching-room-content .right-div .file-upload-div > div, .teaching-room-content .right-div .file-upload-div > div > div {
+    display: flex;
     align-items: center;
 }
 
-.teaching-room-content .right-div .file-upload>div >div:first-of-type button{
-    width: 8vw !important;
-    height: 2vw !important;
-    font-size: 1.2vw;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-}
-
-.teaching-room-content .right-div .file-upload >div >div:first-of-type p {
+.teaching-room-content .right-div .file-upload-div .select-div p {
     margin: 0 1vw;
     font-size: 1vw;
-    width: 20vw;
+    max-width: 32vw;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
 
-.teaching-room-content .right-div .file-upload >div >div:last-of-type {
-    margin-top: 1vh;
+.teaching-room-content .right-div .file-upload-div button {
+    height: 2.5vw;
+    text-align: center;
     display: flex;
     justify-content: center;
-    margin-bottom: 1vh;
+    align-items: center;
 }
-.teaching-room-content .right-div .file-upload >div >div:last-of-type button {
-    margin: 0 0.5vh;
-    width: 5vw !important;
-    height: 2vw !important;
-    font-size: 1vw;
-    text-align:center !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
+
+.teaching-room-content .right-div .file-upload-div .action-div {
+    width: 15vw;
+    text-align: center;
+    display:flex;
+    justify-content: center;
 }
+
+.teaching-room-content .right-div .file-upload-div .action-div button {
+    height: 2.5vw;
+    width: 6vw;
+    font-size: 1.2vw;
+    margin-right: 0.3vw;
+}
+
+.teaching-room-content .right-div .file-upload-div .select-div button {
+    margin-left: 1vh;
+    font-size: 1.5vw;
+    width: 10.5vw;
+}
+
 
