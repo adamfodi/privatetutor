@@ -51,9 +51,8 @@ const TeachingRoom = (props) => {
         const _localStream = localStream;
         const _remoteStream = remoteStream;
 
-        const unsubscribe = teachingRoomRef.current.onSnapshot(async (snapshot) => {
-            console.log("1")
-            snapshot.data().offer && setRoomCreated(true);
+        const unsubscribeTeachingRoom = teachingRoomRef.current.onSnapshot(async (snapshot) => {
+            snapshot.data().offer ? setRoomCreated(true) : setRoomCreated(false);
             role === "student" && setRemoteMediaStreamOn(snapshot.data().mediaStream.tutorMediaStreamOn);
             role === "tutor" && setRemoteMediaStreamOn(snapshot.data().mediaStream.studentMediaStreamOn);
             setChat(snapshot.data().chat.sort(sortMessagesByDate));
@@ -61,11 +60,13 @@ const TeachingRoom = (props) => {
 
         return () => {
             if (_peerConnection.current) {
-                console.log("Component unmount")
-                unsubscribe();
+                console.log("Component unmounting...")
+                unsubscribeTeachingRoom();
                 WebRTCService.unSubscribe(role, _peerConnection, _localStream, _remoteStream)
 
-                // TeachingRoomService.resetTeachingRoom(privateLesson.roomID)
+                TeachingRoomService.resetTeachingRoom(privateLesson.roomID, tutorCandidatesCollectionRef, studentCandidatesCollectionRef)
+                    .catch(() => {
+                    })
             }
         }
     }, [privateLesson.roomID, role])
@@ -147,7 +148,7 @@ const TeachingRoom = (props) => {
         }
 
         WebRTCService.createRoom(peerConnection, localStream, remoteStream, remoteVideoRef, setConnectionState,
-            tutorCandidatesCollectionRef, teachingRoomRef, studentCandidatesCollectionRef, navigate)
+            tutorCandidatesCollectionRef, teachingRoomRef, studentCandidatesCollectionRef, privateLesson.roomID, navigate)
             .then(() => {
                 TeachingRoomService.setMediaStream(privateLesson.roomID, setMediaStream(_localMediaStreamOn))
                     .then(() => {
@@ -192,7 +193,7 @@ const TeachingRoom = (props) => {
         }
 
         WebRTCService.joinRoom(peerConnection, localStream, remoteStream, remoteVideoRef, setConnectionState,
-            tutorCandidatesCollectionRef, teachingRoomRef, studentCandidatesCollectionRef, navigate)
+            tutorCandidatesCollectionRef, teachingRoomRef, studentCandidatesCollectionRef, privateLesson.roomID, navigate)
             .then(() => {
                 TeachingRoomService.setMediaStream(privateLesson.roomID, setMediaStream(_localMediaStreamOn))
                     .then(() => {

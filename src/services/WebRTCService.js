@@ -1,5 +1,6 @@
 import {RTCPeerConnectionConfiguration, RTCPeerConnectionOfferOptions} from "../config/webRTCConfig";
 import Swal from "sweetalert2";
+import {TeachingRoomService} from "./TeachingRoomService";
 
 let unsubscribeTeachingRoom = () => {
 };
@@ -83,14 +84,15 @@ export const WebRTCService = {
     },
 
     async createRoom(peerConnection, localStream, remoteStream, remoteVideoRef, setConnectionState,
-                     tutorCandidatesCollectionRef, teachingRoomRef, studentCandidatesCollectionRef, navigate) {
+                     tutorCandidatesCollectionRef, teachingRoomRef, studentCandidatesCollectionRef, roomID, navigate) {
 
         remoteVideoRef.current.srcObject = remoteStream.current;
 
         peerConnection.current = new RTCPeerConnection(RTCPeerConnectionConfiguration);
 
         peerConnection.current.addEventListener('iceconnectionstatechange',
-            (event) => iceConnectionStateEventListener(event, setConnectionState, navigate));
+            (event) => iceConnectionStateEventListener(event, setConnectionState, tutorCandidatesCollectionRef,
+                studentCandidatesCollectionRef, roomID, navigate));
 
         localStream.current.getTracks().forEach(track => {
             peerConnection.current.addTrack(track, localStream.current);
@@ -104,7 +106,7 @@ export const WebRTCService = {
     },
 
     async joinRoom(peerConnection, localStream, remoteStream, remoteVideoRef, setConnectionState,
-                   tutorCandidatesCollectionRef, teachingRoomRef, studentCandidatesCollectionRef, navigate) {
+                   tutorCandidatesCollectionRef, teachingRoomRef, studentCandidatesCollectionRef, roomID, navigate) {
 
         remoteVideoRef.current.srcObject = remoteStream.current;
 
@@ -114,7 +116,8 @@ export const WebRTCService = {
             peerConnection.current = new RTCPeerConnection(RTCPeerConnectionConfiguration);
 
             peerConnection.current.addEventListener('iceconnectionstatechange',
-                (event) => iceConnectionStateEventListener(event, setConnectionState, navigate));
+                (event) => iceConnectionStateEventListener(event, setConnectionState, tutorCandidatesCollectionRef,
+                    studentCandidatesCollectionRef, roomID, navigate));
 
             localStream.current.getTracks().forEach(track => {
                 peerConnection.current.addTrack(track, localStream.current);
@@ -185,17 +188,28 @@ export const WebRTCService = {
     }
 }
 
-const iceConnectionStateEventListener = (event, setConnectionState, navigate) => {
+const iceConnectionStateEventListener = (event, setConnectionState, tutorCandidatesCollectionRef, studentCandidatesCollectionRef, roomID, navigate) => {
     event.currentTarget && event.currentTarget.iceConnectionState && setConnectionState(event.currentTarget.iceConnectionState);
 
     if (event.currentTarget && event.currentTarget.iceConnectionState === "disconnected") {
         Swal.fire({
-            icon: 'error',
-            title: 'A kapcsolat megszakadt!',
-            allowEscapeKey: false,
-            allowOutsideClick: false
-        })
-            .then(() => navigate("/private-lessons"))
+            didOpen: () => {
+                Swal.showLoading();
+            },
+            title: "Csatlakozás...",
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        });
+        TeachingRoomService.resetTeachingRoom(roomID, tutorCandidatesCollectionRef, studentCandidatesCollectionRef)
+            .then(() => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'A kapcsolat megszakadt!',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false
+                })
+                    .then(() => navigate("/private-lessons"))
+            })
     }
 };
 
@@ -215,7 +229,6 @@ const trackEventListener = (event, remoteStream) => {
 
 const teachingRoomSnapshot = (peerConnection, teachingRoomRef) => {
     unsubscribeTeachingRoom = teachingRoomRef.current.onSnapshot(async (snapshot) => {
-        console.log("2")
         const data = snapshot.data();
         if (!peerConnection.current.currentRemoteDescription && data && data.answer && peerConnection.current.signalingState !== "closed") {
             const rtcSessionDescription = new RTCSessionDescription(data.answer);
@@ -226,7 +239,7 @@ const teachingRoomSnapshot = (peerConnection, teachingRoomRef) => {
 
 const tutorCandidatesSnapshot = (peerConnection, tutorCandidatesCollectionRef) => {
     unsubscribeTutorCandidatesCollection = tutorCandidatesCollectionRef.current.onSnapshot(snapshot => {
-        snapshot.docChanges().forEach(async change => {
+        snapshot.docChanges().forEach(async (change) => {
             if (change.type === 'added' && peerConnection.current.signalingState !== "closed") {
                 let data = change.doc.data();
                 await peerConnection.current.addIceCandidate(new RTCIceCandidate(data))
@@ -237,7 +250,7 @@ const tutorCandidatesSnapshot = (peerConnection, tutorCandidatesCollectionRef) =
 
 const studentCandidatesSnapshot = (peerConnection, studentCandidatesCollectionRef) => {
     unsubscribeStudentCandidatesCollection = studentCandidatesCollectionRef.current.onSnapshot(snapshot => {
-        snapshot.docChanges().forEach(async change => {
+        snapshot.docChanges().forEach(async (change) => {
             if (change.type === 'added' && peerConnection.current.signalingState !== "closed") {
                 let data = change.doc.data();
                 await peerConnection.current.addIceCandidate(new RTCIceCandidate(data))

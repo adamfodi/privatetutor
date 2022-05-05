@@ -2,7 +2,6 @@ import {getFirebase} from "react-redux-firebase";
 import {rrfProps as state} from "../config/firebaseConfig";
 import {arrayUnion, deleteField} from "firebase/firestore";
 
-
 export const TeachingRoomService = {
 
     async createRoom(roomID) {
@@ -55,10 +54,9 @@ export const TeachingRoomService = {
             })
     },
 
-    resetTeachingRoom(roomID) {
-        const firestore = state.firebase.firestore;
-
-         firestore()
+    async resetTeachingRoomFields(roomID) {
+        await getFirebase()
+            .firestore()
             .collection("teachingRooms")
             .doc(roomID)
             .update({
@@ -70,4 +68,17 @@ export const TeachingRoomService = {
                 answer: deleteField()
             })
     },
+
+    async deleteCandidatesCollections(collectionRef) {
+        const collection = await collectionRef.current.get();
+        collection.docs.forEach((doc) => {
+            collectionRef.current.doc(doc.id).delete()
+        })
+    },
+
+    async resetTeachingRoom(roomID, tutorCandidatesCollectionRef, studentCandidatesCollectionRef) {
+        await this.deleteCandidatesCollections(tutorCandidatesCollectionRef);
+        await this.deleteCandidatesCollections(studentCandidatesCollectionRef);
+        await this.resetTeachingRoomFields(roomID);
+    }
 }

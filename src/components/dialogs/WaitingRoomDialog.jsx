@@ -96,6 +96,7 @@ const WaitingRoomDialog = (props) => {
                         <Button
                             label="Óra indítása"
                             onClick={() => createRoom(webcamPlaying, waitingRoomLocalStream, waitingRoomLocalVideoRef)}
+                            disabled={roomCreated}
                         />
                     }
                     {
