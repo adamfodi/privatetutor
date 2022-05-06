@@ -26,7 +26,7 @@ const Main = props => {
     const [ratingFilter, setRatingFilter] = useState(null);
     const [priceFilter, setPriceFilter] = useState(null);
     const [showTutorProfileDialog, setShowTutorProfileDialog] = useState(false);
-    const [currentTutorProfileDialog, setCurrentTutorProfileDialog] = useState(null);
+    const [currentTutorProfile, setCurrentTutorProfile] = useState(null);
 
     const timetableOptions = [
         {
@@ -115,7 +115,7 @@ const Main = props => {
             />
             <Button label="Profil"
                     onClick={() => {
-                        setCurrentTutorProfileDialog(rowData);
+                        setCurrentTutorProfile(rowData);
                         setShowTutorProfileDialog(true);
                     }}
             />
@@ -156,110 +156,115 @@ const Main = props => {
 
     return (
         <div className="main-container">
-            <div className="datatable-container">
-                <DataTable
-                    value={filteredTutors}
-                    loading={!users}
-                    paginator
-                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                    currentPageReportTemplate="Találatok száma: {totalRecords}"
-                    responsiveLayout="scroll"
-                    rows={5}
-                    rowsPerPageOptions={[5, 10, 15, 20]}
-                    sortField="tutor.advertisement.hourlyRate"
-                    sortOrder={1}
-                    emptyMessage="Nem található tanár."
-                >
+            <p className="title">
+                Találd meg a tanárod
+            </p>
+            <div>
+                <div className="datatable-container">
+                    <DataTable
+                        value={filteredTutors}
+                        loading={!users}
+                        paginator
+                        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                        currentPageReportTemplate="Találatok száma: {totalRecords}"
+                        responsiveLayout="scroll"
+                        rows={5}
+                        rowsPerPageOptions={[5, 10, 15, 20]}
+                        sortField="tutor.advertisement.hourlyRate"
+                        sortOrder={1}
+                        emptyMessage="Nem található tanár."
+                    >
 
-                    <Column
-                        body={pictureAndProfileBodyTemplate}
-                        className="picture-and-profile-template-td"
-                    />
+                        <Column
+                            body={pictureAndProfileBodyTemplate}
+                            className="picture-and-profile-template-td"
+                        />
 
-                    <Column
-                        field="profile.personalData.fullName"
-                        header="Név"
-                        sortable
-                        body={nameAndSubjectsBodyTemplate}
-                        className="name-and-subjects-body-template-td"
+                        <Column
+                            field="profile.personalData.fullName"
+                            header="Név"
+                            sortable
+                            body={nameAndSubjectsBodyTemplate}
+                            className="name-and-subjects-body-template-td"
 
-                    />
+                        />
 
-                    <Column
-                        field="tutor.hoursHeld"
-                        header="Megtartott órák"
-                        sortable
-                        body={hoursHeldBodyTemplate}
-                        className="hours-held-body-template-td"
-                    />
+                        <Column
+                            field="tutor.hoursHeld"
+                            header="Megtartott órák"
+                            sortable
+                            body={hoursHeldBodyTemplate}
+                            className="hours-held-body-template-td"
+                        />
 
-                    <Column
-                        header="Értékelés"
-                        sortable
-                        body={ratingBodyTemplate}
-                        className="rating-body-template-td"
+                        <Column
+                            header="Értékelés"
+                            sortable
+                            body={ratingBodyTemplate}
+                            className="rating-body-template-td"
 
-                    />
+                        />
 
-                    <Column
-                        field="tutor.advertisement.hourlyRate"
-                        header="Óradíj"
-                        sortable
-                        body={hourlyRateBodyTemplate}
-                        className="hourly-rate-body-template-td"
+                        <Column
+                            field="tutor.advertisement.hourlyRate"
+                            header="Óradíj"
+                            sortable
+                            body={hourlyRateBodyTemplate}
+                            className="hourly-rate-body-template-td"
 
-                    />
-                </DataTable>
-            </div>
-            <div className="filter-container">
-                <div className="header-div">
-                    <p>Szűrés</p>
+                        />
+                    </DataTable>
                 </div>
-                <div className="name-div">
-                    <p>Név</p>
-                    <InputText value={nameFilter}
-                               onChange={(e) => setNameFilter(e.target.value)}
-                               placeholder="pl. Kovács István"
-                    />
-                </div>
-                <div className="subjects-div">
-                    <p>Tantárgy</p>
-                    <Dropdown value={subjectFilter}
-                              options={subjectsList}
-                              onChange={(e) => setSubjectFilter(e.value)}
-                              optionLabel="name"
-                              filter
-                              filterMatchMode="startsWith"
-                              showClear
-                              filterBy="name"
-                              placeholder="pl. Matematika"
-                              emptyFilterMessage="Nem található ilyen tárgynév"
-                    />
+                <div className="filter-container">
+                    <div className="header-div">
+                        <p>Szűrés</p>
+                    </div>
+                    <div className="name-div">
+                        <p>Név</p>
+                        <InputText value={nameFilter}
+                                   onChange={(e) => setNameFilter(e.target.value)}
+                                   placeholder="pl. Kovács István"
+                        />
+                    </div>
+                    <div className="subjects-div">
+                        <p>Tantárgy</p>
+                        <Dropdown value={subjectFilter}
+                                  options={subjectsList}
+                                  onChange={(e) => setSubjectFilter(e.value)}
+                                  optionLabel="name"
+                                  filter
+                                  filterMatchMode="startsWith"
+                                  showClear
+                                  filterBy="name"
+                                  placeholder="pl. Matematika"
+                                  emptyFilterMessage="Nem található ilyen tárgynév"
+                        />
 
-                </div>
-                <div className="timetable-div">
-                    <p>Időpont</p>
-                    <MultiSelect
-                        value={timetableFilter}
-                        options={timetableOptions}
-                        onChange={(e) => setTimetableFilter(e.value)}
-                        optionLabel="label"
-                        optionValue="value"
-                        optionGroupLabel="label"
-                        optionGroupChildren="items"
-                        placeholder="pl.: Kedd délután"
-                        display="chip"
-                    />
-                </div>
-                <div className="clear-div">
-                    <Button label="Szűrés törlése"
-                            className="p-button-danger p-button-text"
-                            onClick={() => {
-                                setNameFilter('')
-                                setSubjectFilter(null)
-                                setTimetableFilter([])
-                            }}
-                    />
+                    </div>
+                    <div className="timetable-div">
+                        <p>Időpont</p>
+                        <MultiSelect
+                            value={timetableFilter}
+                            options={timetableOptions}
+                            onChange={(e) => setTimetableFilter(e.value)}
+                            optionLabel="label"
+                            optionValue="value"
+                            optionGroupLabel="label"
+                            optionGroupChildren="items"
+                            placeholder="pl.: Kedd délután"
+                            display="chip"
+                        />
+                    </div>
+                    <div className="clear-div">
+                        <Button label="Szűrés törlése"
+                                className="p-button-danger p-button-text"
+                                onClick={() => {
+                                    setNameFilter('')
+                                    setSubjectFilter(null)
+                                    setTimetableFilter([])
+                                }}
+                        />
+                    </div>
                 </div>
             </div>
             <Dialog header="Profil"
@@ -272,13 +277,12 @@ const Main = props => {
                     className="profile-dialog"
             >
                 <ProfileDialog
-                    data={currentTutorProfileDialog}
+                    data={currentTutorProfile}
                 />
             </Dialog>
         </div>
     )
 }
-
 
 const mapStateToProps = state => {
     return {

@@ -54,30 +54,35 @@ const ProfileDialog = (props) => {
                         </div>
                     </div>
                 </div>
-                <div className="introduction-div">
-                    <p>Bemutatkozás</p>
-                    <Editor
-                        headerTemplate={editorHeader}
-                        value={props.data.tutor.advertisement.introduction}
-                        readOnly
-                    />
-                </div>
-                <div className="subjects-div">
-                    <p>Oktatott tárgyak</p>
-                    <Chips
-                        value={props.data.tutor.advertisement.subjects.map((subject) => subject.name)}
-                        removable={false}
-                        readOnly
-                    />
-                </div>
-                <div className="timetable-div">
-                    <p>Órarend</p>
-                    <Timetable timetable={props.data.tutor.advertisement.timetable}
-                               setNewAdvertisement={null}
-                               readonly={true}
-                    />
-                </div>
+                {
+                    props.data.tutor.advertisement.active &&
+                    <>
+                        <div className="introduction-div">
+                            <p>Bemutatkozás</p>
+                            <Editor
+                                headerTemplate={editorHeader}
+                                value={props.data.tutor.advertisement.introduction}
+                                readOnly
+                            />
+                        </div>
+                        <div className="subjects-div">
+                            <p>Oktatott tárgyak</p>
+                            <Chips
+                                value={props.data.tutor.advertisement.subjects.map((subject) => subject.name)}
+                                removable={false}
+                                readOnly
+                            />
+                        </div>
+                        <div className="timetable-div">
+                            <p>Órarend</p>
+                            <Timetable timetable={props.data.tutor.advertisement.timetable}
+                                       setNewAdvertisement={null}
+                                       readonly={true}
+                            />
+                        </div>
+                    </>
 
+                }
                 {props.firebaseAuth.uid && props.firebaseAuth.uid !== props.data.id &&
                     <Button
                         label="Üzenet küldése"
@@ -85,7 +90,6 @@ const ProfileDialog = (props) => {
                         onClick={() => setShowMessageDialog(true)}
                     />
                 }
-
 
             </div>
             <Dialog
@@ -107,7 +111,6 @@ const ProfileDialog = (props) => {
         </>
     )
 }
-
 
 const mapStateToProps = state => {
     return {

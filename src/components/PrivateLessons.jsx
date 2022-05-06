@@ -17,13 +17,16 @@ import {PrivateLessonService} from "../services/PrivateLessonService";
 import {TeachingRoomService} from "../services/TeachingRoomService";
 import placeholder from "../assets/img/profile-picture-placeholder.png";
 import {Image} from "primereact/image";
+import ProfileDialog from "./dialogs/ProfileDialog";
 
 const PrivateLessons = props => {
-    const {firebaseAuth, users, privateLessons, role} = props;
-    const [otherRole]= useState(role === "tutor" ? "student" : "tutor");
+    const {role, firebaseAuth, users, privateLessons, teachingRooms} = props;
+    const [otherRole] = useState(role === "tutor" ? "student" : "tutor");
     const navigate = useNavigate();
     const [myPrivateLessons, setMyPrivateLessons] = useState([]);
     const [showPrivateLessonDialog, setShowPrivateLessonDialog] = useState(false);
+    const [showProfileDialog, setShowProfileDialog] = useState(false);
+    const [currentUserProfile, setCurrentUserProfile] = useState(null);
 
     moment.locale('hu')
 
@@ -33,6 +36,20 @@ const PrivateLessons = props => {
             )
         }
     }, [firebaseAuth.uid, users, privateLessons, role])
+
+    const checkIfUserAlreadyInTheRoom = (roomID) => {
+        if (teachingRooms) {
+            if (role === "tutor") {
+                const room = teachingRooms[roomID];
+                return !!room.offer
+            }
+
+            if (role === "student") {
+                const room = teachingRooms[roomID];
+                return !!room.answer
+            }
+        }
+    }
 
     const deletePrivateLesson = (privateLessonID, roomID) => {
         Swal.fire({
@@ -67,53 +84,77 @@ const PrivateLessons = props => {
         <div>
             <Button
                 label="Új magánóra létrehozása"
+                className="p-button-help"
                 onClick={() => setShowPrivateLessonDialog(true)}
             />
         </div>
     )
 
-    const otherUserPictureBodyTemplate = rowData => {
-        const otherUser = users.filter(user => user.id === rowData[otherRole + "UID"])[0];
+    const userPictureAndProfileBodyTemplate = rowData => {
+        const user = users.filter(user => user.id === rowData[otherRole + "UID"])[0];
         return (
             <div>
                 <Image
-                    src={otherUser && otherUser.profile.profilePictureUrl ? otherUser.profile.profilePictureUrl  : placeholder}
+                    src={user && user.profile.profilePictureUrl ? user.profile.profilePictureUrl : placeholder}
                     alt="Profile Picture"
+                />
+
+                <Button
+                    label="Profil"
+                    onClick={() => {
+                        setCurrentUserProfile(user);
+                        setShowProfileDialog(true)
+                    }}
                 />
             </div>
         )
     }
 
-    const otherUserNameBodyTemplate = rowData => {
-        const otherUser = users.filter(user => user.id === rowData[otherRole + "UID"])[0];
-        const otherUserFullName = otherUser ? otherUser.profile.personalData.fullName : '';
+    const userNameBodyTemplate = rowData => {
+        const user = users.filter(user => user.id === rowData[otherRole + "UID"])[0];
+        const userFullName = user ? user.profile.personalData.fullName : '';
         return (
-            <div>
-                {/*TODO: ProfileDialog onClick*/}
-                <p>{otherUserFullName}</p>
-            </div>
+            <p>{userFullName}</p>
         )
     }
 
-    const joinRoomBodyTemplate = rowData => {
+    const joinRoomAndFeedbackBodyTemplate = rowData => {
         const currentTime = new Date();
-        return (
-            rowData.status === 'accepted' &&
-            <div>
-                <Button label="Csatlakozás"
+
+        if (rowData.status === 'accepted' && rowData.dateTo.toDate() > currentTime) {
+            return (
+                <div>
+                    <Button
+                        label="Csatlakozás"
+                        className="p-button-success"
                         onClick={() => navigate("/teaching-room",
                             {
                                 state:
                                     {
-                                        privateLesson: {...rowData,dateTo : rowData.dateTo.toDate()} ,
+                                        privateLesson: {...rowData, dateTo: rowData.dateTo.toDate()},
                                         otherRole: otherRole
                                     }
                             }
-                            )}
-                        disabled={rowData.dateFrom.toDate() > currentTime || rowData.dateTo.toDate() < currentTime}
-                />
-            </div>
-        )
+                        )}
+                        disabled={(rowData.dateFrom.toDate() > currentTime || rowData.dateTo.toDate() < currentTime)
+                            || checkIfUserAlreadyInTheRoom(rowData.roomID)}
+                    />
+                </div>
+            )
+        }
+
+        if (rowData.status === 'accepted' && rowData.dateTo.toDate() <= currentTime) {
+            return (
+                <div>
+                    <Button
+                        label="Értékelés"
+                        className="p-button-info"
+                    />
+                </div>
+            )
+        }
+
+        return null;
     }
 
     const timeBodyTemplate = (rowData) => {
@@ -126,11 +167,16 @@ const PrivateLessons = props => {
         )
     }
 
-    const dayBodyTemplate = (rowData) => {
+    const dateBodyTemplate = (rowData) => {
         return (
-            <p>
-                {moment(rowData.dateFrom.toDate()).format('YYYY. MMMM DD. - dddd ')}
-            </p>
+            <>
+                <p>
+                    {moment(rowData.dateFrom.toDate()).format('YYYY. MMMM DD.')}
+                </p>
+                <p>
+                    {moment(rowData.dateFrom.toDate()).format('dddd')}
+                </p>
+            </>
         )
     }
 
@@ -139,7 +185,7 @@ const PrivateLessons = props => {
             case "pending":
                 return (
                     <Tag icon="pi pi-question"
-                         severity="info"
+                         severity="warning"
                          value="Függőben"
                     />
                 )
@@ -163,18 +209,20 @@ const PrivateLessons = props => {
             case "finished":
                 return (
                     <Tag icon="pi pi-book"
-                         severity="primary"
+                         severity="secondary"
                          value="Befejezett"
                     />
                 )
 
             default:
-                return rowData.status
+                return null
         }
     }
 
     const deleteBodyTemplate = (rowData) => {
+        const currentTime = new Date();
         return (
+            rowData.dateFrom.toDate() < currentTime &&
             <div>
                 <Button label="Törlés"
                         className="p-button-danger"
@@ -235,25 +283,31 @@ const PrivateLessons = props => {
                     header={role === "tutor" && tableHeaderTemplate}
                     emptyMessage="Nem található magánóra."
                 >
-                    <Column body={otherUserPictureBodyTemplate}/>
+                    <Column
+                        body={userPictureAndProfileBodyTemplate}
+                        className="picture-and-profile-td"
+                    />
 
                     <Column
                         header="Név"
-                        body={otherUserNameBodyTemplate}
+                        body={userNameBodyTemplate}
+                        className="user-name-td"
                     />
 
-                    <Column body={joinRoomBodyTemplate}/>
+                    <Column body={joinRoomAndFeedbackBodyTemplate}/>
 
                     <Column
                         header="Időpont"
                         body={timeBodyTemplate}
+                        className="time-td"
                     />
 
                     <Column
                         field="dateFrom"
                         header="Nap"
                         sortable
-                        body={dayBodyTemplate}
+                        body={dateBodyTemplate}
+                        className="date-td"
                     />
 
                     <Column
@@ -280,21 +334,36 @@ const PrivateLessons = props => {
                     myPrivateLessons={myPrivateLessons}
                 />
             </Dialog>
+            <Dialog header="Profil"
+                    visible={showProfileDialog}
+                    position={"center"}
+                    modal
+                    onHide={() => setShowProfileDialog(false)}
+                    draggable={false}
+                    resizable={false}
+                    className="profile-dialog"
+            >
+                <ProfileDialog
+                    data={currentUserProfile}
+                />
+            </Dialog>
         </div>
     )
 }
 
 const mapStateToProps = state => {
     return {
+        role: state.role,
         firebaseAuth: state.firebase.auth,
         users: state.firestore.ordered.users,
         privateLessons: state.firestore.ordered.privateLessons,
-        role: state.role
+        teachingRooms: state.firestore.data.teachingRooms,
     };
 };
 
 export default compose(
     connect(mapStateToProps),
     firestoreConnect([{collection: "users"}]),
-    firestoreConnect([{collection: "privateLessons"}])
+    firestoreConnect([{collection: "privateLessons"}]),
+    firestoreConnect([{collection: "teachingRooms"}])
 )(PrivateLessons);

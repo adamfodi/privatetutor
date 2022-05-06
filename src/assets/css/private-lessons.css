@@ -2,25 +2,29 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 90%;
+    width: 1300px;
     background-color: white;
     margin: 30px auto;
+    border-radius: 15px;
 }
 
 .private-lessons-container button {
     border: 0 !important;
     box-shadow: none !important;
-    border-radius: 0 !important;
 }
 
 .private-lessons-container .title {
-    font-size: 30px;
+    font-size: 50px;
+    font-family: Georgia, Times New Roman, sans-serif;
+    margin: 20px 0;
     text-align: center;
 }
 
 .private-lessons-container .p-image img {
+    border-radius: 50%;
     width: 100px;
     height: 100px;
+    border: 1px solid #212121;
 }
 
 .private-lessons-container .p-tag {
@@ -41,16 +45,36 @@
     margin-bottom: 10px;
 }
 
-.private-lessons-container .datatable-container td:nth-of-type(2) {
+.private-lessons-container .datatable-container .picture-and-profile-td div{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.private-lessons-container .datatable-container .picture-and-profile-td div button{
+    width: 100px;
+}
+
+.private-lessons-container .datatable-container .user-name-td {
     width: 30%;
 }
 
-.private-lessons-container .datatable-container td:nth-of-type(2) p {
+.private-lessons-container .datatable-container .user-name-td p {
     font-size: 25px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.private-lessons-container .datatable-container td:nth-of-type(4) p, .private-lessons-container .datatable-container td:nth-of-type(5) p {
+.private-lessons-container .datatable-container .time-td p, .private-lessons-container .datatable-container .date-td p {
     font-size: 20px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.private-lessons-container .datatable-container .date-td p:last-of-type:first-letter {
+    text-transform: uppercase;
 }
 
 .private-lessons-container .datatable-container td {

@@ -1,6 +1,5 @@
 import {rrfProps as state} from "../config/firebaseConfig";
 
-
 export const PrivateLessonService = {
 
     async createPrivateLesson(privateLesson) {

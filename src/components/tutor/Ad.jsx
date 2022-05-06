@@ -17,7 +17,6 @@ const Ad = (props) => {
     const [newAd, setNewAd] = useState(null);
 
     useEffect(() => {
-        // console.log("csak akkor fut le, ha megvaltozott az adat firestoreban")
         if (advertisement) {
             setNewAd({...advertisement})
         }
