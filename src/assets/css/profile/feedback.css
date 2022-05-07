@@ -1,0 +1,88 @@
+.feedback-container {
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    border-radius: 15px;
+    width: 100%;
+    box-shadow: 0 3px 5px grey, 0 0 2px grey, 0 1px 4px grey !important;
+}
+
+.feedback-container .sum {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    border-bottom: 1px solid grey;
+}
+
+.feedback-container .sum p {
+    width: 80px;
+    font-size: 50px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.feedback-container .sum .pi-star-fill {
+    font-size: 50px;
+    color: orange;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.feedback-container .feedback-table {
+    margin-bottom: 10px;
+}
+
+.feedback-container .feedback-table .rating-td {
+    width: 10%;
+    text-align:center;
+}
+
+.feedback-container .feedback-table .rating-td div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.feedback-container .feedback-table .rating-td div p {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 1px;
+}
+
+.feedback-container .feedback-table .rating-td div .pi-star {
+    font-size: 20px;
+    margin-left: 5px;
+}
+
+.feedback-container .feedback-table .date-td {
+    width: 20%;
+    text-align:center;
+}
+
+.feedback-container .feedback-table .date-td p {
+    font-size: 20px;
+    margin: 1px;
+}
+
+.feedback-container .feedback-table .feedback-td{
+    width: 70%;
+}
+
+.feedback-container .feedback-table .feedback-td p{
+    font-size: 15px;
+    overflow-wrap: anywhere;
+}
+
+.feedback-container .p-datatable-table {
+    margin-top: 10px;
+}
+
+.feedback-container .feedback-table .p-column-header-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+

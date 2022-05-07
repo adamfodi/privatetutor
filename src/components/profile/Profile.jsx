@@ -5,6 +5,7 @@ import {ProgressSpinner} from "primereact/progressspinner";
 import {TabPanel, TabView} from "primereact/tabview";
 import PersonalData from "./PersonalData";
 import ProfilePicture from "./ProfilePicture";
+import Feedback from "./Feedback";
 
 const Profile = props => {
     const {profile} = props;
@@ -33,6 +34,7 @@ const Profile = props => {
                                 <ProfilePicture profilePictureUrl={newProfile.profilePictureUrl}/>
                             </TabPanel>
                             <TabPanel header="Visszajelzések">
+                                <Feedback feedback={newProfile.feedback}/>
 
                             </TabPanel>
                         </TabView>

@@ -79,16 +79,18 @@ const Navbar = props => {
             },
         );
 
-        items.push(
-            {
-                label: 'Magánóráim',
-                icon: 'pi pi-fw pi-book',
-                className: currentPath === '/private-lessons' && "selected-menu-item",
-                command: () => {
-                    navigate("/private-lessons")
-                }
-            },
-        );
+        if (role) {
+            items.push(
+                {
+                    label: 'Magánóráim',
+                    icon: 'pi pi-fw pi-book',
+                    className: currentPath === '/private-lessons' && "selected-menu-item",
+                    command: () => {
+                        navigate("/private-lessons")
+                    }
+                },
+            );
+        }
 
         if (role === 'tutor') {
             items.push(

@@ -33,7 +33,7 @@
     width: 300px;
     height: 600px;
     margin: 30px;
-    border: 3px solid #212121;
+    box-shadow: 0 3px 5px #212121, 0 0 2px #212121, 0 1px 4px #212121 !important;
     background-color: #fafafa
 }
 
@@ -81,13 +81,14 @@
 .main-container .datatable-container {
     width: 850px;
     margin: 30px;
-    border: 3px solid #212121;
+    box-shadow: 0 3px 5px #212121, 0 0 2px #212121, 0 1px 4px #212121 !important;
     background-color: #fafafa
 }
 
 .main-container .datatable-container .p-datatable-table {
     table-layout: fixed !important;
     width: 100%;
+    margin-top: 10px;
 }
 
 .main-container .datatable-container thead .picture-and-profile-template-td:hover {
