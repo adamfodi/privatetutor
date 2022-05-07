@@ -97,6 +97,7 @@ const Ad = (props) => {
                                          maxFractionDigits={0}
                                          min={0}
                                          max={99999}
+                                         tooltip="max. 99999"
                             />
                         </div>
 
