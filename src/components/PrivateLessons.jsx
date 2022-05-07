@@ -18,6 +18,7 @@ import {TeachingRoomService} from "../services/TeachingRoomService";
 import placeholder from "../assets/img/profile-picture-placeholder.png";
 import {Image} from "primereact/image";
 import ProfileDialog from "./dialogs/ProfileDialog";
+import FeedbackDialog from "./dialogs/FeedbackDialog";
 
 const PrivateLessons = props => {
     const {role, firebaseAuth, users, privateLessons, teachingRooms} = props;
@@ -26,7 +27,10 @@ const PrivateLessons = props => {
     const [myPrivateLessons, setMyPrivateLessons] = useState([]);
     const [showPrivateLessonDialog, setShowPrivateLessonDialog] = useState(false);
     const [showProfileDialog, setShowProfileDialog] = useState(false);
+    const [showFeedbackDialog, setShowFeedbackDialog] = useState(false);
     const [currentUserProfile, setCurrentUserProfile] = useState(null);
+    const [currentFeedbackUID, setCurrentFeedbackUID] = useState(null);
+    const [currentPrivateLessonID, setCurrentPrivateLessonID] = useState(null);
 
     moment.locale('hu')
 
@@ -144,14 +148,37 @@ const PrivateLessons = props => {
         }
 
         if (rowData.status === 'accepted' && rowData.dateTo.toDate() <= currentTime) {
-            return (
-                <div>
-                    <Button
-                        label="Értékelés"
-                        className="p-button-info"
-                    />
-                </div>
-            )
+            if (role === "tutor" && !rowData.tutorFeedback) {
+                return (
+                    <div>
+                        <Button
+                            label="Értékelés"
+                            className="p-button-info"
+                            onClick={() => {
+                                setCurrentFeedbackUID(rowData.studentUID);
+                                setCurrentPrivateLessonID(rowData.id);
+                                setShowFeedbackDialog(true)
+                            }}
+                        />
+                    </div>
+                )
+            }
+
+            if (role === "student" && !rowData.studentFeedback) {
+                return (
+                    <div>
+                        <Button
+                            label="Értékelés"
+                            className="p-button-info"
+                            onClick={() => {
+                                setCurrentFeedbackUID(rowData.tutorUID);
+                                setCurrentPrivateLessonID(rowData.id);
+                                setShowFeedbackDialog(true)
+                            }}
+                        />
+                    </div>
+                )
+            }
         }
 
         return null;
@@ -345,6 +372,22 @@ const PrivateLessons = props => {
             >
                 <ProfileDialog
                     data={currentUserProfile}
+                />
+            </Dialog>
+            <Dialog header="Értékelés"
+                    visible={showFeedbackDialog}
+                    position={"center"}
+                    modal
+                    onHide={() => setShowFeedbackDialog(false)}
+                    draggable={false}
+                    resizable={false}
+                    className="feedback-dialog"
+            >
+                <FeedbackDialog
+                    setShowFeedbackDialog={setShowFeedbackDialog}
+                    feedbackUID={currentFeedbackUID}
+                    privateLessonID={currentPrivateLessonID}
+                    role={role}
                 />
             </Dialog>
         </div>

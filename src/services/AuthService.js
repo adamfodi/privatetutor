@@ -22,7 +22,10 @@ export const AuthService = {
                                 gender: newUser.gender,
                             },
                             profilePictureUrl: null,
-                            feedback: []
+                            feedback: {
+                                list: [],
+                                sum: 0
+                            }
                         },
                         messages: {
                             incoming: [],

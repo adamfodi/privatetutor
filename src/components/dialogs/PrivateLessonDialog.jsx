@@ -141,6 +141,8 @@ const PrivateLessonDialog = (props) => {
                 dateTo: dateTo,
                 status: "pending",
                 roomID: uuidv4(),
+                studentFeedback: false,
+                tutorFeedback: false
             }
 
             const overlappedDates = myPrivateLessons.filter(privateLesson =>

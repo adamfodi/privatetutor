@@ -61,13 +61,12 @@ const TeachingRoom = (props) => {
         return () => {
             if (_peerConnection.current) {
                 console.log("Component unmounting...")
-                unsubscribeTeachingRoom();
                 WebRTCService.unSubscribe(role, _peerConnection, _localStream, _remoteStream)
-
                 TeachingRoomService.resetTeachingRoom(privateLesson.roomID, tutorCandidatesCollectionRef, studentCandidatesCollectionRef)
                     .catch(() => {
                     })
             }
+            unsubscribeTeachingRoom();
         }
     }, [privateLesson.roomID, role])
 
@@ -304,7 +303,9 @@ const TeachingRoom = (props) => {
 
     return (
         <div className="teaching-room-container">
-            <div className="teaching-room-content">
+            <div
+                className={!showWaitingRoomDialog ? "teaching-room-content" : "teaching-room-content-hidden"}
+            >
                 <div className="left-div">
                     <div className="my-cam-div">
                         <div className="media-div">

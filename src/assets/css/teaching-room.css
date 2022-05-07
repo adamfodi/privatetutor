@@ -7,6 +7,10 @@
     margin-top: 1vh;
 }
 
+.teaching-room-content-hidden{
+    display: none !important;
+}
+
 .teaching-room-content button {
     border: none !important;
     box-shadow: none !important;

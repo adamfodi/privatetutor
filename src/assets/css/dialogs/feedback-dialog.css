@@ -1,0 +1,52 @@
+.feedback-dialog {
+    width: 850px;
+    height: 300px;
+    overflow: auto;
+}
+
+.feedback-dialog .p-dialog-title {
+    border: none !important;
+}
+
+.feedback-dialog .p-dialog-header-icon {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.feedback-dialog-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.feedback-dialog-content >div:first-of-type {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.feedback-dialog-content textarea {
+    resize: none;
+    font-size: 20px;
+    width: 460px !important;
+    height: 100px !important;
+    border: 1px solid #212121;
+    margin-right: 5px;
+}
+
+.feedback-dialog-content .p-rating-icon {
+    margin: 0;
+    padding: 2px;
+    font-size: 25px;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.feedback-dialog-content button {
+    box-shadow: none !important;
+    border: none !important;
+    width: 200px;
+    font-size: 25px;
+    margin-top: 35px;
+}
