@@ -123,8 +123,7 @@ const Messages = props => {
                         allowEscapeKey: false
                     })
                 })
-                .catch((err) => {
-                    console.log(err)
+                .catch(() => {
                     Swal.fire({
                         didOpen: () => {
                             Swal.hideLoading();
