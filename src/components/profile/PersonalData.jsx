@@ -1,6 +1,4 @@
-import {connect} from "react-redux";
 import {addLocale} from "primereact/api";
-import {Controller, useForm} from "react-hook-form";
 import {InputText} from "primereact/inputtext";
 import {Calendar} from "primereact/calendar";
 import {Dropdown} from "primereact/dropdown";
@@ -8,13 +6,22 @@ import "../../assets/css/profile/personal-data.css"
 import "../../assets/css/util/calendar.css"
 import {addLocaleHu, genderList} from "../../util/FormFields";
 import Swal from "sweetalert2";
-import {classNames} from "primereact/utils";
 import {Button} from "primereact/button";
 import {UserService} from "../../services/UserService";
+import React, {useRef, useState} from "react";
+import {Toast} from "primereact/toast";
+import {InputNumber} from "primereact/inputnumber";
+import {connect} from "react-redux";
 
 const PersonalData = (props) => {
     const {firebaseAuth, personalData} = props;
-    const {control, formState: {errors}, handleSubmit} = useForm({defaultValues: personalData});
+    const [lastName, setLastName] = useState(personalData.lastName);
+    const [firstName, setFirstName] = useState(personalData.firstName);
+    const [birthday, setBirthday] = useState(personalData.birthday);
+    const [gender, setGender] = useState(personalData.gender);
+    const [phoneNumber, setPhoneNumber] = useState(personalData.phoneNumber);
+    const [city, setCity] = useState(personalData.city);
+    const errorToast = useRef(null);
 
     addLocale('hu', addLocaleHu);
 
@@ -27,136 +34,181 @@ const PersonalData = (props) => {
         />
     };
 
-    const onSubmit = (data) => {
-        const dataWithFullName = {...data, fullName: data.lastName + ' ' + data.firstName};
-        UserService.updatePersonalData(firebaseAuth.uid, dataWithFullName)
-            .then(() => {
-                Swal.fire({
-                    timer: 1500,
-                    icon: "success",
-                    title: "Sikeres módosítás!",
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
-                })
-            })
-            .catch(() => {
-                Swal.fire({
-                    icon: "error",
-                    title: "Hiba történt az adatok módosítása során!",
-                    allowOutsideClick: false,
-                });
-            })
-    };
+    const validatePersonalData = () => {
+        const errorToast = []
 
-    const getFormErrorMessage = (name) => {
-        return errors[name] && <span className="sign-up-error">{errors[name].message}</span>
+        if (lastName.length === 0) {
+            errorToast.push({
+                life: 5000,
+                severity: 'error',
+                summary: 'Vezetéknév megadása kötelező!',
+            })
+        }
+        if (firstName.length === 0) {
+            errorToast.push({
+                life: 5000,
+                severity: 'error',
+                summary: 'Keresztnév megadása kötelező!',
+            })
+        }
+
+        if (!birthday) {
+            errorToast.push({
+                life: 5000,
+                severity: 'error',
+                summary: 'Születésnap megadása kötelező!',
+            })
+        }
+
+        if (phoneNumber) {
+            let pattern = new RegExp("^\\d{9}$");
+            if (!pattern.test(phoneNumber)) {
+                errorToast.push({
+                    life: 5000,
+                    severity: 'error',
+                    summary: 'Nem megfelelő telefonszám formátum!',
+                })
+            }
+        }
+
+        return errorToast;
+
+    }
+
+    const updatePersonalData = () => {
+        const toast = validatePersonalData();
+
+        if (toast.length === 0) {
+            Swal.fire({
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+                title: "Módosítás...",
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            });
+
+            const newPersonalData = {
+                email: personalData.email,
+                firstName: firstName,
+                lastName: lastName,
+                fullName: lastName + ' ' + firstName,
+                birthday: birthday,
+                gender: gender,
+                phoneNumber: phoneNumber,
+                city: city
+            }
+
+            UserService.updatePersonalData(firebaseAuth.uid, newPersonalData)
+                .then(() => {
+                    Swal.fire({
+                        timer: 1500,
+                        icon: "success",
+                        title: "Sikeres módosítás!",
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    })
+                })
+                .catch(() => {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Hiba történt az adatok módosítása során!",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    });
+                })
+        } else {
+            errorToast.current.show(toast);
+        }
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="personal-data-field-container">
-                <div className="personal-data-fields">
-                    <div className="personal-data-field">
-                        <div className="personal-data-field-data">
-                            <p>Vezetéknév</p>
-                            <span>
-                                <Controller name="lastName"
-                                            control={control}
-                                            rules={
-                                                {
-                                                    required: 'Vezetéknév megadása kötelező!',
-                                                }
-                                            }
-                                            render={({field, fieldState}) => (
-                                                <InputText id={field.name} {...field}
-                                                           className={classNames({'p-invalid': fieldState.invalid})}
-                                                />
-                                            )}
-                                />
-                            </span>
-                        </div>
-                        {getFormErrorMessage('lastName')}
-                    </div>
-                    <div className="personal-data-field">
-                        <div className="personal-data-field-data">
-                            <p>Keresztnév</p>
-                            <span>
-                                <Controller name="firstName"
-                                            control={control}
-                                            rules={
-                                                {
-                                                    required: 'Keresztnév megadása kötelező!',
-                                                }
-                                            }
-                                            render={({field, fieldState}) => (
-                                                <InputText id={field.name} {...field}
-                                                           className={classNames({'p-invalid': fieldState.invalid})}
-                                                />
-                                            )}
-                                />
-                            </span>
-                        </div>
-                        {getFormErrorMessage('firstName')}
-                    </div>
-                    <div className="personal-data-field">
-                        <div className="personal-data-field-data">
-                            <p>Születésnap</p>
-                            <span>
-                                <Controller name="birthday"
-                                            control={control}
-                                            rules={
-                                                {
-                                                    required: 'Születésnap megadása kötelező!',
-                                                }
-                                            }
-                                            render={({field}) => (
-                                                <Calendar
-                                                    id={field.name}
-                                                    value={field.value}
-                                                    onChange={(e) => field.onChange(e.target.value)}
-                                                    dateFormat="yy.mm.dd"
-                                                    maxDate={new Date()}
-                                                    yearNavigator
-                                                    yearNavigatorTemplate={yearNavigatorTemplate}
-                                                    yearRange="1900:2022"
-                                                    selectOtherMonths
-                                                    locale="hu"
-                                                    placeholder="Születésnap"
-                                                />
-                                            )}
-                                />
-                            </span>
-                        </div>
-                        {getFormErrorMessage('birthday')}
-                    </div>
-                    <div className="personal-data-field">
-                        <div className="personal-data-field-data">
-                            <p>Nem</p>
-                            <span>
-                                <Controller name="gender"
-                                            control={control}
-                                            render={({field}) => (
-                                                <Dropdown
-                                                    id={field.name}
-                                                    value={field.value}
-                                                    onChange={(e) => field.onChange(e.target.value)}
-                                                    options={genderList}
-                                                />
-                                            )}
-                                />
-                            </span>
-                        </div>
-                    </div>
+        <>
+            <div className="personal-data-fields-container">
+                <div className="personal-data-field">
+                    <p>
+                        Vezetéknév*
+                    </p>
+                    <InputText
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                    />
+                </div>
+                <div className="personal-data-field">
+                    <p>
+                        Keresztnév*
+                    </p>
+                    <InputText
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                    />
+                </div>
+                <div className="personal-data-field">
+                    <p>
+                        Születésnap*
+                    </p>
+                    <Calendar
+                        value={birthday}
+                        onChange={(e) => setBirthday(e.target.value)}
+                        dateFormat="yy.mm.dd"
+                        maxDate={new Date()}
+                        yearNavigator
+                        yearNavigatorTemplate={yearNavigatorTemplate}
+                        yearRange="1900:2022"
+                        selectOtherMonths
+                        locale="hu"
+                    />
+                </div>
+                <div className="personal-data-field">
+                    <p>
+                        Nem*
+                    </p>
+                    <Dropdown
+                        value={gender}
+                        onChange={(e) => setGender(e.target.value)}
+                        options={genderList}
+                    />
+                </div>
+                <div className="personal-data-field">
+                    <p>
+                        Telefonszám
+                    </p>
+                    <InputNumber
+                        value={phoneNumber}
+                        onValueChange={(e) => setPhoneNumber(e.target.value)}
+                        placeholder="+36 301234567"
+                        prefix="+36 "
+                        useGrouping={false}
+                        tooltip="pl. +36 301234567"
+                    />
+                </div>
+                <div className="personal-data-field">
+                    <p>
+                        Lakhely
+                    </p>
+                    <InputText
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                    />
                 </div>
             </div>
             <div className="personal-data-button-container">
-                <Button type="submit"
-                        label="Módosítások mentése"
-                        className="personal-data-submit-button p-button-success"
+                <Button
+                    label="Módosítások mentése"
+                    className="personal-data-submit-button"
+                    onClick={() => updatePersonalData()}
                 />
             </div>
-        </form>
+            <Toast ref={errorToast}/>
+        </>
     )
 }
 
-export default (PersonalData);
+const mapStateToProps = state => {
+    return {
+        firebaseAuth: state.firebase.auth
+    };
+};
+
+export default connect(mapStateToProps)(PersonalData)

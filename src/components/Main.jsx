@@ -22,9 +22,6 @@ const Main = props => {
     const [nameFilter, setNameFilter] = useState('');
     const [subjectFilter, setSubjectFilter] = useState(null);
     const [timetableFilter, setTimetableFilter] = useState([]);
-    const [lessonsFilter, setLessonsFilter] = useState(null);
-    const [ratingFilter, setRatingFilter] = useState(null);
-    const [priceFilter, setPriceFilter] = useState(null);
     const [showTutorProfileDialog, setShowTutorProfileDialog] = useState(false);
     const [currentTutorProfile, setCurrentTutorProfile] = useState(null);
 
@@ -71,19 +68,16 @@ const Main = props => {
         users && setFilteredTutors(
             users.filter((user) => {
                 const filterTutors = () => {
-                    // console.log("filterTutors")
                     return user.tutor.advertisement.active
                 }
 
                 const filterNames = () => {
-                    // console.log("filterNames")
                     return nameFilter.length === 0
                         ? true
                         : user.profile.personalData.fullName.toLowerCase().startsWith(nameFilter.toLowerCase())
                 }
 
                 const filterSubjects = () => {
-                    // console.log("filterSubjects")
                     return !subjectFilter
                         ? true
                         : user.tutor.advertisement.subjects.some((subject) => subject.name === subjectFilter.name)
@@ -134,14 +128,8 @@ const Main = props => {
         </div>
     }
 
-    const hoursHeldBodyTemplate = (rowData) => {
-        return <div>
-            <p>{rowData.tutor.hoursHeld}</p>
-        </div>
-    }
-
     const ratingBodyTemplate = (rowData) => {
-        const rating = rowData.profile.feedback.length === 0 ? 0 : 4.5;
+        const rating = rowData.profile.feedback.sum;
         return <div>
             <p>{rating}</p>
         </div>
@@ -157,7 +145,7 @@ const Main = props => {
     return (
         <div className="main-container">
             <p className="title">
-                Találd meg a tanárod
+                Találd meg a tanárod!
             </p>
             <div>
                 <div className="datatable-container">
@@ -187,14 +175,6 @@ const Main = props => {
                             body={nameAndSubjectsBodyTemplate}
                             className="name-and-subjects-body-template-td"
 
-                        />
-
-                        <Column
-                            field="tutor.hoursHeld"
-                            header="Megtartott órák"
-                            sortable
-                            body={hoursHeldBodyTemplate}
-                            className="hours-held-body-template-td"
                         />
 
                         <Column

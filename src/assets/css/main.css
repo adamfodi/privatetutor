@@ -70,12 +70,12 @@
 }
 
 .main-container .filter-container .clear-div {
-    margin-top: 20px;
+    margin-top: 50px;
     text-align: center;
 }
 
 .main-container .filter-container .clear-div button {
-    font-size: 20px;
+    font-size: 25px;
 }
 
 .main-container .datatable-container {
@@ -96,10 +96,8 @@
 
 .main-container .datatable-container .p-column-header-content {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    height: 75px;
 }
 
 .main-container .datatable-container tr {
@@ -194,12 +192,10 @@
     margin-top: 3px;
 }
 
-.main-container .datatable-container tbody .hours-held-body-template-td,
 .main-container .datatable-container tbody .rating-body-template-td {
     text-align: center;
 }
 
-.main-container .datatable-container tbody .hours-held-body-template-td p,
 .main-container .datatable-container tbody .rating-body-template-td p {
     font-size: 30px;
     font-weight: bold;

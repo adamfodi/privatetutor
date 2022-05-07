@@ -4,8 +4,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #19616b;
-    border-radius: 0.5em;
+    background-color: #5d5d5d;
+    border-radius: 15px;
     width: 35em;
 }
 
@@ -19,11 +19,13 @@
     border-bottom: 3.5em solid white;
     border-left: 2.5em solid white;
     border-right: 2.5em solid white;
+    border-radius: 15px;
 }
 
-.profile-picture-image-container .p-image img {
+.profile-picture-image-container .p-image img , .profile-picture-image-container .p-image-preview-indicator{
     height: 20em !important;
     width: 20em !important;
+    border-radius: 50%;
 }
 
 .profile-picture-image-container .p-button-icon {

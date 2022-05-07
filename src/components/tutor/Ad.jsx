@@ -96,6 +96,7 @@ const Ad = (props) => {
                                          useGrouping={false}
                                          maxFractionDigits={0}
                                          min={0}
+                                         max={99999}
                             />
                         </div>
 

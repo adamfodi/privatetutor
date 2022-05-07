@@ -1,5 +1,5 @@
 import React, {useMemo, useRef} from 'react';
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {Menubar} from 'primereact/menubar';
 import {Button} from "primereact/button";
 import {connect} from "react-redux";
@@ -12,6 +12,7 @@ import {clearRole} from "../redux/actions/roleActions";
 const Navbar = props => {
     const {role, firebaseAuth, personalData, clearRole} = props;
     const navigate = useNavigate();
+    const currentPath = useLocation().pathname;
     const menu = useRef(null);
     const displayName = personalData ? personalData.fullName : null;
 
@@ -71,6 +72,7 @@ const Navbar = props => {
             {
                 label: 'Főoldal',
                 icon: 'pi pi-fw pi-home',
+                className: currentPath === '/main' && "selected-menu-item",
                 command: () => {
                     navigate("/main")
                 }
@@ -80,7 +82,8 @@ const Navbar = props => {
         items.push(
             {
                 label: 'Magánóráim',
-                icon: 'pi pi-fw pi-home',
+                icon: 'pi pi-fw pi-book',
+                className: currentPath === '/private-lessons' && "selected-menu-item",
                 command: () => {
                     navigate("/private-lessons")
                 }
@@ -92,6 +95,7 @@ const Navbar = props => {
                 {
                     label: 'Hirdetés',
                     icon: 'pi pi-fw pi-pencil',
+                    className: currentPath === '/tutor/ad' && "selected-menu-item",
                     command: () => {
                         navigate("/tutor/ad")
                     },
@@ -99,20 +103,9 @@ const Navbar = props => {
             );
         }
 
-        items.push(
-            {
-                label: 'Fórum',
-                icon: 'pi pi-fw pi-pencil',
-                command: () => {
-                    navigate("/main")
-                },
-                disabled: true
-            },
-        );
-
         return items;
 
-    }, [navigate, role])
+    }, [currentPath, navigate, role])
 
     const userItems = useMemo(() => {
         return [
@@ -151,6 +144,7 @@ const Navbar = props => {
                 start={menubarStartTemplate}
                 model={mainItems}
                 end={menubarEndTemplate}
+                className="nav-menubar"
             />
         </div>
     );

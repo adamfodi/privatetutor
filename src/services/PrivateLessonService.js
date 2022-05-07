@@ -34,15 +34,6 @@ export const PrivateLessonService = {
             )
     },
 
-    async deletePrivateLesson(id) {
-        const firestore = state.firebase.firestore;
-
-        await firestore()
-            .collection("privateLessons")
-            .doc(id)
-            .delete()
-    }
-
 }
 
 

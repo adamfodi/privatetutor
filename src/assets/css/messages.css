@@ -252,23 +252,5 @@
     font-weight: bold;
 }
 
-.messages-container .p-toast-message-content {
-    display: flex;
-    align-items: center;
-}
-
-.messages-container .p-toast-message-text {
-    font-size: 25px;
-}
-
-.messages-container .p-toast-icon-close {
-    border: none !important;
-    box-shadow: none !important;
-}
-
-.messages-container .p-toast-icon-close-icon {
-    font-size: 25px;
-}
-
 
 

@@ -10,7 +10,6 @@ import moment from "moment";
 import 'moment/locale/hu'
 import "../assets/css/private-lessons.css"
 import {Tag} from "primereact/tag";
-import Swal from "sweetalert2";
 import {useNavigate} from "react-router-dom";
 import PrivateLessonDialog from "./dialogs/PrivateLessonDialog";
 import {PrivateLessonService} from "../services/PrivateLessonService";
@@ -53,35 +52,6 @@ const PrivateLessons = props => {
                 return !!room.answer
             }
         }
-    }
-
-    const deletePrivateLesson = (privateLessonID, roomID) => {
-        Swal.fire({
-            title: 'Biztosan törölni szeretné?',
-            showConfirmButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'Igen',
-            cancelButtonText: 'Mégse',
-            allowEscapeKey: false,
-            allowOutsideClick: false
-        }).then((result) => {
-            if (result.isConfirmed) {
-                PrivateLessonService.deletePrivateLesson(privateLessonID)
-                    .then(() => {
-                        TeachingRoomService.deleteRoom(roomID)
-                    })
-                    .catch(() => {
-                        Swal.fire({
-                            position: 'center',
-                            allowOutsideClick: false,
-                            allowEscapeKey: false,
-                            icon: 'error',
-                            iconColor: '#c91e1e',
-                            title: 'Probléma történt!\n Kérem próbálja újra később!'
-                        });
-                    })
-            }
-        })
     }
 
     const tableHeaderTemplate = (
@@ -148,33 +118,35 @@ const PrivateLessons = props => {
         }
 
         if (rowData.status === 'accepted' && rowData.dateTo.toDate() <= currentTime) {
-            if (role === "tutor" && !rowData.tutorFeedback) {
+            if (role === "tutor") {
                 return (
                     <div>
                         <Button
-                            label="Értékelés"
+                            label={rowData.tutorFeedback ? "Értékelve" : "Értékelés"}
                             className="p-button-info"
                             onClick={() => {
                                 setCurrentFeedbackUID(rowData.studentUID);
                                 setCurrentPrivateLessonID(rowData.id);
                                 setShowFeedbackDialog(true)
                             }}
+                            disabled={rowData.tutorFeedback}
                         />
                     </div>
                 )
             }
 
-            if (role === "student" && !rowData.studentFeedback) {
+            if (role === "student") {
                 return (
                     <div>
                         <Button
-                            label="Értékelés"
+                            label={rowData.studentFeedback ? "Értékelve" : "Értékelés"}
                             className="p-button-info"
                             onClick={() => {
                                 setCurrentFeedbackUID(rowData.tutorUID);
                                 setCurrentPrivateLessonID(rowData.id);
                                 setShowFeedbackDialog(true)
                             }}
+                            disabled={rowData.studentFeedback}
                         />
                     </div>
                 )
@@ -208,6 +180,10 @@ const PrivateLessons = props => {
     }
 
     const statusBodyTemplate = (rowData) => {
+        const currentTime = new Date();
+        if (rowData.dateTo.toDate() <= currentTime && rowData.status === "accepted"){
+            PrivateLessonService.modifyPrivateLessonStatus(rowData.id,"finished")
+        }
         switch (rowData.status) {
             case "pending":
                 return (
@@ -235,7 +211,7 @@ const PrivateLessons = props => {
 
             case "finished":
                 return (
-                    <Tag icon="pi pi-book"
+                    <Tag icon="pi pi-lock"
                          severity="secondary"
                          value="Befejezett"
                     />
@@ -246,51 +222,42 @@ const PrivateLessons = props => {
         }
     }
 
-    const deleteBodyTemplate = (rowData) => {
-        const currentTime = new Date();
-        return (
-            rowData.dateFrom.toDate() < currentTime &&
-            <div>
-                <Button label="Törlés"
-                        className="p-button-danger"
-                        onClick={(() => deletePrivateLesson(rowData.id, rowData.roomID))}
-                />
-            </div>
-        )
-    }
-
     const responseBodyTemplate = (rowData) => {
-        switch (rowData.status) {
-            case "pending":
-                return (
-                    <div>
-                        <Button label="Elfogadás"
-                                className="p-button-success"
-                                onClick={() => {
-                                    PrivateLessonService.modifyPrivateLessonStatus(rowData.id, "accepted")
-                                        .then(() => {
-                                            TeachingRoomService.createRoom(rowData.roomID)
-                                        })
-                                }}
-                        />
-                        <Button label="Elutasítás"
-                                className="p-button-danger"
-                                onClick={() => PrivateLessonService.modifyPrivateLessonStatus(rowData.id, "rejected")}
-                        />
-                    </div>
-                )
+        const currentTime = new Date();
 
-            case "accepted":
-                return (
-                    <div>
-                        <Button label="Lemondás"
-                                className="p-button-danger"
-                                onClick={() => PrivateLessonService.modifyPrivateLessonStatus(rowData.id, "rejected")}
-                        />
-                    </div>
-                )
-            default:
-                return null
+        if (rowData.dateFrom.toDate() >= currentTime) {
+            switch (rowData.status) {
+                case "pending":
+                    return (
+                        <div>
+                            <Button label="Elfogadás"
+                                    className="p-button-success"
+                                    onClick={() => {
+                                        PrivateLessonService.modifyPrivateLessonStatus(rowData.id, "accepted")
+                                            .then(() => {
+                                                TeachingRoomService.createRoom(rowData.roomID)
+                                            })
+                                    }}
+                            />
+                            <Button label="Elutasítás"
+                                    className="p-button-danger"
+                                    onClick={() => PrivateLessonService.modifyPrivateLessonStatus(rowData.id, "rejected")}
+                            />
+                        </div>
+                    )
+
+                case "accepted":
+                    return (
+                        <div>
+                            <Button label="Lemondás"
+                                    className="p-button-danger"
+                                    onClick={() => PrivateLessonService.modifyPrivateLessonStatus(rowData.id, "rejected")}
+                            />
+                        </div>
+                    )
+                default:
+                    return null
+            }
         }
     }
 
@@ -344,7 +311,9 @@ const PrivateLessons = props => {
                         body={statusBodyTemplate}
                     />
 
-                    <Column body={role === "tutor" ? deleteBodyTemplate : responseBodyTemplate}/>
+                    <Column
+                        body={role === "student" && responseBodyTemplate}
+                    />
                 </DataTable>
             </div>
             <Dialog header="Új magánóra létrehozása"

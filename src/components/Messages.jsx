@@ -369,7 +369,6 @@ const Messages = props => {
                 }
             </Dialog>
             <Toast ref={errorToast}/>
-
         </div>
     );
 };

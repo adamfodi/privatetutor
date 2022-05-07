@@ -26,3 +26,27 @@
 .navbar-container .p-menubar-end .auth-buttons .p-button:first-of-type {
     margin-right: 20px;
 }
+
+.navbar-container .nav-menubar .p-menubar-root-list li{
+    margin-right: 5px;
+    font-size: 20px;
+}
+
+.navbar-container .nav-menubar .p-menuitem a{
+    border: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+}
+
+.navbar-container .nav-menubar .p-menuitem a:hover{
+    background-color: #d8f1d2 !important;
+}
+
+.navbar-container .nav-menubar .selected-menu-item {
+    background-color: yellowgreen !important;
+}
+
+.navbar-container .nav-menubar .selected-menu-item a:hover {
+    background-color: yellowgreen !important;
+}
+

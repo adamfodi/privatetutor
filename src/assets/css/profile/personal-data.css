@@ -1,66 +1,34 @@
-.personal-data-field-container {
-    background-color: #19616b;
-    color: white;
+.personal-data-fields-container {
     font-weight: bold;
     display: flex;
+    flex-direction: column;
     margin: auto;
-    border-radius: 0.5em;
+    border-radius: 15px;
     width: 100%;
+    box-shadow: 0 3px 5px grey, 0 0 2px grey, 0 1px 4px grey !important;
 }
 
-.personal-data-fields {
-    width: 60%;
-}
-
-.personal-data-field {
-    margin-left: 2em;
-    margin-right: 2em;
-}
-
-.personal-data-field-data {
+.personal-data-field{
+    width: 100%;
     display: flex;
+    justify-content: space-around;
     align-items: center;
-    justify-content: space-between;
 }
 
-.personal-data-field-data > p {
-    width: 40%;
-    font-size: 1.5em !important;
+.personal-data-field > p {
+    width: 15%;
+    font-size: 25px !important;
     font-weight: bold;
 }
 
-.personal-data-field-data > span {
-    width: 100%;
-}
-
-.personal-data-field-data > span > .p-calendar {
-    width: 100%;
-}
-
-.personal-data-field-data > span > .p-dropdown {
-    width: 100%;
-    border: none;
-}
-
-.personal-data-field-data .p-inputtext {
-    width: 100%;
-    font-size: 1.5em !important;
-    border: none;
-}
-
-.personal-data-field-data .p-inputtext:focus {
-    box-shadow: 0 0 1px 1px orangered !important;
-    border: none !important;
-}
-
-.personal-data-field-data > span > .p-inputwrapper-focus {
-    box-shadow: 0 0 1px 1px orangered !important;
-    border: none !important;
+.personal-data-field .p-inputtext, .personal-data-field .p-calendar, .personal-data-field .p-dropdown, .personal-data-field span {
+    width: 80%;
+    font-size: 25px !important;
 }
 
 .personal-data-field-data .p-dropdown-trigger-icon {
     width: 100%;
-    font-size: 1.5em;
+    font-size: 25px;
 }
 
 .personal-data-button-container {
@@ -70,8 +38,8 @@
 }
 
 .personal-data-submit-button {
-    margin: 1em 0 0 0;
-    padding: 0.6em;
-    font-size: 2em;
+    font-size: 25px;
+    padding: 10px 50px;
+    margin-top: 30px;
 }
 

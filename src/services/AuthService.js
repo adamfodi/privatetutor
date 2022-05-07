@@ -20,11 +20,13 @@ export const AuthService = {
                                 email: newUser.email,
                                 birthday: newUser.birthday,
                                 gender: newUser.gender,
+                                phoneNumber: null,
+                                city: ""
                             },
                             profilePictureUrl: null,
                             feedback: {
                                 list: [],
-                                sum: 0
+                                sum: "-"
                             }
                         },
                         messages: {
@@ -38,8 +40,7 @@ export const AuthService = {
                                 timetable: createEmptyTimetable(),
                                 hourlyRate: null,
                                 active: false
-                            },
-                            hoursHeld: 0
+                            }
                         }
                     })
             })

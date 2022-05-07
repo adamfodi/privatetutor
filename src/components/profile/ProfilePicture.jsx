@@ -16,8 +16,6 @@ const ProfilePicture = (props) => {
     const storage = getStorage();
     const storageRef = ref(storage, 'profilePictures/' + auth.uid);
 
-    console.log(newUrl)
-
     const uploadButtonClick = (fileRef) => {
         fileRef.current.click();
     };

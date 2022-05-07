@@ -42,7 +42,7 @@ const ProfileDialog = (props) => {
                     <div>
                         <div>
                             <p>Születésnap:</p>
-                            <p>{moment(props.data.profile.personalData.birthday.toDate()).format("YYYY. MMMM. Do ")}</p>
+                            <p>{moment(props.data.profile.personalData.birthday.toDate()).format("YYYY. MMMM Do ")}</p>
                         </div>
                         <div>
                             <p>Email:</p>
@@ -50,7 +50,23 @@ const ProfileDialog = (props) => {
                         </div>
                         <div>
                             <p>Telefonszám:</p>
-                            <p>+3631234565</p>
+                            <p>
+                                {
+                                    props.data.profile.personalData.phoneNumber
+                                        ? "+36 " + props.data.profile.personalData.phoneNumber
+                                        : "-"
+                                }
+                            </p>
+                        </div>
+                        <div>
+                            <p>Lakhely:</p>
+                            <p>
+                                {
+                                    props.data.profile.personalData.city.length !== 0
+                                        ? props.data.profile.personalData.city
+                                        : "-"
+                                }
+                            </p>
                         </div>
                     </div>
                 </div>
