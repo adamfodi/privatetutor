@@ -117,7 +117,7 @@ const PrivateLessons = props => {
             )
         }
 
-        if (rowData.status === 'accepted' && rowData.dateTo.toDate() <= currentTime) {
+        if (rowData.status === 'finished' && rowData.dateTo.toDate() <= currentTime) {
             if (role === "tutor") {
                 return (
                     <div>
@@ -181,8 +181,8 @@ const PrivateLessons = props => {
 
     const statusBodyTemplate = (rowData) => {
         const currentTime = new Date();
-        if (rowData.dateTo.toDate() <= currentTime && rowData.status === "accepted"){
-            PrivateLessonService.modifyPrivateLessonStatus(rowData.id,"finished")
+        if (rowData.dateTo.toDate() <= currentTime && rowData.status === "accepted") {
+            PrivateLessonService.modifyPrivateLessonStatus(rowData.id, "finished")
         }
         switch (rowData.status) {
             case "pending":
@@ -225,39 +225,35 @@ const PrivateLessons = props => {
     const responseBodyTemplate = (rowData) => {
         const currentTime = new Date();
 
-        if (rowData.dateFrom.toDate() >= currentTime) {
-            switch (rowData.status) {
-                case "pending":
-                    return (
-                        <div>
-                            <Button label="Elfogadás"
-                                    className="p-button-success"
-                                    onClick={() => {
-                                        PrivateLessonService.modifyPrivateLessonStatus(rowData.id, "accepted")
-                                            .then(() => {
-                                                TeachingRoomService.createRoom(rowData.roomID)
-                                            })
-                                    }}
-                            />
-                            <Button label="Elutasítás"
-                                    className="p-button-danger"
-                                    onClick={() => PrivateLessonService.modifyPrivateLessonStatus(rowData.id, "rejected")}
-                            />
-                        </div>
-                    )
-
-                case "accepted":
-                    return (
-                        <div>
-                            <Button label="Lemondás"
-                                    className="p-button-danger"
-                                    onClick={() => PrivateLessonService.modifyPrivateLessonStatus(rowData.id, "rejected")}
-                            />
-                        </div>
-                    )
-                default:
-                    return null
+        if (rowData.dateFrom.toDate() >= currentTime)
+            if (rowData.status === "pending" && role === "student") {
+                return (
+                    <div>
+                        <Button label="Elfogadás"
+                                className="p-button-success"
+                                onClick={() => {
+                                    PrivateLessonService.modifyPrivateLessonStatus(rowData.id, "accepted")
+                                        .then(() => {
+                                            TeachingRoomService.createRoom(rowData.roomID)
+                                        })
+                                }}
+                        />
+                        <Button label="Elutasítás"
+                                className="p-button-danger"
+                                onClick={() => PrivateLessonService.modifyPrivateLessonStatus(rowData.id, "rejected")}
+                        />
+                    </div>
+                )
             }
+        if (rowData.status === "accepted") {
+            return (
+                <div>
+                    <Button label="Lemondás"
+                            className="p-button-danger"
+                            onClick={() => PrivateLessonService.modifyPrivateLessonStatus(rowData.id, "rejected")}
+                    />
+                </div>
+            )
         }
     }
 
@@ -312,7 +308,7 @@ const PrivateLessons = props => {
                     />
 
                     <Column
-                        body={role === "student" && responseBodyTemplate}
+                        body={responseBodyTemplate}
                     />
                 </DataTable>
             </div>
