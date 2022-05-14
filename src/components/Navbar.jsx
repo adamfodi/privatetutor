@@ -107,7 +107,7 @@ const Navbar = props => {
 
         return items;
 
-    }, [currentPath, firebaseAuth.isEmpty, navigate, role])
+    }, [role, currentPath, firebaseAuth.isEmpty, navigate])
 
     const userItems = useMemo(() => {
         return [
