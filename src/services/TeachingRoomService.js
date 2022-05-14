@@ -18,14 +18,6 @@ export const TeachingRoomService = {
             })
     },
 
-    async deleteRoom(roomID) {
-        await getFirebase()
-            .firestore()
-            .collection("teachingRooms")
-            .doc(roomID)
-            .delete()
-    },
-
     async sendMessage(roomID, uid, messageContent, messageType) {
         const firestore = state.firebase.firestore;
         const message = {

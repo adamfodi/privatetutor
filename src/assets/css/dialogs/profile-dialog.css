@@ -35,31 +35,31 @@
     margin-bottom: 20px;
 }
 
-.profile-dialog-content .personal-data-div {
+.profile-dialog-content .personal-data-div, .profile-dialog-content .feedback-div {
     width: 100%;
 }
 
-.profile-dialog-content .personal-data-div > p {
+.profile-dialog-content .personal-data-div > p, .profile-dialog-content .feedback-div > p:first-of-type {
     font-size: 25px;
 }
 
-.profile-dialog-content .personal-data-div > div {
+.profile-dialog-content .personal-data-div > div, .profile-dialog-content .feedback-table {
     box-shadow: 0 3px 5px grey, 0 0 2px grey, 0 1px 4px grey !important;
     border-radius: 0;
 }
 
-.profile-dialog-content .personal-data-div > div >div {
+.profile-dialog-content .personal-data-div > div > div {
     display: flex;
     align-items: center;
 }
 
-.profile-dialog-content .personal-data-div > div >div >p:first-of-type {
+.profile-dialog-content .personal-data-div > div > div > p:first-of-type {
     font-size: 20px;
     font-weight: bold;
     margin: 15px 10px;
 }
 
-.profile-dialog-content .personal-data-div > div >div >p:last-of-type {
+.profile-dialog-content .personal-data-div > div > div > p:last-of-type {
     margin: 0;
     font-size: 20px;
     white-space: nowrap;
@@ -134,5 +134,61 @@
     margin-top: 30px;
     border: none !important;
     box-shadow: none !important;
+}
+
+.profile-dialog-content .feedback-table {
+    margin-bottom: 10px;
+}
+
+.profile-dialog-content .feedback-table .rating-td {
+    width: 10%;
+    text-align: center;
+}
+
+.profile-dialog-content .feedback-table .rating-td div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.profile-dialog-content .feedback-table .rating-td div p {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 1px;
+}
+
+.profile-dialog-content .feedback-table .rating-td div .pi-star {
+    font-size: 20px;
+    margin-left: 5px;
+}
+
+.profile-dialog-content .feedback-table .date-td {
+    width: 20%;
+    text-align: center;
+}
+
+.profile-dialog-content .feedback-table .date-td p {
+    font-size: 20px;
+    margin: 1px;
+}
+
+.profile-dialog-content .feedback-table .feedback-td {
+    width: 70%;
+}
+
+.profile-dialog-content .feedback-table .feedback-td p {
+    font-size: 15px;
+    overflow-wrap: anywhere;
+}
+
+.profile-dialog-content .p-datatable-table {
+    margin-top: 10px;
+}
+
+.profile-dialog-content .feedback-table .p-column-header-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 

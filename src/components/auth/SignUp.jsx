@@ -70,7 +70,6 @@ const SignUp = props => {
                     })
                 })
                 .catch((err) => {
-                    console.log(err)
                     Swal.fire({
                         icon: "error",
                         title: "Ez az email cím már foglalt!",
@@ -109,6 +108,10 @@ const SignUp = props => {
                                                      pattern: {
                                                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
                                                          message: 'Helytelen email cím!'
+                                                     },
+                                                     maxLength: {
+                                                         value: 40,
+                                                         message: "Az email cím maximum 40 karakter hosszú lehet!"
                                                      }
                                                  }
                                              }
@@ -130,7 +133,15 @@ const SignUp = props => {
                                              control={control}
                                              rules={
                                                  {
-                                                     required: 'Jelszó megadása kötelező!'
+                                                     required: 'Jelszó megadása kötelező!',
+                                                     minLength: {
+                                                         value: 6,
+                                                         message: "A jelszónak minimum 6 karakter hosszúnak kell lennie!"
+                                                     },
+                                                     maxLength: {
+                                                         value: 30,
+                                                         message: "A jelszó maximum 30 karakter hosszú lehet!"
+                                                     }
                                                  }
                                              }
                                              render={({field, fieldState}) => (
@@ -157,7 +168,15 @@ const SignUp = props => {
                                              control={control}
                                              rules={
                                                  {
-                                                     required: 'Ismételt jelszó megadása kötelező!'
+                                                     required: 'Ismételt jelszó megadása kötelező!',
+                                                     minLength: {
+                                                         value: 6,
+                                                         message: "Az ismételt jelszónak minimum 6 karakter hosszúnak kell lennie!"
+                                                     },
+                                                     maxLength: {
+                                                         value: 30,
+                                                         message: "Az ismételt jelszó maximum 30 karakter hosszú lehet!"
+                                                     }
                                                  }
                                              }
                                              render={({field, fieldState}) => (
@@ -181,6 +200,14 @@ const SignUp = props => {
                                              rules={
                                                  {
                                                      required: 'Vezetéknév megadása kötelező!',
+                                                     minLength: {
+                                                         value: 3,
+                                                         message: "A vezetéknévnek minimum 3 karakter hosszúnak kell lennie!"
+                                                     },
+                                                     maxLength: {
+                                                         value: 30,
+                                                         message: "A vezetéknév maximum 30 karakter hosszú lehet!"
+                                                     }
                                                  }
                                              }
                                              render={({field, fieldState}) => (
@@ -201,6 +228,14 @@ const SignUp = props => {
                                              rules={
                                                  {
                                                      required: 'Keresztnév megadása kötelező!',
+                                                     minLength: {
+                                                         value: 3,
+                                                         message: "A keresztnévnek minimum 3 karakter hosszúnak kell lennie!"
+                                                     },
+                                                     maxLength: {
+                                                         value: 30,
+                                                         message: "A keresztnév maximum 30 karakter hosszú lehet!"
+                                                     }
                                                  }
                                              }
                                              render={({field, fieldState}) => (
@@ -258,25 +293,28 @@ const SignUp = props => {
                         </span>
                         </div>
                         <div className="login-role">
+                            <p>Bejelentkezés, mint</p>
                             <div>
-                                <RadioButton
-                                    inputId="student"
-                                    name="role"
-                                    value="student"
-                                    onChange={(e) => setLoginRole(e.value)}
-                                    checked={loginRole === "student"}
-                                />
-                                <p>Tanulni szeretnék!</p>
-                            </div>
-                            <div>
-                                <RadioButton
-                                    inputId="tutor"
-                                    name="role"
-                                    value="tutor"
-                                    onChange={(e) => setLoginRole(e.value)}
-                                    checked={loginRole === "tutor"}
-                                />
-                                <p>Tanítani szeretnék!</p>
+                                <div>
+                                    <RadioButton
+                                        inputId="student"
+                                        name="role"
+                                        value="student"
+                                        onChange={(e) => setLoginRole(e.value)}
+                                        checked={loginRole === "student"}
+                                    />
+                                    <p>Hallgató</p>
+                                </div>
+                                <div>
+                                    <RadioButton
+                                        inputId="tutor"
+                                        name="role"
+                                        value="tutor"
+                                        onChange={(e) => setLoginRole(e.value)}
+                                        checked={loginRole === "tutor"}
+                                    />
+                                    <p>Oktató</p>
+                                </div>
                             </div>
                         </div>
                         <div className="submit-button">

@@ -22,17 +22,17 @@ const Feedback = (props) => {
 
     const feedbackBodyTemplate = (rowData) => {
         return (
-                <p>
-                    {rowData.message}
-                </p>
+            <p>
+                {rowData.message}
+            </p>
         )
     }
 
     const dateBodyTemplate = (rowData) => {
         return (
-                <p>
-                    {moment(rowData.date.toDate()).format('YYYY. MMMM DD.')}
-                </p>
+            <p>
+                {moment(rowData.date.toDate()).format('YYYY. MMMM DD.')}
+            </p>
         )
     }
 
@@ -77,7 +77,6 @@ const Feedback = (props) => {
                         sortable
                         className="date-td"
                     />
-
                 </DataTable>
             </div>
         </div>

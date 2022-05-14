@@ -22,5 +22,4 @@ export const RTCPeerConnectionConfiguration = {
 export const RTCPeerConnectionOfferOptions = {
     offerToReceiveAudio: true,
     offerToReceiveVideo: true,
-    // iceRestart: restartInput.checked,
 };

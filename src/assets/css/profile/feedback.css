@@ -36,7 +36,7 @@
 
 .feedback-container .feedback-table .rating-td {
     width: 10%;
-    text-align:center;
+    text-align: center;
 }
 
 .feedback-container .feedback-table .rating-td div {
@@ -59,7 +59,7 @@
 
 .feedback-container .feedback-table .date-td {
     width: 20%;
-    text-align:center;
+    text-align: center;
 }
 
 .feedback-container .feedback-table .date-td p {
@@ -67,11 +67,11 @@
     margin: 1px;
 }
 
-.feedback-container .feedback-table .feedback-td{
+.feedback-container .feedback-table .feedback-td {
     width: 70%;
 }
 
-.feedback-container .feedback-table .feedback-td p{
+.feedback-container .feedback-table .feedback-td p {
     font-size: 15px;
     overflow-wrap: anywhere;
 }

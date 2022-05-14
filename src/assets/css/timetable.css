@@ -1,19 +1,19 @@
-.timetable-content .p-datatable-table{
+.timetable-content .p-datatable-table {
     table-layout: fixed !important;
     width: 3vw;
 }
 
-.timetable-content th div{
-    display:flex;
+.timetable-content th div {
+    display: flex;
     justify-content: center;
 }
 
-.timetable-content th:first-of-type div{
-    display:flex;
+.timetable-content th:first-of-type div {
+    display: flex;
     justify-content: left;
 }
 
-.timetable-content th div span{
+.timetable-content th div span {
     font-size: 20px;
 }
 

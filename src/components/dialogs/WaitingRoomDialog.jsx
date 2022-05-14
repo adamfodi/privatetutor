@@ -58,7 +58,7 @@ const WaitingRoomDialog = (props) => {
                                 onClick={() => {
                                     if (webcamPlaying) {
                                         setWebcamLoading(true)
-                                        WebRTCService.stopLocalMediaStream(null, waitingRoomLocalStream, waitingRoomLocalVideoRef)
+                                        WebRTCService.stopMediaStream(null, waitingRoomLocalStream, waitingRoomLocalVideoRef)
                                             .then(() => {
                                                 setWebcamLoading(false)
                                                 setWebcamPlaying(false)
@@ -87,7 +87,7 @@ const WaitingRoomDialog = (props) => {
                 {
                     role === 'student' &&
                     <p className="info">
-                        Az órához csak akkor lehet csatlakozni, ha az oktató azt már elindította!
+                        Az órához csak akkor lehet csatlakozni, ha azt az oktató már elindította!
                     </p>
                 }
                 <div className="action-button-div">

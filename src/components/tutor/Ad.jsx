@@ -40,7 +40,7 @@ const Ad = (props) => {
             allowEscapeKey: false
 
         });
-        UserService.updateTutorAdvertisement(firebaseAuth.uid, newAd)
+        UserService.updateTutorAd(firebaseAuth.uid, newAd)
             .then(() => {
                 Swal.fire({
                     timer: 1500,

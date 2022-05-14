@@ -71,6 +71,14 @@ const PersonalData = (props) => {
             }
         }
 
+        if (city && city.length > 40) {
+            errorToast.push({
+                life: 5000,
+                severity: 'error',
+                summary: 'A lakhely maximum 40 karakter hosszú lehet!',
+            })
+        }
+
         return errorToast;
 
     }
@@ -113,7 +121,7 @@ const PersonalData = (props) => {
                 .catch(() => {
                     Swal.fire({
                         icon: "error",
-                        title: "Hiba történt az adatok módosítása során!",
+                        title: "Hiba történt az adatok módosítása során!\n Kérem próbálja újra később!",
                         allowOutsideClick: false,
                         allowEscapeKey: false
                     });

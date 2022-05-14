@@ -63,8 +63,6 @@ const Timetable = (props) => {
         );
     }
 
-    // console.log(timetable)
-
     return (
         <div className="timetable-content">
             <DataTable value={timetable}

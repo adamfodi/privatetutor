@@ -46,7 +46,6 @@ const TeachingRoom = (props) => {
     const studentCandidatesCollectionRef = useRef(teachingRoomRef.current.collection('studentCandidates'));
 
     useEffect(() => {
-        console.log("Component mounted!")
         const _peerConnection = peerConnection;
         const _localStream = localStream;
         const _remoteStream = remoteStream;
@@ -60,7 +59,6 @@ const TeachingRoom = (props) => {
 
         return () => {
             if (_peerConnection.current) {
-                console.log("Component unmounting...")
                 WebRTCService.unSubscribe(role, _peerConnection, _localStream, _remoteStream)
                 TeachingRoomService.resetTeachingRoom(privateLesson.roomID, tutorCandidatesCollectionRef, studentCandidatesCollectionRef)
                     .catch(() => {
@@ -105,7 +103,7 @@ const TeachingRoom = (props) => {
 
     const stopLocalMediaStream = () => {
         setButtonLoading(true)
-        WebRTCService.stopLocalMediaStream(peerConnection, localStream)
+        WebRTCService.stopMediaStream(peerConnection, localStream)
             .then(() => {
                 TeachingRoomService.setMediaStream(privateLesson.roomID, setMediaStream(false))
                     .then(() => {
@@ -327,7 +325,7 @@ const TeachingRoom = (props) => {
                         <div className="buttons-div">
                             {localMediaStreamOn &&
                                 <Button
-                                    label={localMediaStreamType === "camera" ? "Kamera kikapcsolása" : "Képernyőmegosztás kikapcsolása"}
+                                    label={localMediaStreamType === "camera" ? "Kamera kikapcsolása" : "Képernyőmegosztás leállítása"}
                                     className="p-button-danger"
                                     onClick={() => stopLocalMediaStream()}
                                     loading={buttonLoading}
@@ -390,7 +388,7 @@ const TeachingRoom = (props) => {
                         />
                     </div>
                     <div className="file-upload-div">
-                        <p>File megosztás</p>
+                        <p>Fájl megosztás</p>
                         <div>
                             <div className="select-div">
                                 <Button type="button"

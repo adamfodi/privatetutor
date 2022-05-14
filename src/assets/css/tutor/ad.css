@@ -58,7 +58,7 @@
     font-size: 21px;
 }
 
-.ad-container .introduction-div .ql-editor p  {
+.ad-container .introduction-div .ql-editor p {
     font-size: 20px;
 }
 
@@ -68,7 +68,7 @@
 
 .ad-container .active-div {
     width: 75%;
-    display:flex;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -87,11 +87,11 @@
     font-size: 25px !important;
 }
 
-.ad-container .submit-button-div{
+.ad-container .submit-button-div {
     text-align: center;
 }
 
-.ad-container .submit-button-div button{
+.ad-container .submit-button-div button {
     font-size: 25px;
     padding: 10px 50px;
     margin-top: 10px;

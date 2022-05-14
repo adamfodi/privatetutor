@@ -99,7 +99,7 @@ const PrivateLessons = props => {
             return (
                 <div>
                     <Button
-                        label="Csatlakozás"
+                        label="Belépés"
                         className="p-button-success"
                         onClick={() => navigate("/teaching-room",
                             {
@@ -117,7 +117,7 @@ const PrivateLessons = props => {
             )
         }
 
-        if (rowData.status === 'finished' && rowData.dateTo.toDate() <= currentTime) {
+        if (rowData.status === 'finished') {
             if (role === "tutor") {
                 return (
                     <div>
@@ -225,7 +225,7 @@ const PrivateLessons = props => {
     const responseBodyTemplate = (rowData) => {
         const currentTime = new Date();
 
-        if (rowData.dateFrom.toDate() >= currentTime)
+        if (rowData.dateFrom.toDate() >= currentTime) {
             if (rowData.status === "pending" && role === "student") {
                 return (
                     <div>
@@ -245,15 +245,16 @@ const PrivateLessons = props => {
                     </div>
                 )
             }
-        if (rowData.status === "accepted") {
-            return (
-                <div>
-                    <Button label="Lemondás"
-                            className="p-button-danger"
-                            onClick={() => PrivateLessonService.modifyPrivateLessonStatus(rowData.id, "rejected")}
-                    />
-                </div>
-            )
+            if (rowData.status === "accepted") {
+                return (
+                    <div>
+                        <Button label="Lemondás"
+                                className="p-button-danger"
+                                onClick={() => PrivateLessonService.modifyPrivateLessonStatus(rowData.id, "rejected")}
+                        />
+                    </div>
+                )
+            }
         }
     }
 
@@ -284,7 +285,10 @@ const PrivateLessons = props => {
                         className="user-name-td"
                     />
 
-                    <Column body={joinRoomAndFeedbackBodyTemplate}/>
+                    <Column
+                        body={joinRoomAndFeedbackBodyTemplate}
+                            className="join-feedback-td"
+                    />
 
                     <Column
                         header="Időpont"
@@ -309,6 +313,7 @@ const PrivateLessons = props => {
 
                     <Column
                         body={responseBodyTemplate}
+                        className="response-td"
                     />
                 </DataTable>
             </div>

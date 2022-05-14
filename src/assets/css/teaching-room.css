@@ -7,7 +7,7 @@
     margin-top: 1vh;
 }
 
-.teaching-room-content-hidden{
+.teaching-room-content-hidden {
     display: none !important;
 }
 
@@ -72,7 +72,7 @@
     align-items: center;
 }
 
-.teaching-room-content .left-div .my-cam-div .buttons-div .on-buttons{
+.teaching-room-content .left-div .my-cam-div .buttons-div .on-buttons {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -310,7 +310,7 @@
 .teaching-room-content .right-div .file-upload-div .action-div {
     width: 15vw;
     text-align: center;
-    display:flex;
+    display: flex;
     justify-content: center;
 }
 

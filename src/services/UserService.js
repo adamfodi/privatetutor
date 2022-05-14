@@ -23,7 +23,7 @@ export const UserService = {
             })
     },
 
-    async updateTutorAdvertisement(uid, advertisement) {
+    async updateTutorAd(uid, advertisement) {
 
         await getFirebase()
             .firestore()
@@ -48,12 +48,12 @@ export const UserService = {
 
                 let sum = 0;
                 user.data().profile.feedback.list.forEach(feedback => {
-                    sum+= feedback.rating;
+                    sum += feedback.rating;
                 })
 
-                sum = (sum/user.data().profile.feedback.list.length).toFixed(1)
+                sum = (sum / user.data().profile.feedback.list.length).toFixed(1)
 
-                await this.updateFeedbackSum(uid,sum);
+                await this.updateFeedbackSum(uid, sum);
 
             })
     },

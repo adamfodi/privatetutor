@@ -79,7 +79,7 @@ const Navbar = props => {
             },
         );
 
-        if (role) {
+        if (!firebaseAuth.isEmpty) {
             items.push(
                 {
                     label: 'Magánóráim',
@@ -92,7 +92,7 @@ const Navbar = props => {
             );
         }
 
-        if (role === 'tutor') {
+        if (!firebaseAuth.isEmpty && role === 'tutor') {
             items.push(
                 {
                     label: 'Hirdetés',
@@ -107,7 +107,7 @@ const Navbar = props => {
 
         return items;
 
-    }, [currentPath, navigate, role])
+    }, [currentPath, firebaseAuth.isEmpty, navigate, role])
 
     const userItems = useMemo(() => {
         return [

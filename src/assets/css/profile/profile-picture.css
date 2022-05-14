@@ -22,7 +22,7 @@
     border-radius: 15px;
 }
 
-.profile-picture-image-container .p-image img , .profile-picture-image-container .p-image-preview-indicator{
+.profile-picture-image-container .p-image img, .profile-picture-image-container .p-image-preview-indicator {
     height: 20em !important;
     width: 20em !important;
     border-radius: 50%;

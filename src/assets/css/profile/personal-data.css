@@ -8,7 +8,7 @@
     box-shadow: 0 3px 5px grey, 0 0 2px grey, 0 1px 4px grey !important;
 }
 
-.personal-data-field{
+.personal-data-field {
     width: 100%;
     display: flex;
     justify-content: space-around;

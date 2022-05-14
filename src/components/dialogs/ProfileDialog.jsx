@@ -11,6 +11,8 @@ import moment from "moment";
 import MessageDialog from "./MessageDialog";
 import {Dialog} from "primereact/dialog";
 import {connect} from "react-redux";
+import {DataTable} from "primereact/datatable";
+import {Column} from "primereact/column";
 
 const ProfileDialog = (props) => {
     const [showMessageDialog, setShowMessageDialog] = useState(false);
@@ -27,6 +29,33 @@ const ProfileDialog = (props) => {
                 toName: props.data.profile.personalData.fullName,
             }
             : null
+    };
+
+    const ratingBodyTemplate = (rowData) => {
+        return (
+            <div>
+                <p>
+                    {rowData.rating}
+                </p>
+                <i className="pi pi-star"/>
+            </div>
+        )
+    }
+
+    const feedbackBodyTemplate = (rowData) => {
+        return (
+            <p>
+                {rowData.message}
+            </p>
+        )
+    }
+
+    const dateBodyTemplate = (rowData) => {
+        return (
+            <p>
+                {moment(rowData.date.toDate()).format('YYYY. MMMM DD.')}
+            </p>
+        )
     }
 
     return (
@@ -68,6 +97,46 @@ const ProfileDialog = (props) => {
                                 }
                             </p>
                         </div>
+                    </div>
+                </div>
+                <div className="feedback-div">
+                    <p>Vélemények</p>
+                    <div className="feedback-table">
+                        <DataTable
+                            value={props.data.profile.feedback.list}
+                            responsiveLayout="scroll"
+                            paginator
+                            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                            currentPageReportTemplate="Visszajelzések száma: {totalRecords}"
+                            rows={5}
+                            rowsPerPageOptions={[5, 10, 15, 20]}
+                            sortField="date"
+                            sortOrder={-1}
+                            emptyMessage="Nem található visszajelzés."
+                        >
+                            <Column
+                                field="rating"
+                                header="Értékelés"
+                                body={ratingBodyTemplate}
+                                sortable
+                                className="rating-td"
+                            />
+
+                            <Column
+                                field="message"
+                                header="Visszajelzés"
+                                body={feedbackBodyTemplate}
+                                className="feedback-td"
+                            />
+
+                            <Column
+                                field="date"
+                                header="Dátum"
+                                body={dateBodyTemplate}
+                                sortable
+                                className="date-td"
+                            />
+                        </DataTable>
                     </div>
                 </div>
                 {

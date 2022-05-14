@@ -136,7 +136,6 @@ const SignIn = props => {
                                 label="Bejelentkezés"
                             />
                         </div>
-
                     </form>
                 </div>
             </div>

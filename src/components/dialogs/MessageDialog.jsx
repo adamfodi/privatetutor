@@ -20,8 +20,6 @@ const MessageDialog = (props) => {
 
     moment.locale('hu')
 
-    console.log(message)
-
     const validateMessage = () => {
         const errorToast = []
 
@@ -96,10 +94,17 @@ const MessageDialog = (props) => {
                         allowOutsideClick: false,
                         allowEscapeKey: false
                     })
-                        .then(() => setShowMessageDialog(false))
+                        .then(() => {
+                            MessageService.setIncomingMessageRead(message.toUID, message)
+                                .then(() => {
+                                    setShowMessageDialog(false)
+                                })
+                        })
                 })
                 .catch((err) => {
-                    console.log(err)
+                    MessageService.setIncomingMessageRead(message.toUID, message)
+                        .catch(() => {
+                        })
                     Swal.fire({
                         didOpen: () => {
                             Swal.hideLoading();
@@ -126,7 +131,7 @@ const MessageDialog = (props) => {
                                 Feladó
                             </p>
                             <InputText
-                                value={message.toName}
+                                value={message.fromName}
                                 disabled
                             />
                         </div>
@@ -142,7 +147,7 @@ const MessageDialog = (props) => {
 
                         <div className="date-div">
                             <p>
-                                {moment(message.date.toDate()).format("YYYY. MMMM. Do hh:mm")}
+                                {moment(message.date.toDate()).format("YYYY. MMMM. Do HH:mm")}
                             </p>
                         </div>
                         <div className="content-div">
@@ -179,7 +184,7 @@ const MessageDialog = (props) => {
                                 Címzett
                             </p>
                             <InputText
-                                value={message.toName}
+                                value={message.fromName}
                                 disabled
                             />
                         </div>

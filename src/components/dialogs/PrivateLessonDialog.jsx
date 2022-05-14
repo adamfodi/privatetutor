@@ -109,7 +109,6 @@ const PrivateLessonDialog = (props) => {
             })
             .catch((err) => {
                 setShowNewPrivateLessonDialog(false)
-                console.log(err)
                 Swal.fire({
                     didOpen: () => {
                         Swal.hideLoading();
@@ -146,6 +145,7 @@ const PrivateLessonDialog = (props) => {
             }
 
             const overlappedDates = myPrivateLessons.filter(privateLesson =>
+                privateLesson.status === "accepted" &&
                 newPrivateLesson.dateFrom < privateLesson.dateTo.toDate() && newPrivateLesson.dateTo > privateLesson.dateFrom.toDate()
             )
 

@@ -45,14 +45,14 @@
     margin-bottom: 10px;
 }
 
-.private-lessons-container .datatable-container .picture-and-profile-td div{
-    display:flex;
+.private-lessons-container .datatable-container .picture-and-profile-td div {
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.private-lessons-container .datatable-container .picture-and-profile-td div button{
+.private-lessons-container .datatable-container .picture-and-profile-td div button {
     width: 100px;
 }
 
@@ -82,7 +82,7 @@
 }
 
 .private-lessons-container .datatable-container td:last-of-type > div {
-    display:flex;
+    display: flex;
     justify-content: space-evenly;
 }
 
@@ -96,5 +96,21 @@
     border-radius: 0;
 }
 
+.private-lessons-container .datatable-container .response-td div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.private-lessons-container .datatable-container .response-td div button, .private-lessons-container .datatable-container .join-feedback-td div button {
+    width: 100px;
+    padding: 7px;
+    text-align: center;
+}
+
+.private-lessons-container .datatable-container .response-td div button:nth-of-type(2) {
+    margin-top: 5px;
+}
 
 

@@ -19,7 +19,7 @@
     align-items: center;
 }
 
-.feedback-dialog-content >div:first-of-type {
+.feedback-dialog-content > div:first-of-type {
     width: 100%;
     display: flex;
     justify-content: space-around;

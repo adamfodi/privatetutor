@@ -54,7 +54,7 @@ export const WebRTCService = {
             });
     },
 
-    async stopLocalMediaStream(peerConnection, localStream) {
+    async stopMediaStream(peerConnection, localStream) {
         localStream.current.getTracks().forEach((track) => {
             track.enabled = false;
             track.stop();

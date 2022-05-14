@@ -60,9 +60,10 @@ const ProfilePicture = (props) => {
                                 Swal.fire({
                                     timer: 1500,
                                     icon: "success",
-                                    title: "Sikeres módosítás!",
+                                    title: "Sikeres feltöltés!",
                                     showConfirmButton: false,
                                     allowOutsideClick: false,
+                                    allowEscapeKey: false
                                 })
                             })
                     })
@@ -70,8 +71,9 @@ const ProfilePicture = (props) => {
             .catch(() => {
                 Swal.fire({
                     icon: "error",
-                    title: "Hiba történt a feltöltés során!",
+                    title: "Hiba történt a kép feltöltés során!\n Kérem próbálja újra később!",
                     allowOutsideClick: false,
+                    allowEscapeKey: false
                 });
             })
     };

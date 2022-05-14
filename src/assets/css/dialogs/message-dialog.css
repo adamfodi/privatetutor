@@ -44,11 +44,11 @@
     opacity: 1;
 }
 
-.message-dialog-content  .read-message-div  .content-div {
+.message-dialog-content .read-message-div .content-div {
     margin: 20px 10px 10px 10px;
 }
 
-.message-dialog-content  .send-message-div  .content-div {
+.message-dialog-content .send-message-div .content-div {
     margin: 30px 10px 10px 10px;
 }
 

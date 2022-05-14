@@ -68,20 +68,36 @@
 .sign-up-container .login-role {
     margin: auto;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     color: white;
-    width: 92%;
+    width: 75%;
+}
+
+.sign-up-container .login-role > p {
+    font-size: 30px;
+    color: white;
+    margin: 0;
 }
 
 .sign-up-container .login-role > div {
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    width: 75%;
+}
+
+.sign-up-container .login-role > div > div {
     display: flex;
     justify-content: space-around;
     align-items: center;
 }
 
-.sign-up-container .login-role > div > p {
-    font-size: 28px;
+.sign-up-container .login-role > div > div p {
+    font-size: 30px;
     font-family: Calibri, sans-serif;
 }
 
@@ -103,7 +119,7 @@
 .sign-up-container .submit-button .p-button {
     display: flex;
     justify-content: center;
-    margin: 4vh auto;
+    margin: 1vh auto 2vh auto;
     padding: 2vh 2vh;
     font-size: 45px;
     box-shadow: none !important;

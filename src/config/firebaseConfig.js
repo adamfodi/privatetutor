@@ -4,7 +4,6 @@ import 'firebase/compat/firestore';
 import {applyMiddleware, createStore} from 'redux'
 import {createFirestoreInstance} from 'redux-firestore'
 import rootReducer from "../redux/reducers/rootReducer";
-import {composeWithDevTools} from "redux-devtools-extension";
 import thunk from "redux-thunk";
 import {persistReducer, persistStore} from "redux-persist";
 import storage from 'redux-persist/lib/storage';
@@ -12,7 +11,7 @@ import storage from 'redux-persist/lib/storage';
 const persistConfig = {
     key: 'root',
     storage,
-    blacklist: ['firebase','firestore']
+    blacklist: ['firebase', 'firestore']
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
@@ -44,9 +43,7 @@ const initialState = {};
 const store = createStore(
     persistedReducer,
     initialState,
-    composeWithDevTools(
-        applyMiddleware(thunk),
-    ),
+    applyMiddleware(thunk),
 );
 
 // react-redux-firebase props
